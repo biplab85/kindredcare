@@ -1,0 +1,229 @@
+@use '../abstracts' as *;
+
+// Section 07 — verification tiers.
+// Turns "we do background checks" (what Care.com says) into something
+// specific and checkable.
+.s-tiers {
+  background-color: var(--c-bone);
+
+  &__grid {
+    display: grid;
+    gap: space(5);
+
+    @include mq(lg) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+.c-tier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: space(6);
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid color-mix(in oklab, var(--c-clay) 66%, #fff);
+  border-radius: 20px;
+  // Two shadows: a hairline contact edge, and a wide soft cast. All three tiers
+  // get them — previously only the third had any depth, so the other two read as
+  // plain boxes next to it.
+  box-shadow:
+    0 1px 2px rgb(26 31 38 / 4%),
+    0 18px 40px -26px rgb(26 31 38 / 13%);
+  transition:
+    transform $dur-micro $ease-out,
+    box-shadow $dur-micro $ease-out,
+    border-color $dur-micro $ease-out;
+
+  @include hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in oklab, var(--c-trust) 34%, var(--c-clay));
+    box-shadow:
+      0 1px 2px rgb(26 31 38 / 5%),
+      0 28px 56px -28px rgb(26 31 38 / 20%);
+  }
+
+  &__top {
+    display: flex;
+    gap: space(4);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__badge {
+    display: inline-flex;
+    gap: space(2);
+    align-items: center;
+    align-self: flex-start;
+    padding: space(2) space(4);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    // Leaf Green carries verification meaning — the only place it appears.
+    color: color-mix(in oklab, var(--c-leaf) 80%, black);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background-color: color-mix(in oklab, var(--c-leaf) 12%, transparent);
+    border-radius: 999px;
+  }
+
+  // Three pips, filled to the tier's level. This is what carries "each one
+  // unlocks more" — a border colour alone was too quiet to read as a progression.
+  &__meter {
+    display: flex;
+    flex-shrink: 0;
+    gap: 5px;
+
+    i {
+      width: 20px;
+      height: 4px;
+      background-color: color-mix(in oklab, var(--c-clay) 80%, #fff);
+      border-radius: 999px;
+    }
+  }
+
+  &__name {
+    margin-block-start: space(5);
+    font-family: var(--font-display);
+    font-size: 1.625rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  &__desc {
+    margin-block-start: space(3);
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: var(--c-ink-soft);
+    text-wrap: pretty;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: space(3);
+    padding-block-start: space(5);
+    margin-block-start: space(5);
+    border-block-start: 1px solid color-mix(in oklab, var(--c-clay) 66%, #fff);
+  }
+
+  &__item {
+    display: flex;
+    gap: space(3);
+    align-items: flex-start;
+    max-width: none;
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    color: var(--c-ink);
+  }
+
+  &__check {
+    flex-shrink: 0;
+    margin-block-start: 3px;
+    color: var(--c-leaf);
+  }
+
+  // Pushed to the floor, so all three cards line their footers up regardless of
+  // how many checks each one lists.
+  &__unlocks {
+    padding: space(4) space(5);
+    margin-block-start: auto;
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    color: var(--c-ink);
+    background-color: color-mix(in oklab, var(--c-trust) 6%, #fff);
+    border-radius: 14px;
+  }
+
+  &__more {
+    @include focusable;
+
+    display: inline-flex;
+    gap: space(2);
+    align-items: center;
+    align-self: flex-start;
+    margin-block-start: space(5);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--c-trust);
+    text-align: start;
+    transition: color $dur-micro $ease-out;
+
+    @include hover {
+      color: color-mix(in oklab, var(--c-trust) 82%, black);
+
+      .c-tier__more-icon {
+        transform: translate(2px, -2px);
+      }
+    }
+  }
+
+  &__more-icon {
+    flex-shrink: 0;
+    transition: transform $dur-micro $ease-out;
+  }
+
+  // Ascending weight left → right: the meter fills, and the top tier carries a
+  // ring plus a heavier cast so it reads as the ceiling.
+  &--1 .c-tier__meter i:nth-child(-n + 1),
+  &--2 .c-tier__meter i:nth-child(-n + 2),
+  &--3 .c-tier__meter i:nth-child(-n + 3) {
+    background-color: var(--c-leaf);
+  }
+
+  // Stacking order for the collapsed state (js/modules/tier-stack.js): the cards
+  // converge on the middle one, and Professional should read as the top of the
+  // pile. Harmless once they are spread.
+  &--1 { z-index: 1; }
+  &--2 { z-index: 2; }
+  &--3 { z-index: 3; }
+
+  &--2 {
+    border-color: color-mix(in oklab, var(--c-trust) 26%, var(--c-clay));
+  }
+
+  &--3 {
+    border-color: color-mix(in oklab, var(--c-trust) 46%, var(--c-clay));
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--c-trust) 16%, transparent),
+      0 24px 52px -26px rgb(26 31 38 / 20%);
+  }
+}
+
+// Modal body for "what's checked"
+.c-tier-modal {
+  max-width: 520px;
+  padding: space(7);
+  background-color: var(--c-bone);
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: space(4);
+    margin-block-start: space(5);
+  }
+
+  &__item {
+    max-width: none;
+  }
+
+  &__term {
+    display: block;
+    font-weight: 600;
+  }
+
+  &__def {
+    display: block;
+    margin-block-start: space(1);
+    font-size: var(--fs-sm);
+    color: var(--c-ink-soft);
+  }
+}

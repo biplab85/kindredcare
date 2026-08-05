@@ -1,0 +1,385 @@
+@use '../abstracts' as *;
+
+// =============================================================================
+// Footer — Sekare demo-four `.footer-area.style1`, matched.
+//
+// Reference values, measured off the live page:
+//   ground        #0a111d, pt-100
+//   subscribe     pb-100; "Let's contact" at 64px/89.6 white, newsletter
+//                 right: 55px pill input on #101928 with a 1px #2e364a border
+//                 and a 50px circular submit pinned to its right edge
+//   widgets       four columns, each with a 1px vertical rule on its right
+//                 (their ::before is a fixed 412px tall; ours stretches)
+//   headings      24px / 700 / #d9d9d9, 20px below
+//   links         16px / #838792
+//   copyright     #101928 band, 28px block padding
+// =============================================================================
+.l-footer {
+  color: #838792;
+  background-color: #0a111d;
+
+  a {
+    text-decoration: none;
+  }
+
+  // -- Subscription band -------------------------------------------------------
+  &__subscribe {
+    display: grid;
+    gap: space(6);
+    align-items: center;
+    padding-block: clamp(56px, 7vw, 100px);
+
+    @include mq(md) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: space(8);
+    }
+  }
+
+  &__shout {
+    margin: 0;
+    font-size: clamp(2.25rem, 5.5vw, 4rem); // reference: 64px
+    font-weight: 700;
+    line-height: 1.2;
+    color: #fff;
+  }
+
+  &__shout-link {
+    @include focusable;
+
+    color: #fff;
+    // Keeps the arrow married to the words — it must never orphan onto its
+    // own line at a narrow width.
+    white-space: nowrap;
+    transition: color $dur-micro $ease-out;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--c-accent);
+    }
+  }
+
+  // The base reset sets `svg { display: block }`, which drops this onto its
+  // own line. Put it back inline and sit it on the text baseline, as the
+  // reference does with `position: relative; left: 10px; top: 15px`.
+  &__shout-icon {
+    position: relative;
+    inset-block-start: 0.1em;
+    display: inline-block;
+    width: 0.6em;
+    height: 0.6em;
+    margin-inline-start: 0.12em;
+    color: var(--c-accent);
+    vertical-align: baseline;
+  }
+
+  &__newsletter-title {
+    margin-block-end: space(4);
+    font-size: 1.5rem; // reference: 24px
+    font-weight: 700;
+    color: #fff;
+  }
+
+  // Pill field with the submit pinned inside its right edge.
+  &__form {
+    position: relative;
+    padding-inline-end: 60px;
+  }
+
+  &__input {
+    width: 100%;
+    height: 55px;
+    padding-inline: 30px;
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    color: #fff;
+    background-color: #101928;
+    border: 1px solid #2e364a;
+    border-radius: 100px;
+
+    &::placeholder {
+      color: #61656f;
+      transition: color $dur-micro $ease-out;
+    }
+
+    &:focus {
+      border-color: var(--c-accent);
+      outline: none;
+
+      &::placeholder {
+        color: transparent;
+      }
+    }
+
+    &:focus-visible {
+      @include focus-ring(1px);
+    }
+  }
+
+  &__submit {
+    @include focusable;
+
+    position: absolute;
+    inset-block-start: 2px;
+    inset-inline-end: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    color: #fff;
+    background-color: var(--c-accent);
+    border: 0;
+    border-radius: 50%;
+    transition: background-color $dur-micro $ease-out;
+
+    &:hover {
+      background-color: color-mix(in oklab, var(--c-accent) 82%, #fff);
+    }
+  }
+
+  // -- Widget row --------------------------------------------------------------
+  &__widgets {
+    display: grid;
+    gap: space(7);
+    padding-block-end: clamp(56px, 7vw, 100px);
+
+    @include mq(sm) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @include mq(lg) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: space(6);
+    }
+  }
+
+  // The reference draws a fixed 412px rule; stretching it to the row height
+  // survives a widget growing a line, which theirs would not.
+  &__widget {
+    position: relative;
+
+    @include mq(lg) {
+      padding-inline-end: space(6);
+
+      &::before {
+        position: absolute;
+        inset-block: -8px 0;
+        inset-inline-end: 0;
+        width: 1px;
+        content: '';
+        background-color: #2e364a;
+      }
+    }
+  }
+
+  &__widget--last::before {
+    display: none;
+  }
+
+  &__brand {
+    display: inline-flex;
+    margin-block-end: space(5);
+  }
+
+  &__logo {
+    display: block;
+    width: auto;
+    height: 36px;
+  }
+
+  &__heading {
+    margin-block-end: space(4);
+    font-size: 1.5rem; // reference: 24px
+    font-weight: 700;
+    color: #d9d9d9;
+  }
+
+  &__list,
+  &__plain,
+  &__contact,
+  &__social {
+    list-style: none;
+  }
+
+  &__list li,
+  &__plain li {
+    max-width: none;
+    margin-block-end: space(3);
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+
+    &:last-child {
+      margin-block-end: 0;
+    }
+  }
+
+  &__link {
+    @include focusable;
+
+    color: #838792;
+    transition: color $dur-micro $ease-out;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--c-accent);
+    }
+  }
+
+  &__contact li {
+    position: relative;
+    max-width: none;
+    padding-inline-start: 30px;
+    margin-block-end: space(3);
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+
+    &:last-child {
+      margin-block-end: 0;
+    }
+
+    svg {
+      position: absolute;
+      inset-block-start: 3px;
+      inset-inline-start: 0;
+      width: 16px;
+      height: 16px;
+      color: var(--c-accent);
+    }
+  }
+
+  &__connect {
+    margin-block-start: space(6);
+  }
+
+  &__social {
+    display: flex;
+    gap: space(2);
+  }
+
+  // Reference uses 50px circles; held at 44px to match every other round
+  // control on the site.
+  &__social-link {
+    @include focusable;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: #d9d9d9;
+    background-color: #101928;
+    border: 1px solid #2e364a;
+    border-radius: 50%;
+    transition:
+      color $dur-micro $ease-out,
+      background-color $dur-micro $ease-out,
+      border-color $dur-micro $ease-out;
+
+    &:hover,
+    &:focus-visible {
+      color: #fff;
+      background-color: var(--c-accent);
+      border-color: var(--c-accent);
+    }
+  }
+
+  // -- Copyright band ----------------------------------------------------------
+  &__copyright {
+    padding-block: 28px;
+    background-color: #101928;
+
+    p {
+      max-width: none;
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: #838792;
+      text-align: center;
+    }
+  }
+}
+
+// =============================================================================
+// App mode — the footer's list columns as accordions
+//
+// Inside a single `mq-below(md)`. The desktop footer is four columns side by
+// side and none of this reaches it; the module that builds the triggers is
+// gated on the same query and unbuilds above it (js/modules/footer-accordion.js).
+//
+// Open and stacked, Quick links, Type of care and Contact information run to
+// about a screen and a half on a phone, so the copyright line — and the phone
+// number people scroll to the footer to find — sit below all of it. Collapsed,
+// the footer is a short index you can read the shape of at a glance.
+// =============================================================================
+@include mq-below(md) {
+  .l-footer {
+    // The three collapsible widgets are flush rows divided by hairlines, so the
+    // stack reads as one list of sections rather than four floating blocks.
+    &__widgets {
+      gap: 0;
+    }
+
+    // The brand column is not collapsible and keeps its air.
+    &__widget:not([data-footer-acc]) {
+      margin-block-end: space(6);
+    }
+
+    &__widget[data-footer-acc] {
+      border-block-start: 1px solid #2e364a;
+    }
+
+    // The heading is now only a container for the trigger; the trigger carries
+    // the row's height and padding.
+    &__widget[data-footer-acc] > .l-footer__heading {
+      margin-block-end: 0;
+    }
+
+    &__acc-btn {
+      @include focusable;
+
+      display: flex;
+      gap: space(4);
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      // 60px of row. These are the footer's only controls, and they are the
+      // last thing a thumb meets on the page.
+      min-height: 60px;
+      padding-block: space(4);
+      font: inherit;
+      color: inherit;
+      text-align: start;
+      background: none;
+      border: 0;
+    }
+
+    &__acc-icon {
+      flex-shrink: 0;
+      color: var(--c-accent);
+      transition: transform $dur-micro $ease-out;
+    }
+
+    &__acc-btn[aria-expanded='true'] .l-footer__acc-icon {
+      transform: rotate(180deg);
+    }
+
+    // The panel animates on `height`, so it carries no padding of its own —
+    // padding survives `height: 0` under border-box and would leave a band of
+    // dead space under a closed row. The floor goes on the last item instead.
+    &__acc-panel > li:last-child {
+      padding-block-end: space(5);
+    }
+
+    // Closes the last accordion row, and separates the social links — which sit
+    // inside the contact widget but outside its panel, and stay visible.
+    &__connect {
+      padding-block-start: space(6);
+      border-block-start: 1px solid #2e364a;
+    }
+
+    @include reduced-motion {
+      &__acc-icon {
+        transition: none;
+      }
+    }
+  }
+}

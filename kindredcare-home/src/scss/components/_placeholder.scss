@@ -1,0 +1,41 @@
+@use '../abstracts' as *;
+
+// Photography placeholder — deliberate, not broken.
+// Replace with real <picture> elements once the shoot lands (plan §14).
+.c-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: space(5);
+  text-align: center;
+  background-image:
+    linear-gradient(140deg, #e8ddd0 0%, #d9c9b8 45%, #cbb9a6 100%);
+
+  &__label {
+    max-width: none;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: rgb(26 31 38 / 55%);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__note {
+    max-width: 30ch;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: rgb(26 31 38 / 45%);
+  }
+
+  &--tint-a {
+    background-image: linear-gradient(140deg, #efe3d9 0%, #e2d0c2 100%);
+  }
+
+  &--tint-b {
+    background-image: linear-gradient(140deg, #e3ece3 0%, #cfe0d2 100%);
+  }
+}

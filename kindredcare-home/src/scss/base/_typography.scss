@@ -1,0 +1,66 @@
+@use '../abstracts' as *;
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight, 600);
+  line-height: var(--lh-heading);
+  color: var(--c-ink);
+  text-wrap: balance;
+  letter-spacing: -0.015em;
+}
+
+h1 {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+// Reading blocks stay at 68ch regardless of the 1440px container. Plan §5.4.
+p,
+li {
+  @include measure;
+}
+
+.u-lead {
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--c-ink-soft);
+}
+
+.u-sm {
+  font-size: var(--fs-sm);
+}
+
+// Eyebrow — the small label above a heading.
+// Reference: 16px, regular weight, accent colour, sentence case, no tracking.
+.u-eyebrow {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--c-trust);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.u-ink-soft {
+  color: var(--c-ink-soft);
+}
+
+.u-sr-only {
+  @include sr-only;
+}

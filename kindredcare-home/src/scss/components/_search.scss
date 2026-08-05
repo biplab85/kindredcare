@@ -1,0 +1,70 @@
+@use '../abstracts' as *;
+
+// Header search — Sekare reference: 300×50, radius 50px, #F5F6F9, icon inset
+// left at 45px of padding.
+.c-search {
+  position: relative;
+  display: none;
+
+  @include mq(lg) {
+    display: block;
+    width: clamp(220px, 22vw, 300px);
+  }
+
+  &__input {
+    @include focusable;
+
+    width: 100%;
+    height: 50px;
+    padding-inline: 45px space(5);
+    font-size: var(--fs-sm);
+    color: var(--c-ink);
+    background-color: #f5f6f9;
+    border: 1px solid transparent;
+    border-radius: 50px;
+    transition:
+      border-color $dur-micro $ease-out,
+      background-color $dur-micro $ease-out;
+
+    &::placeholder {
+      color: var(--c-ink-soft);
+    }
+
+    &:focus {
+      background-color: #fff;
+      border-color: var(--c-clay);
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 16px;
+    color: var(--c-ink-soft);
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+}
+
+// Circular menu trigger — the yellow puck in the reference. Opens the
+// off-canvas panel, so it is a real control at every breakpoint rather than
+// desktop decoration.
+.c-menu-btn {
+  @include focusable;
+  @include press-feedback(0.94);
+
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  color: #fff;
+  background-color: var(--c-accent);
+  border-radius: 50%;
+  transition: background-color $dur-micro $ease-out;
+
+  @include hover {
+    background-color: color-mix(in oklab, var(--c-accent) 88%, black);
+  }
+}

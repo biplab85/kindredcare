@@ -1,0 +1,399 @@
+@use '../abstracts' as *;
+
+// =============================================================================
+// Section 01c — Sekare demo-four `.demo-four-service-area`, matched.
+//
+// The pin is pure CSS, exactly as the reference does it. There is no
+// ScrollTrigger and no scroll listener anywhere in this section:
+//
+//   .demo-four-service-content { position: sticky; top: 150px; }
+//
+// It works because the left column is a stretched grid/flex item, so it is as
+// tall as the whole card stack even though its content is ~355px. That tall,
+// mostly-empty containing block is the runway the sticky box travels along,
+// and sticky can never escape it — so the release back into normal flow at the
+// end of the section is automatic, not configured.
+//
+// The consequence worth knowing: pin duration is not a number anywhere. It is
+// simply `card stack height - intro height`. Add a sixth group and it pins
+// longer, with no change here.
+//
+// Reference geometry, measured at 1600px:
+//   columns      5 / 7
+//   card         354px tall, radius 25px, padding-inline-start 50px
+//   image        306x354, flex-shrink 0, own radius 25px
+//   gap          24px between cards
+//   sticky top   150px (clears their fixed header; ours is 74px, so 110px)
+// =============================================================================
+.s-service-groups {
+  // Light wash, pitched between the page's warm bone and the cards' cool
+  // pastel grounds so neither looks stranded. Two soft blooms over a vertical
+  // fade; both ends return to bone so the section joins its neighbours
+  // without a visible seam.
+  //
+  // NOTE: no `overflow` here. It would make this box the sticky scroll
+  // container for the intro column and the pin would stop working.
+  background-image:
+    radial-gradient(46% 38% at 10% 6%, rgba(66, 147, 207, 9%), transparent 72%),
+    radial-gradient(42% 34% at 94% 78%, rgba(180, 150, 190, 12%), transparent 72%),
+    linear-gradient(180deg, #faf7f2 0%, #f4f5fd 38%, #f8f3f7 72%, #faf7f2 100%);
+
+  // Keeps the content plane above the decorative layer.
+  > .l-container {
+    position: relative;
+    z-index: 1;
+  }
+
+  // The clip lives here, not on the section — see the note above.
+  &__deco {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  &__mote {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    opacity: 0.22;
+    // Long, unequal periods so the six never fall into step with each other.
+    animation: sg-drift-a 26s $ease-in-out infinite;
+
+    @include mq-below(lg) {
+      // The gutters vanish once the columns stack, so these would drift over
+      // the copy. The wash stays; the motes go.
+      display: none;
+    }
+  }
+
+  // Positions sit in the container gutters at desktop widths.
+  &__mote--1 {
+    top: 7%;
+    left: 3.5%;
+    color: var(--c-accent);
+  }
+
+  &__mote--2 {
+    top: 21%;
+    right: 4%;
+    width: 40px;
+    height: 40px;
+    color: var(--c-leaf);
+    animation: sg-drift-b 33s $ease-in-out -6s infinite;
+  }
+
+  &__mote--3 {
+    top: 43%;
+    left: 2.5%;
+    color: var(--c-accent);
+    animation: sg-drift-c 29s $ease-in-out -12s infinite;
+  }
+
+  &__mote--4 {
+    top: 61%;
+    right: 3%;
+    width: 30px;
+    height: 30px;
+    color: var(--c-ink-soft);
+    opacity: 0.16;
+    animation: sg-drift-a 37s $ease-in-out -19s infinite;
+  }
+
+  &__mote--5 {
+    top: 79%;
+    left: 4.5%;
+    color: var(--c-heart);
+    opacity: 0.18;
+    animation: sg-drift-b 31s $ease-in-out -3s infinite;
+  }
+
+  &__mote--6 {
+    top: 33%;
+    right: 7%;
+    width: 26px;
+    height: 26px;
+    color: var(--c-accent);
+    opacity: 0.15;
+    animation: sg-drift-c 41s $ease-in-out -25s infinite;
+  }
+
+  // Plan §9 — motion is opt-out everywhere, and this is pure decoration.
+  @include reduced-motion {
+    &__mote {
+      animation: none;
+    }
+  }
+
+  &__layout {
+    display: grid;
+    gap: space(7);
+
+    @include mq(lg) {
+      // Reference is Bootstrap col-lg-5 / col-lg-7.
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: clamp(32px, 4vw, 64px);
+      // NOT `align-items: start` — the intro column has to stretch to the full
+      // row height or the sticky child has nowhere to travel and never pins.
+    }
+  }
+
+  &__intro-inner {
+    @include mq(lg) {
+      position: sticky;
+      // Our header is 74px and sticky at top: 0; this leaves 36px of air.
+      top: 110px;
+    }
+  }
+
+  &__title {
+    margin-block: space(3) space(7);
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem); // reference: 36px
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--c-ink);
+  }
+
+  &__list {
+    display: grid;
+    gap: space(5); // reference: 24px
+    list-style: none;
+  }
+}
+
+// Three drift paths. Transform-only, so each mote stays on the compositor and
+// never triggers layout — six of these run for the whole life of the page.
+@keyframes sg-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  33% {
+    transform: translate3d(16px, -22px, 0) rotate(7deg);
+  }
+
+  66% {
+    transform: translate3d(-12px, 14px, 0) rotate(-6deg);
+  }
+}
+
+@keyframes sg-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  40% {
+    transform: translate3d(-20px, -14px, 0) rotate(-9deg);
+  }
+
+  70% {
+    transform: translate3d(10px, 20px, 0) rotate(5deg);
+  }
+}
+
+@keyframes sg-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  25% {
+    transform: translate3d(12px, 16px, 0) rotate(8deg);
+  }
+
+  55% {
+    transform: translate3d(-16px, -10px, 0) rotate(-4deg);
+  }
+
+  80% {
+    transform: translate3d(8px, -18px, 0) rotate(6deg);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// The card itself.
+// -----------------------------------------------------------------------------
+.c-group-card {
+  // Anchors the title link's ::after, which makes the whole card clickable.
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // No end padding: the photograph is meant to sit flush into the rounded
+  // corner, as it does in the reference.
+  padding-inline: clamp(24px, 3vw, 50px) 0;
+  background-color: var(--group-ground, #eff0fe);
+  border-radius: 25px;
+
+  // Below md the page is in app mode — stack, and let the image go full width.
+  @include mq-below(md) {
+    display: block;
+    padding: space(5);
+    border-radius: 16px;
+  }
+
+  &__body {
+    min-width: 0;
+    padding-block: space(5);
+  }
+
+  &__title {
+    margin-block-end: space(3);
+    font-size: clamp(1.125rem, 1.6vw, 1.5rem); // reference: 24px
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--c-ink);
+  }
+
+  &__link {
+    @include focusable;
+
+    color: inherit;
+    text-decoration: none;
+
+    // Lets the whole card be the click target while only one link exists in
+    // the accessibility tree.
+    &::after {
+      position: absolute;
+      inset: 0;
+      content: '';
+    }
+  }
+
+  &__list {
+    margin-block-end: space(5);
+    list-style: none;
+  }
+
+  &__item {
+    position: relative;
+    max-width: none;
+    padding-inline-start: 20px;
+    margin-block-end: space(2);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--c-ink);
+
+    // Reference marks each line with a literal asterisk in the accent colour.
+    &::before {
+      position: absolute;
+      inset-inline-start: 0;
+      top: 0.15em;
+      font-size: 1.25em;
+      line-height: 1;
+      color: var(--c-accent);
+      content: '*';
+    }
+  }
+
+  // The "+N more" line. Same rhythm, no marker, quieter — it is a count, not
+  // another service.
+  &__more {
+    padding-inline-start: 20px;
+    margin-block-end: 0;
+    font-size: var(--fs-sm);
+    font-weight: 400;
+    color: var(--c-ink-soft);
+
+    &::before {
+      content: none;
+    }
+  }
+
+  // 50px outlined circle that fills on hover. Decorative — the card's single
+  // link is on the title, so this is not a second tab stop to the same place.
+  &__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    color: var(--c-accent);
+    background-color: transparent;
+    border: 1px solid var(--c-accent);
+    border-radius: 50%;
+    // Reference eases this over 0.6s, which is slow but deliberate.
+    transition:
+      color 0.6s $ease-out,
+      background-color 0.6s $ease-out;
+  }
+
+  &__media {
+    flex-shrink: 0;
+    width: 306px;
+    height: 354px;
+
+    // Reference steps this down to 230x265 between 992 and 1399.
+    @media (max-width: 1399px) {
+      width: 230px;
+      height: 265px;
+    }
+
+    @include mq-below(md) {
+      width: 100%;
+      height: auto;
+      margin-block-start: space(5);
+    }
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 25px;
+
+    @include mq-below(md) {
+      aspect-ratio: 306 / 220;
+      border-radius: 12px;
+    }
+  }
+
+  // The only hover in the reference: the arrow fills. The card does not lift,
+  // the ground does not change, the photograph does not scale.
+  @include hover {
+    .c-group-card__icon {
+      color: #fff;
+      background-color: var(--c-accent);
+    }
+  }
+
+  // Keyboard parity — focusing the title gives the same affordance.
+  &:focus-within &__icon {
+    color: #fff;
+    background-color: var(--c-accent);
+  }
+
+  @include reduced-motion {
+    &__icon {
+      transition: none;
+    }
+  }
+}
+
+// The reference's five pastel grounds, kept literally — the same call as the
+// periwinkle border on the founded section.
+.c-group-card--ground-1 {
+  --group-ground: #eff0fe;
+}
+
+.c-group-card--ground-2 {
+  --group-ground: #faf6e7;
+}
+
+.c-group-card--ground-3 {
+  --group-ground: #f5f6f9;
+}
+
+.c-group-card--ground-4 {
+  --group-ground: #ede3eb;
+}
+
+.c-group-card--ground-5 {
+  --group-ground: #ebf3fa;
+}

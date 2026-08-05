@@ -1,0 +1,59 @@
+@use '../abstracts' as *;
+
+// Shared section furniture: eyebrow → heading → lead.
+// Matches the reference's rhythm (sentence-case accent eyebrow, display
+// heading, 18px/1.7 lead).
+.c-section-head {
+  margin-block-end: clamp(40px, 5vw, 64px);
+
+  &__eyebrow {
+    margin-block-end: space(2);
+  }
+
+  &__title {
+    max-width: 20ch;
+  }
+
+  &__lead {
+    max-width: 56ch;
+    margin-block-start: space(4);
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--c-ink-soft);
+  }
+
+  // Centred variant
+  &--center {
+    text-align: center;
+
+    .c-section-head__title,
+    .c-section-head__lead {
+      margin-inline: auto;
+    }
+  }
+
+  // Split variant — heading left, lead right
+  &--split {
+    @include mq(lg) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: space(8);
+      align-items: end;
+
+      .c-section-head__lead {
+        margin-block-start: 0;
+      }
+    }
+  }
+
+  // On the dark section
+  &--inverse {
+    .c-section-head__title {
+      color: var(--c-ink-inverse);
+    }
+
+    .c-section-head__lead {
+      color: rgb(250 247 242 / 74%);
+    }
+  }
+}

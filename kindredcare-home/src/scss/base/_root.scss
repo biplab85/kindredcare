@@ -1,0 +1,66 @@
+@use '../abstracts' as *;
+
+// Tokens are emitted as custom properties so JS, and the Swiper/Fancybox
+// overrides, can read them. Plan §10.
+:root {
+  // -- Colour (hex first, oklch overrides where supported) --------------------
+  --c-trust: #{$trust-blue-fb};
+  --c-heart: #{$heart-red-fb};
+  --c-leaf: #{$leaf-green-fb};
+  --c-accent: #{$accent-fb};
+
+  --c-bone: #{$bone};
+  --c-sand: #{$sand};
+  --c-clay: #{$clay};
+  --c-ink: #{$ink};
+  --c-ink-soft: #{$ink-soft};
+  --c-ink-inverse: #{$ink-inverse};
+  --c-deep: #{$deep};
+
+  // -- Type -------------------------------------------------------------------
+  // Work Sans display + Inter body, matching kindredcare.ca. Two faces only.
+  --font-display: #{$font-display};
+  --font-body: #{$font-body};
+  // Work Sans is a low-contrast grotesque; it needs real weight to hold the
+  // display sizes the serif was carrying by contrast alone.
+  --display-weight: 700;
+
+  // 63px at 1440, matching the reference exactly (63 / 1440 = 4.375vw).
+  --fs-display: clamp(2.5rem, 4.375vw, 3.9375rem);
+  --fs-h2: clamp(2rem, 4vw, 3.25rem);
+  --fs-h3: clamp(1.5rem, 2.5vw, 2rem);
+  --fs-lead: clamp(1.25rem, 2vw, 1.5rem);
+  --fs-body: 1.125rem; // 18px — the floor
+  --fs-sm: 1rem; // 16px — never smaller, except the documented bottom-bar exception
+
+  --lh-display: 1.1; // 69.3 / 63 in the reference
+  --lh-heading: 1.15;
+  --lh-body: 1.65;
+
+  // -- Layout -----------------------------------------------------------------
+  --container-max: #{$container-max};
+  --gutter: 24px;
+  --section-pad-y: clamp(80px, 10vw, 160px);
+
+  // -- Elevation — warm-tinted, never neutral grey --------------------------
+  --shadow-sm: 0 1px 2px rgb(26 31 38 / 6%);
+  --shadow-md: 0 4px 16px rgb(26 31 38 / 8%);
+  --shadow-lg: 0 16px 48px rgb(26 31 38 / 10%);
+
+  // -- App chrome -------------------------------------------------------------
+  --bottom-bar-h: #{$bottom-bar-h};
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  @include mq(md) {
+    --gutter: 32px;
+  }
+}
+
+@supports (color: oklch(0.5 0.1 240)) {
+  :root {
+    --c-trust: #{$trust-blue};
+    --c-heart: #{$heart-red};
+    --c-leaf: #{$leaf-green};
+    --c-accent: #{$accent};
+  }
+}

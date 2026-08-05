@@ -1,0 +1,681 @@
+@use '../abstracts' as *;
+
+// Section 04 — the centrepiece.
+//
+// The page's whole differentiation argument: agencies sell six services, we sell
+// thirty. Built on the Sekare "Service We Provide" pattern, which is a pastel
+// mosaic rather than a row of matching cards. What that pattern is made of, and
+// what we take from it:
+//
+//   · The section heading lives INSIDE the grid as one of the tiles, not above
+//     it — and it sits at the centre of the composition, enclosed on all four
+//     sides. This is the move that makes the layout.
+//   · Every tile carries its own soft tint. No borders, no shadows anywhere —
+//     flat colour and radius are the only surface treatment.
+//   · Tiles come in several widths and two heights, so the row reads as a jigsaw.
+//   · Photos bleed to the tile's bottom edge (zero bottom padding, clipped), and
+//     two of them sit in a "window frame": rounded top corners with a hairline on
+//     three sides and none along the bottom.
+//   · A title and nothing else. Rates live in the tile's modal, not on its face —
+//     the reference's cards carry a title and an image, and adding a second line
+//     of text is what was starving the photos of height.
+//
+// Two deliberate departures, both to keep it ours:
+//
+//  1. The reference interlocks its tiles with hand-tuned negative margins
+//     (-370px on one card, re-tuned across four breakpoints). We get the same
+//     composition from `grid-template-areas`, which needs no magic numbers and
+//     survives a change of gutter or container width.
+//  2. The reference sets its headings in Playfair Display. We load no serif (see
+//     _variables.scss — that question is closed), so the typographic *hierarchy*
+//     is matched using our own display face.
+.s-taxonomy {
+  // The tint set. Five soft fills echoing the reference's rotating pastels, all
+  // mixed from our own brand colours rather than borrowed from theirs.
+  --tint-grey: #{color-mix(in oklab, var(--c-trust) 5%, #fff)};
+  --tint-blue: #{color-mix(in oklab, var(--c-accent) 11%, #fff)};
+  --tint-sage: #{color-mix(in oklab, var(--c-leaf) 13%, #fff)};
+  --tint-rose: #{color-mix(in oklab, var(--c-heart) 9%, #fff)};
+  --tint-cream: #{color-mix(in oklab, var(--c-sand) 62%, #fff)};
+  --tint-sky: #{color-mix(in oklab, var(--c-trust) 9%, #fff)};
+
+  background-color: var(--c-bone);
+
+  // Mobile filter chips — app-mode pattern (plan §7).
+  &__chips {
+    display: flex;
+    gap: space(3);
+    padding-block-end: space(5);
+    margin-block-end: space(6);
+    overflow-x: auto;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @include mq(lg) {
+      display: none;
+    }
+  }
+
+  &__chip {
+    @include focusable;
+    @include press-feedback(0.96);
+
+    flex-shrink: 0;
+    padding: space(3) space(5);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--c-ink);
+    white-space: nowrap;
+    scroll-snap-align: start;
+    background-color: #fff;
+    border: 1px solid var(--c-clay);
+    border-radius: 999px;
+
+    &[aria-pressed='true'] {
+      color: #fff;
+      background-color: var(--c-trust);
+      border-color: var(--c-trust);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // The mosaic
+  //
+  // One column on mobile, a 2-up at md, and the reference's placed composition at
+  // lg. Below lg the tiles flow, which is what the filter chips need.
+  // ---------------------------------------------------------------------------
+  &__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+    gap: space(4);
+
+    @include mq(md) {
+      grid-auto-flow: row dense;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      // A fixed row height is what makes a row span mean anything: a tile that
+      // spans two rows gets 2 tracks plus the gap between them.
+      grid-auto-rows: 232px;
+    }
+
+    // The reference composition, placed rather than flowed.
+    //
+    // Measured off the reference at its 1296px container: a 12-column grid where
+    // the heading occupies columns 4–9 of row 2, and is therefore enclosed on all
+    // four sides — a tall tile to its left spanning rows 1–2, two tiles above it,
+    // a tall tile to its right spanning rows 2–3, and three tiles below.
+    //
+    // Hard placement is safe here precisely because the filter chips are
+    // `display: none` at lg: there is no filtering at this width, so no tile can
+    // vanish and leave a hole. Below lg the tiles flow, which is what the filter
+    // needs.
+    //
+    //   tl  tall left     tm  top middle (framed)   tr  top right
+    //   hd  the heading   rr  tall right            bl  bottom left
+    //   bn  bottom narrow bm  bottom middle (framed)
+    @include mq(lg) {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      // Row 2 is the tallest, as in the reference — it is the one holding the
+      // heading. Ours runs deeper because our heading also carries a lead
+      // paragraph, which the reference's does not.
+      grid-template-rows: 236px 400px 256px;
+      grid-template-areas:
+        'tl tl tl tm tm tm tm tr tr tr tr tr'
+        'tl tl tl hd hd hd hd hd hd rr rr rr'
+        'bl bl bl bl bn bn bm bm bm rr rr rr';
+      gap: space(5);
+    }
+  }
+}
+
+// -- The heading tile ---------------------------------------------------------
+// The reference's `.service-provide-card`: centred, on a rounder radius than the
+// service tiles so it reads as the anchor rather than as one more card.
+.c-cat-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: space(6) space(5);
+  text-align: center;
+  background-color: var(--tint-sky);
+  border-radius: 26px;
+
+  @include mq(md) {
+    grid-column: span 6;
+    grid-row: span 2;
+    padding: space(6);
+  }
+
+  @include mq(lg) {
+    // The centre of the composition.
+    grid-area: hd;
+  }
+
+  &__title {
+    max-width: 22ch;
+    margin-block-start: space(2);
+    font-family: var(--font-display);
+    font-size: clamp(1.625rem, 2.6vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  &__lead {
+    max-width: 52ch;
+    margin-block-start: space(4);
+    font-size: var(--fs-sm);
+    line-height: 1.7;
+    color: var(--c-ink-soft);
+    text-wrap: pretty;
+  }
+
+  &__action {
+    margin-block-start: space(5);
+  }
+}
+
+// -- Service tile -------------------------------------------------------------
+.c-cat {
+  @include focusable;
+  @include press-feedback(0.99);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: space(2);
+  align-items: flex-start;
+  width: 100%;
+  // Zero at the bottom: the photo runs to the tile's edge.
+  padding: space(5) space(5) 0;
+  overflow: hidden;
+  text-align: start;
+  background-color: var(--tint-grey);
+  // No border and no shadow, per the reference — tint and radius do all of it.
+  border: 0;
+  border-radius: 18px;
+  transition: background-color $dur-micro $ease-out;
+
+  // chips.js filters by setting the `hidden` attribute. The `display: flex` above
+  // is an author style and so beats the UA's `[hidden] { display: none }` —
+  // without this the filter sets the attribute and nothing disappears.
+  &[hidden] {
+    display: none;
+  }
+
+  // -- Tint variants ----------------------------------------------------------
+  &--grey { background-color: var(--tint-grey); }
+  &--blue { background-color: var(--tint-blue); }
+  &--sage { background-color: var(--tint-sage); }
+  &--rose { background-color: var(--tint-rose); }
+  &--cream { background-color: var(--tint-cream); }
+
+  // -- Placement --------------------------------------------------------------
+  // Mobile is one column, so every tile is full width and nothing below needs to
+  // say so.
+  //
+  // Tablet is a uniform 2-up. The reference's composition depends on 12 tracks;
+  // against 6 it cannot be reproduced without leaving holes, and a half-width
+  // pair per row is the honest reduction of it.
+  @include mq(md) {
+    grid-column: span 3;
+
+    &--tall {
+      grid-row: span 2;
+    }
+  }
+
+  // The reference composition. Each tile claims a named cell, so the visual
+  // arrangement is independent of DOM order — which lets the heading stay first
+  // in the markup for the stacked reading order.
+  @include mq(lg) {
+    &--tl { grid-area: tl; }
+    &--tm { grid-area: tm; }
+    &--tr { grid-area: tr; }
+    &--rr { grid-area: rr; }
+    &--bl { grid-area: bl; }
+    &--bn { grid-area: bn; }
+    &--bm { grid-area: bm; }
+  }
+
+  &__name {
+    max-width: none;
+    font-family: var(--font-display);
+    // 24px, matching the reference's card title, with its 1.4 leading.
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--c-ink);
+    letter-spacing: -0.015em;
+    transition: color $dur-micro $ease-out;
+  }
+
+  // The reference splits long titles across lines with a nested span and offsets
+  // the second line. Same idea, kept to a plain indent.
+  &__name span {
+    display: block;
+    margin-inline-start: space(3);
+  }
+
+  // The photo sits at the tile's floor and bleeds to its edges.
+  &__photo {
+    // Cancels the tile's inline padding so the image spans the full width.
+    margin-inline: calc(-1 * #{space(5)});
+    align-self: stretch;
+    overflow: hidden;
+    // Mobile tiles are content-height, so the photo carries its own.
+    height: 190px;
+
+    @include mq(md) {
+      // From md up the tile has a fixed row height, so the photo should take
+      // whatever the title and rate leave. This has to be `flex`, not
+      // `height: 100%` on the image: a percentage height inside an auto-height
+      // flex item resolves against nothing, so the image falls back to its
+      // intrinsic ratio and the photo area collapses to ~130px.
+      flex: 1 1 auto;
+      height: auto;
+      min-height: 0;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      // Every file is pre-cropped to its own box's aspect ratio (see the
+      // measurements in scratchpad/install_images.py), so `cover` scales but does
+      // not actually crop — nothing in frame is lost at the design width.
+      object-fit: cover;
+      object-position: center;
+      transition: transform 600ms $ease-out;
+    }
+  }
+
+  // The reference's "window frame" — rounded top corners, a hairline on three
+  // sides, nothing along the bottom, so the photo reads as rising out of the tile
+  // rather than pasted onto it.
+  &--frame .c-cat__photo {
+    margin-inline: 0;
+    padding-inline: space(4);
+
+    img {
+      border: 2px solid color-mix(in oklab, var(--c-trust) 34%, transparent);
+      border-block-end: 0;
+      border-radius: 16px 16px 0 0;
+    }
+  }
+
+  // Two photos rather than one, echoing the reference's `.images` cluster: a flex
+  // pair that overlaps slightly, so the seam reads as layered rather than as a
+  // join. The later image sits on top — `position: relative` is what the
+  // reference uses for the same purpose.
+  //
+  // Each file is cropped to its own half of the box, so neither becomes a sliver:
+  // the wide tile splits horizontally, the tall one vertically.
+  &--duo .c-cat__photo {
+    display: flex;
+
+    img {
+      position: relative;
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    img + img {
+      margin-inline-start: -12px;
+      border-start-start-radius: 14px;
+      border-end-start-radius: 14px;
+    }
+  }
+
+  // Companionship's pair is offset rather than overlapped: a narrower plate flush
+  // left with only its right edge rounded, a wider one flush right with only its
+  // left edge rounded, and air between the two. The alternating inset is what
+  // gives the tall tile some rhythm down its length.
+  &--duo-stack .c-cat__photo {
+    flex-direction: column;
+    gap: space(6);
+    // Air above the first plate. The tile already puts space(2) between its
+    // children, so this brings the gap under the title up to the same 32px that
+    // separates the two images.
+    margin-block-start: space(5);
+
+    // `align-self` is the cross axis in a column, so start/end read as left/right.
+    img:first-child {
+      align-self: flex-start;
+      width: 70%;
+      border-radius: 0 20px 20px 0;
+    }
+
+    img:last-child {
+      align-self: flex-end;
+      width: 80%;
+      // Cancels the overlap the horizontal pair uses.
+      margin-block-start: 0;
+      margin-inline-start: 0;
+      border-radius: 20px 0 0 20px;
+    }
+  }
+
+  // Gardening's photo takes an asymmetric radius: a wide sweep on one diagonal,
+  // a tight one on the other. It is the smallest tile in the mosaic, and the
+  // lopsided corners are what stop it reading as a leftover offcut.
+  &--bn .c-cat__photo img {
+    border-radius: 50px 11px;
+  }
+
+  // The circular arrow. The reference puts one on a single card rather than on
+  // all of them; ours goes on the two feature tiles, which are the ones the
+  // section most wants clicked.
+  &__arrow {
+    position: absolute;
+    inset-block-start: space(5);
+    inset-inline-end: space(5);
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    color: #fff;
+    background-color: var(--c-accent);
+    border-radius: 50%;
+    transition:
+      background-color $dur-micro $ease-out,
+      transform $dur-micro $ease-out;
+  }
+
+  // Titles clear the arrow where there is one.
+  &--arrow .c-cat__name {
+    padding-inline-end: 58px;
+  }
+
+  @include hover {
+    .c-cat__name {
+      color: var(--c-trust);
+    }
+
+    .c-cat__photo img {
+      transform: scale(1.04);
+    }
+
+    .c-cat__arrow {
+      background-color: var(--c-trust);
+      transform: translate(2px, -2px);
+    }
+  }
+}
+
+// -- Category modal (Fancybox inline content) ---------------------------------
+.c-cat-modal {
+  max-width: 560px;
+  padding: space(7);
+  background-color: var(--c-bone);
+
+  &__eyebrow {
+    margin-block-end: space(2);
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  &__text {
+    margin-block-start: space(4);
+    color: var(--c-ink-soft);
+  }
+
+  &__meta {
+    display: grid;
+    gap: space(4);
+    padding-block: space(5);
+    margin-block-start: space(5);
+    border-block: 1px solid var(--c-clay);
+
+    @include mq(sm) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &__meta-label {
+    display: block;
+    max-width: none;
+    font-size: var(--fs-sm);
+    color: var(--c-ink-soft);
+  }
+
+  &__meta-value {
+    display: block;
+    max-width: none;
+    margin-block-start: space(1);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  &__actions {
+    margin-block-start: space(6);
+  }
+}
+
+// =============================================================================
+// App mode — section 04 on a phone
+//
+// Everything below this line is inside a single `mq-below(md)`. Nothing here
+// reaches the tablet 2-up or the placed lg composition; those are untouched.
+//
+// The desktop section is a mosaic: tiles of several widths and two heights,
+// interlocking around a heading tile at the centre. One column cannot be a
+// mosaic — collapsed to a phone it became seven near-identical slabs, each a
+// title sitting above a 190px band of photograph, and the sameness read as a
+// list of rows rather than as the centrepiece of the page.
+//
+// So the phone gets a different composition with the same materials: the
+// photograph becomes the card, the title sits on it over an ink scrim, and the
+// two feature services stand taller than the rest so the column has a rhythm to
+// scroll through. Tints, radii, type and the arrow puck are all the section's
+// own — only the arrangement changes.
+// =============================================================================
+@include mq-below(md) {
+  // -- The filter rail --------------------------------------------------------
+  // Chips ran to the container edge and stopped mid-word, which reads as
+  // clipping rather than as scrolling. Now the rail escapes the gutter and
+  // scrolls edge to edge, and its trailing end is masked so the cut chip fades
+  // out — the phone idiom for "keep going".
+  .s-taxonomy__chips {
+    @include bleed;
+
+    padding-inline: var(--gutter);
+    // Leading edge stays crisp: a fade at rest position 0 would look like a
+    // rendering fault rather than an affordance.
+    mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent 100%);
+    scroll-padding-inline: var(--gutter);
+  }
+
+  .s-taxonomy__chip {
+    display: inline-flex;
+    align-items: center;
+    // 44px of height. The chips are the section's only controls above the
+    // fold, and a 32px pill is not a thumb target.
+    min-height: 44px;
+  }
+
+  // -- The heading tile -------------------------------------------------------
+  // Centred is right when the tile is enclosed on four sides by the mosaic. At
+  // the head of a single column it is just a centred paragraph, which is the
+  // harder read of the two. Left-aligned, with the button taking the full
+  // width, it becomes the section's opening statement.
+  .c-cat-head {
+    align-items: flex-start;
+    padding: space(6) space(5);
+    text-align: start;
+    border-radius: 22px;
+
+    &__title {
+      font-size: 1.75rem;
+    }
+
+    &__lead {
+      max-width: 38ch;
+    }
+
+    &__action {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+
+  // -- The service tile -------------------------------------------------------
+  .c-cat {
+    // The photo is the card now, so the tile carries no padding of its own and
+    // the title is placed on top of the image instead of above it.
+    align-items: stretch;
+    justify-content: flex-end;
+    min-height: 232px;
+    padding: 0;
+    border-radius: 22px;
+    // The scrim is a stacking context of its own, so the tint underneath can
+    // never paint over the title.
+    isolation: isolate;
+
+    // Two heights, as on desktop — the mosaic's `--tall` tiles are the two
+    // services the section most wants opened, and on a phone that difference
+    // is the only rhythm the column has.
+    &--tall {
+      min-height: 324px;
+    }
+
+    // The ink wash that makes white type legible on any photograph. Weighted to
+    // the bottom third, where the title sits; the top of the image is left
+    // alone.
+    &::before {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      content: '';
+      background-image: linear-gradient(
+        180deg,
+        transparent 28%,
+        color-mix(in oklab, var(--c-deep) 46%, transparent) 62%,
+        color-mix(in oklab, var(--c-deep) 88%, transparent) 100%
+      );
+    }
+
+    // A shade more travel under the thumb than the desktop tile: at this size
+    // the press should be felt.
+    &:active {
+      transform: scale(0.98);
+    }
+
+    &__photo {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      height: auto;
+      margin-inline: 0;
+
+      img {
+        height: 100%;
+      }
+    }
+
+    &__name {
+      position: relative;
+      z-index: 2;
+      padding: space(5);
+      font-size: 1.375rem;
+      line-height: 1.25;
+      color: #fff;
+      // Carries the descenders over the brightest photographs, where the scrim
+      // alone is close to the contrast floor.
+      text-shadow: 0 1px 3px color-mix(in oklab, var(--c-deep) 40%, transparent);
+
+      // The desktop title indents its second line off the first. Against the
+      // bottom-left corner of a photograph that reads as a misalignment.
+      span {
+        margin-inline-start: 0;
+      }
+    }
+
+    // The arrow moves off the type and onto the image, so it is glass rather
+    // than a solid accent puck. Tinted with ink rather than white: it sits at
+    // the top of the card, above where the scrim reaches, so it has to hold
+    // against a sunlit garden and a dark bedroom equally. A white glass puck
+    // disappeared entirely on the bright half of the Companionship pair.
+    &__arrow {
+      z-index: 2;
+      width: 42px;
+      height: 42px;
+      color: #fff;
+      background-color: color-mix(in oklab, var(--c-deep) 46%, transparent);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgb(255 255 255 / 38%);
+    }
+
+    // The title is at the floor and the arrow at the ceiling, so they no longer
+    // share a line to clear.
+    &--arrow .c-cat__name {
+      padding-inline-end: space(5);
+    }
+
+    // -- Cancelling the desktop photo treatments ------------------------------
+    // Each of these shapes the photo inside a padded tile. There is no padded
+    // tile here: the photo is the card, and a frame or a lopsided radius drawn
+    // inside its own bleed is just a line across the image.
+    &--frame .c-cat__photo {
+      padding-inline: 0;
+
+      img {
+        border: 0;
+        border-radius: 0;
+      }
+    }
+
+    &--bn .c-cat__photo img {
+      border-radius: 0;
+    }
+
+    // A pair fills the card side by side. Each file is a portrait crop, which is
+    // the right shape for half of a tall card.
+    &--duo .c-cat__photo img {
+      flex: 1 1 0;
+      height: 100%;
+    }
+
+    // Companionship carries one photograph on a phone, not two.
+    //
+    // The desktop tile is an offset stack: two plates with air between them,
+    // down the length of a tile spanning two 232px rows. That composition needs
+    // the length — sharing one photo box on a phone it gave each plate 79px, a
+    // band of torsos with both faces cropped out. Set side by side instead, the
+    // pair fitted, but a 163px-wide half of a group scene is a thumbnail, and
+    // two of them on the section's own feature card compete rather than compose.
+    //
+    // One image at full card width is the premium reading: a single scene, big
+    // enough to see the faces in, which is what the card is selling. The second
+    // file stays in the markup for every width above this one.
+    &--duo-stack .c-cat__photo {
+      flex-direction: row;
+      gap: 0;
+      margin-block-start: 0;
+
+      img:first-child {
+        flex: 1 1 100%;
+        align-self: auto;
+        width: 100%;
+        border-radius: 0;
+      }
+
+      img + img {
+        display: none;
+      }
+    }
+  }
+}

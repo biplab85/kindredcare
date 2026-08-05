@@ -1,0 +1,73 @@
+@use '../abstracts' as *;
+
+// Swiper overrides. Default Swiper chrome reads as a third-party widget.
+//
+// overflow stays hidden: `visible` + clip-path still grows document
+// scrollWidth, which produced 140px of horizontal page overflow. The 1.15
+// peek comes from slidesPerView, not from letting slides escape the box.
+.swiper {
+  overflow: hidden;
+}
+
+.swiper-slide {
+  height: auto; // equal-height cards
+}
+
+.swiper-pagination {
+  position: static;
+  display: flex;
+  gap: space(2);
+  justify-content: center;
+  margin-block-start: space(6);
+}
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: var(--c-clay);
+  border-radius: 999px;
+  opacity: 1;
+  transition:
+    width $dur-micro $ease-out,
+    background-color $dur-micro $ease-out;
+
+  &-active {
+    width: 24px;
+    background-color: var(--c-trust);
+  }
+}
+
+// Square arrows, echoing the reference's slider controls.
+.c-slider-nav {
+  display: none;
+
+  @include mq(md) {
+    display: flex;
+    gap: space(2);
+    margin-block-start: space(6);
+  }
+
+  &__btn {
+    @include tap-target;
+    @include focusable;
+    @include press-feedback(0.94);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background-color: var(--c-trust);
+    transition:
+      background-color $dur-micro $ease-out,
+      opacity $dur-micro $ease-out;
+
+    @include hover {
+      background-color: color-mix(in oklab, var(--c-trust) 86%, black);
+    }
+
+    &.swiper-button-disabled {
+      cursor: default;
+      opacity: 0.35;
+    }
+  }
+}

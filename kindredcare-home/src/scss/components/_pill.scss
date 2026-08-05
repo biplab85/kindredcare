@@ -1,0 +1,47 @@
+@use '../abstracts' as *;
+
+// Location pill — "Now serving Durham Region, Ontario"
+.c-pill {
+  display: inline-flex;
+  gap: space(3);
+  align-items: center;
+  padding: space(2) space(4);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--c-ink-soft);
+  background-color: color-mix(in oklab, var(--c-sand) 70%, transparent);
+  border: 1px solid var(--c-clay);
+  border-radius: 999px;
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--c-leaf);
+    border-radius: 50%;
+  }
+}
+
+// Trust row — the absorbed section 02. Specificity, never numbers.
+.c-trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: space(3) space(5);
+  padding-block-start: space(5);
+  margin-block-start: space(5);
+  border-block-start: 1px solid var(--c-clay);
+
+  &__item {
+    display: flex;
+    gap: space(2);
+    align-items: center;
+    max-width: none;
+    font-size: var(--fs-sm);
+    color: var(--c-ink-soft);
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    // Leaf Green is reserved for verification meaning only.
+    color: var(--c-leaf);
+  }
+}

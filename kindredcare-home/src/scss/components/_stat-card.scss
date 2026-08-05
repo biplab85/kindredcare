@@ -1,0 +1,76 @@
+@use '../abstracts' as *;
+
+// Sekare's hero stat card, matched: thumbnail on top, large display figure,
+// small label beneath, soft pastel ground, square corners.
+//
+// The FORM is copied exactly. The CONTENT is not: the reference shows
+// "10+ Winning awards" and "20+ Years of services", and KindredCare has
+// neither. Inventing them is how the live site ended up publishing
+// "0% Verified care-giver". These carry real starting rates instead.
+.c-stat-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: space(3) space(3) space(4);
+  background-color: var(--card-bg, #f2ede4);
+
+  &__media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background-color: color-mix(in oklab, var(--card-bg, #f2ede4) 60%, #d9c9b8);
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__figure {
+    display: block;
+    margin-block-start: space(4);
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem); // 36px at the reference width
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--c-ink);
+    text-align: center;
+    letter-spacing: -0.02em;
+  }
+
+  &__unit {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--c-ink-soft);
+  }
+
+  &__label {
+    display: block;
+    max-width: none;
+    // The reference sets 14px here; held at 16px for the type floor (plan §12).
+    margin-block-start: space(1);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--c-ink);
+    text-align: center;
+  }
+
+  // The hero cards no longer carry a rate. `__figure` was the element holding
+  // the gap under the thumbnail, so without it the label sat 4px off the image
+  // — the 4px above is the tight pairing of a label to its figure, not a gap to
+  // a photograph. Scoped to the adjacency so it corrects itself if the rate
+  // ever comes back.
+  &__media + &__label {
+    margin-block-start: space(4);
+  }
+}
+
+.c-stat-card--tint-a {
+  --card-bg: #f4ece6;
+}
+
+.c-stat-card--tint-b {
+  --card-bg: #eaf0ea;
+}

@@ -1,0 +1,180 @@
+@use 'sass:math';
+@use '../abstracts' as *;
+
+// Section 01b — Sekare's .about-founded-area, matched. Sits directly after
+// the hero and its trust strip.
+//
+// Reference geometry, measured off the live demo at 1900px:
+//   row            flex, align-items: center, two equal columns
+//   image          470px column, portrait, overflow visible
+//   rotated label  rotate(-100deg), 24px/700, accent colour, hanging off the
+//                  image's left edge near the bottom
+//   heart badge    102x104, right: -50px / bottom: -5px — straddles the corner
+//   heading        36px/1.4, 700, brand word in the accent colour
+//   body           16px/1.7, muted, 40px below
+//   phone + email  flex, space-between, 88px below the button
+//
+// Colours are ours: the reference's teal accent is Trust Blue here, and the
+// amber button is Heart Red, per the plan's palette remap.
+.s-founded {
+  overflow: hidden; // the badge overhangs; never let it open a scrollbar
+
+  &__layout {
+    display: grid;
+    gap: space(8);
+    align-items: center;
+
+    @include mq(lg) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(48px, 6vw, 96px);
+    }
+  }
+
+  // Right-hand breathing room only, for the badge overhang. No left padding:
+  // the frame's border must line up with the container edge — i.e. with the
+  // header logo and the hero headline — and the label sits inside the frame,
+  // so nothing needs clearance on that side.
+  &__media {
+    @include mq(lg) {
+      padding-inline-end: space(6);
+    }
+  }
+
+  // The outlined box is upright; only the photograph inside it is tilted.
+  // Reference: 526x596 frame, 1px border, 22px padding-block, no padding-inline.
+  &__frame {
+    position: relative;
+    max-width: 526px;
+    padding-block: 22px;
+    // Flush left, not centred in the column — the border is the section's
+    // left edge and it aligns to the container gutter.
+    margin-inline: 0 auto;
+    // The reference's cool periwinkle, kept literally rather than mapped onto
+    // the warm palette — it is the only cool neutral in the build.
+    border: 1px solid #ccd6ef;
+  }
+
+  // Rotated -10deg about its own centre, so its corners break the frame on
+  // every side. Reference: 470 wide in a 524 content box, pushed 50px right,
+  // leaving the wide gap on the left and 4px on the right. Both are kept as
+  // percentages of the content box so the whole thing scales.
+  &__img {
+    display: block;
+    width: math.percentage(math.div(470, 524));
+    height: auto;
+    margin-inline-start: math.percentage(math.div(50, 524));
+    aspect-ratio: 470 / 550;
+    object-fit: cover;
+    transform: rotate(-10deg);
+  }
+
+  // Rotated label, reading bottom-to-top over the photo's left edge. It is
+  // -100deg because it runs square to the photograph, which is itself tilted
+  // -10deg — the label is vertical *relative to the picture*, not the page.
+  //
+  // Pivoting about the bottom-left corner sends the text upward; the extra
+  // 10deg of lean then pushes the run left by width * sin(10deg) ~= 52px, so
+  // `left` pays that back. Reference lands it +10px in from the frame's left
+  // edge, 4px above its bottom.
+  &__vertical {
+    position: absolute;
+    bottom: 9px;
+    left: 95px;
+    max-width: none;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--c-trust);
+    white-space: nowrap;
+    // The reference is -100deg, not -90 — the label leans 10 degrees past
+    // vertical. Set this to -90deg to stand it upright.
+    transform: rotate(-100deg);
+    transform-origin: 0 100%;
+
+    @include mq-below(lg) {
+      display: none; // the column is too narrow to carry it on a phone
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 102px;
+    height: 104px;
+    // Reference: right: -50px / bottom: -5px against the frame.
+    transform: translate(48%, 4%);
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    @include mq-below(md) {
+      width: 72px;
+      height: 74px;
+    }
+  }
+
+  &__title {
+    font-size: clamp(1.75rem, 3vw, 2.25rem); // 36px at the reference width
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--c-ink);
+  }
+
+  &__brand {
+    color: var(--c-trust);
+  }
+
+  &__text {
+    max-width: 56ch;
+    margin-block-start: space(5);
+    font-size: var(--fs-body);
+    line-height: 1.7;
+    color: var(--c-ink-soft);
+  }
+
+  &__cta {
+    margin-block-start: space(7);
+  }
+
+  // Reference: 88px below the button, the pair pushed apart. Wraps rather
+  // than crushing the email on narrow columns.
+  &__contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: space(5) space(8);
+    align-items: flex-start;
+    margin-block-start: clamp(40px, 5vw, 88px);
+
+    @include mq(lg) {
+      justify-content: space-between;
+    }
+  }
+
+  &__contact-label {
+    display: block;
+    margin-block-end: space(1);
+    font-size: var(--fs-sm);
+    color: var(--c-trust);
+  }
+
+  &__contact-link {
+    @include focusable;
+
+    font-size: 1.25rem; // 20px, as the reference
+    font-weight: 700;
+    color: var(--c-ink);
+    text-decoration: none;
+    transition: color $dur-micro $ease-out;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--c-heart);
+    }
+  }
+}

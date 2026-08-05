@@ -1,0 +1,499 @@
+@use '../abstracts' as *;
+
+// Section 05 — founding caregivers.
+//
+// At launch this slot does SUPPLY ACQUISITION (goal G2, the strategy's
+// highest-severity risk). There are 0 listings, so the slider cannot show real
+// gigs — it shows the caregiver's own journey instead, taken from the onboarding
+// flow in final-thoughts.md. No card carries a name or a face: that is what the
+// "never fabricate a caregiver" rule protects, and it holds whatever the content.
+//
+// Same shell later shows real gig cards — the swap is a data change.
+.s-caregivers {
+  position: relative;
+  // Contains the ambient icon layer below.
+  overflow: hidden;
+  background-color: var(--c-sand);
+
+  &__layout {
+    position: relative;
+    // Above the ambient layer.
+    z-index: 1;
+    display: grid;
+    gap: space(8);
+
+    @include mq(lg) {
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: space(9);
+      align-items: center;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Ambient icon layer
+  //
+  // A handful of line icons drifting slowly behind the content. Three drift
+  // patterns, each `alternate` so an icon eases out and back rather than
+  // snapping home, and every one on a different duration so the field never
+  // falls into step.
+  //
+  // Decorative only: aria-hidden in the markup, no pointer events, and all
+  // motion is dropped under prefers-reduced-motion.
+  // ---------------------------------------------------------------------------
+  &__deco {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  &__deco-icon {
+    position: absolute;
+    display: block;
+    color: var(--c-trust);
+    opacity: 0.14;
+    // Slow and long: the motion should be noticed only if you look for it.
+    animation: cg-drift-a 26s $ease-in-out infinite alternate;
+    will-change: transform;
+
+    // Position, scale, pattern and tempo, all varied per icon so no two move
+    // together. Percentages keep them spread at any section width.
+    &:nth-child(1) {
+      inset-block-start: 12%;
+      inset-inline-start: 4%;
+      width: 42px;
+      height: 42px;
+    }
+
+    &:nth-child(2) {
+      inset-block-start: 68%;
+      inset-inline-start: 9%;
+      width: 30px;
+      height: 30px;
+      color: var(--c-leaf);
+      animation-name: cg-drift-b;
+      animation-duration: 31s;
+      animation-delay: -6s;
+    }
+
+    &:nth-child(3) {
+      inset-block-start: 26%;
+      inset-inline-start: 46%;
+      width: 26px;
+      height: 26px;
+      opacity: 0.1;
+      animation-name: cg-drift-c;
+      animation-duration: 23s;
+      animation-delay: -11s;
+    }
+
+    &:nth-child(4) {
+      inset-block-start: 82%;
+      inset-inline-start: 38%;
+      width: 34px;
+      height: 34px;
+      color: var(--c-leaf);
+      animation-duration: 35s;
+      animation-delay: -4s;
+    }
+
+    &:nth-child(5) {
+      inset-block-start: 8%;
+      inset-inline-start: 72%;
+      width: 28px;
+      height: 28px;
+      opacity: 0.1;
+      animation-name: cg-drift-b;
+      animation-duration: 28s;
+      animation-delay: -15s;
+    }
+
+    &:nth-child(6) {
+      inset-block-start: 54%;
+      inset-inline-start: 88%;
+      width: 36px;
+      height: 36px;
+      color: var(--c-heart);
+      opacity: 0.1;
+      animation-name: cg-drift-c;
+      animation-duration: 33s;
+      animation-delay: -2s;
+    }
+
+    &:nth-child(7) {
+      inset-block-start: 90%;
+      inset-inline-start: 66%;
+      width: 24px;
+      height: 24px;
+      animation-name: cg-drift-b;
+      animation-duration: 24s;
+      animation-delay: -9s;
+    }
+
+    &:nth-child(8) {
+      inset-block-start: 40%;
+      inset-inline-start: 22%;
+      width: 30px;
+      height: 30px;
+      opacity: 0.09;
+      animation-name: cg-drift-c;
+      animation-duration: 29s;
+      animation-delay: -18s;
+    }
+
+    @include reduced-motion {
+      animation: none;
+    }
+  }
+
+  &__deco-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__benefits {
+    display: flex;
+    flex-direction: column;
+    gap: space(4);
+    margin-block: space(6);
+  }
+
+  &__benefit {
+    display: flex;
+    gap: space(3);
+    align-items: flex-start;
+    max-width: none;
+    font-size: var(--fs-body);
+    color: var(--c-ink);
+  }
+
+  &__benefit-icon {
+    flex-shrink: 0;
+    margin-block-start: 4px;
+    color: var(--c-leaf);
+  }
+
+  &__slider {
+    min-width: 0;
+  }
+
+  // Bullets and arrows on one line — they were two stacked rows, which put 64px
+  // of nothing between the cards and the controls.
+  &__controls {
+    display: flex;
+    gap: space(4);
+    align-items: center;
+    justify-content: space-between;
+    margin-block-start: space(5);
+
+    // Both children carry their own top margin from the shared slider chrome.
+    .swiper-pagination,
+    .c-slider-nav {
+      margin-block-start: 0;
+    }
+  }
+
+  // Circular, hairline-first arrows rather than the shared filled squares. Only
+  // this section uses `.c-slider-nav`, but the override stays scoped so the
+  // component keeps its default for whatever picks it up next.
+  .c-slider-nav {
+    display: flex;
+    gap: space(3);
+
+    &__btn {
+      width: 48px;
+      height: 48px;
+      color: var(--c-trust);
+      background-color: transparent;
+      border: 1px solid color-mix(in oklab, var(--c-trust) 30%, transparent);
+      border-radius: 50%;
+      transition:
+        color $dur-micro $ease-out,
+        background-color $dur-micro $ease-out,
+        border-color $dur-micro $ease-out;
+
+      @include hover {
+        color: #fff;
+        background-color: var(--c-trust);
+        border-color: var(--c-trust);
+      }
+
+      // Swiper sets this on the arrow that has nowhere left to go.
+      &.swiper-button-disabled {
+        color: var(--c-ink-soft);
+        background-color: transparent;
+        border-color: color-mix(in oklab, var(--c-clay) 90%, transparent);
+        opacity: 1;
+      }
+    }
+  }
+}
+
+// The three drift patterns. Each ends near where it began, so with `alternate`
+// the return leg reads as part of the same slow wander.
+@keyframes cg-drift-a {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(22px, -30px, 0) rotate(9deg);
+  }
+}
+
+@keyframes cg-drift-b {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  to {
+    transform: translate3d(-26px, 22px, 0) rotate(-11deg);
+  }
+}
+
+@keyframes cg-drift-c {
+  from {
+    transform: translate3d(0, 10px, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(18px, -22px, 0) scale(1.12);
+  }
+}
+
+// -- Gig card -----------------------------------------------------------------
+// Built now so the swap from these to real listings is a data change, not a
+// rebuild.
+.c-gig-card {
+  position: relative;
+  display: flex;
+  // A floor, so a short card still has presence. Without it the content sat in
+  // the top two-thirds and the card read as an unfinished box.
+  min-height: 360px;
+  flex-direction: column;
+  height: 100%;
+  padding: space(6);
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid color-mix(in oklab, var(--c-clay) 62%, #fff);
+  border-radius: 20px;
+  // Two shadows doing two jobs: a hairline contact edge, and a wide soft cast so
+  // the card sits above the sand rather than on it.
+  box-shadow:
+    0 1px 2px rgb(26 31 38 / 4%),
+    0 20px 44px -26px rgb(26 31 38 / 16%);
+  transition:
+    transform $dur-micro $ease-out,
+    box-shadow $dur-micro $ease-out,
+    border-color $dur-micro $ease-out;
+
+  // A wash of accent bleeding down from the top edge. Replaces the hairline rule
+  // that was there — at 2px on white it read as a stray line rather than as
+  // deliberate colour.
+  &::before {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    height: 120px;
+    content: '';
+    background-image: linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--c-accent) 9%, transparent),
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  @include hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in oklab, var(--c-accent) 42%, var(--c-clay));
+    box-shadow:
+      0 1px 2px rgb(26 31 38 / 5%),
+      0 30px 60px -28px rgb(26 31 38 / 22%);
+
+    .c-gig-card__icon {
+      color: #fff;
+      background-color: var(--c-trust);
+      border-color: var(--c-trust);
+    }
+
+    .c-gig-card__step {
+      color: color-mix(in oklab, var(--c-accent) 26%, transparent);
+    }
+  }
+
+  &__top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-block-end: space(6);
+  }
+
+  &__icon {
+    display: grid;
+    flex-shrink: 0;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    color: var(--c-trust);
+    background-color: color-mix(in oklab, var(--c-trust) 10%, #fff);
+    border: 1px solid color-mix(in oklab, var(--c-trust) 22%, transparent);
+    border-radius: 50%;
+    transition:
+      color $dur-micro $ease-out,
+      background-color $dur-micro $ease-out,
+      border-color $dur-micro $ease-out;
+  }
+
+  // The step number, outlined rather than filled, so it reads as texture and
+  // never competes with the title. The site used this device for sequences
+  // before; a filled pill on white just looked like a sticker.
+  &__step {
+    max-width: none;
+    font-family: var(--font-display);
+    font-size: 3.25rem;
+    font-weight: 700;
+    line-height: 0.9;
+    color: transparent;
+    letter-spacing: -0.04em;
+    transition: color $dur-micro $ease-out;
+    -webkit-text-stroke: 1.5px color-mix(in oklab, var(--c-accent) 30%, transparent);
+  }
+
+  &__name {
+    position: relative;
+    z-index: 1;
+    max-width: 18ch;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  &__headline {
+    max-width: 34ch;
+    margin-block-start: space(3);
+    font-size: var(--fs-sm);
+    line-height: 1.65;
+    color: var(--c-ink-soft);
+    text-wrap: pretty;
+  }
+
+  &__foot {
+    display: flex;
+    align-items: baseline;
+    padding-block-start: space(4);
+    margin-block-start: auto;
+    border-block-start: 1px solid color-mix(in oklab, var(--c-clay) 62%, #fff);
+  }
+
+  &__meta {
+    max-width: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--c-ink-soft);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  // Kept for real listings, which will carry photography.
+  &__media {
+    aspect-ratio: 4 / 3;
+    background-color: var(--c-clay);
+  }
+}
+
+// =============================================================================
+// App mode — section 05 on a phone
+//
+// Inside a single `mq-below(md)`. The lg split, the ambient drift field and the
+// gig card's desktop proportions are untouched.
+//
+// The pitch column is three green ticks and a button standing on sand. At lg
+// that is right — the gig cards are beside it doing the visual work, and a
+// second raised surface there would fight them. Stacked on a phone the ticks
+// are the first thing after the heading with nothing to hold them, and the
+// button that follows is the section's conversion action sized like a link.
+//
+// So the offer gets a surface of its own — the same white and the same 20px the
+// gig cards use, but hairline-only, no cast shadow: it is the ground the pitch
+// stands on, not a third card competing with the two that swipe below it.
+// =============================================================================
+@include mq-below(md) {
+  .s-caregivers {
+    // -- The offer panel ------------------------------------------------------
+    &__benefits {
+      gap: 0;
+      padding-inline: space(5);
+      margin-block: space(6) space(5);
+      background-color: #fff;
+      border: 1px solid color-mix(in oklab, var(--c-clay) 62%, #fff);
+      border-radius: 20px;
+    }
+
+    // Hairline-divided rows inside the panel, so three claims read as a list of
+    // three rather than as one paragraph with ticks in it.
+    &__benefit {
+      gap: space(4);
+      align-items: center;
+      padding-block: space(4);
+      font-size: var(--fs-sm);
+      line-height: 1.5;
+      border-block-end: 1px solid color-mix(in oklab, var(--c-clay) 55%, transparent);
+
+      &:last-child {
+        border-block-end: 0;
+      }
+    }
+
+    // The tick gets a ground. Loose on white at 18px it read as a bullet
+    // glyph; in a leaf-tinted disc it reads as a mark against the claim.
+    &__benefit-icon {
+      box-sizing: content-box;
+      width: 18px;
+      height: 18px;
+      padding: 7px;
+      margin-block-start: 0;
+      background-color: color-mix(in oklab, var(--c-leaf) 12%, #fff);
+      border-radius: 50%;
+    }
+
+    // The section's conversion action, at the width of the thumb that has to
+    // hit it.
+    .c-btn--lg {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    // -- The journey slider ---------------------------------------------------
+    // 32px of padding on a 270px card leaves 206px of measure, and the headline
+    // was breaking at four words.
+    .c-gig-card {
+      min-height: 320px;
+      padding: space(5);
+    }
+
+    // The outlined numeral is the card's second piece of type at lg, where the
+    // card is wider than it is tall. On a narrow card it was crowding the icon.
+    .c-gig-card__step {
+      font-size: 2.75rem;
+    }
+
+    .c-gig-card__top {
+      margin-block-end: space(5);
+    }
+
+    // The arrows sit on sand here rather than on the white of a column, so they
+    // need a fill to read as controls at all.
+    .c-slider-nav__btn {
+      background-color: #fff;
+    }
+  }
+}

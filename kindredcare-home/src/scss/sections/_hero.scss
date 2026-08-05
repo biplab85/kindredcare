@@ -1,0 +1,286 @@
+@use '../abstracts' as *;
+@use '../layout/container' as l;
+
+// Section 01 — Sekare demo-three structure, matched.
+// Cream type panel left (#FBF7F0), photograph right bleeding to the viewport
+// edge. Eyebrow, display headline, lead, single solid CTA, two stat cards.
+.s-hero {
+  position: relative;
+  z-index: 2;
+  padding-block-end: clamp(48px, 6vw, 72px);
+  overflow: hidden;
+  background-color: #fbf7f0;
+
+  @include mq(lg) {
+    display: grid;
+    grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.06fr);
+    align-items: center;
+    min-height: min(84svh, 760px);
+    padding-block-end: 0;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    padding-block: clamp(32px, 5vw, 56px);
+    padding-inline: var(--gutter);
+
+    @include mq(lg) {
+      @include l.align-to-container-left;
+
+      padding-block: space(8);
+      padding-inline-end: clamp(32px, 5vw, 88px);
+    }
+  }
+
+  &__eyebrow {
+    display: block;
+    margin-block-end: space(3);
+  }
+
+  // ~26 characters keeps the headline to two lines at the reference's 63px,
+  // as "Your Trusted Care Partner" does.
+  &__title {
+    position: relative;
+    max-width: 13ch;
+    font-weight: 700;
+  }
+
+  // In flow, invisible: its only job is to hold the two-line box open so the
+  // typing above it never shifts the CTA or the cards.
+  &__title-ghost {
+    visibility: hidden;
+  }
+
+  &__typed {
+    position: absolute;
+    inset: 0;
+  }
+
+  // Caret — only present while characters are still arriving.
+  &__typed.is-typing::after {
+    display: inline-block;
+    width: 0.06em;
+    height: 0.78em;
+    margin-inline-start: 0.06em;
+    vertical-align: baseline;
+    content: '';
+    background-color: var(--c-heart);
+    animation: hero-caret 1s step-end infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
+
+  &__lead {
+    max-width: 44ch;
+    margin-block-start: space(5);
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--c-ink);
+  }
+
+  &__cta {
+    margin-block-start: space(6);
+  }
+
+  // Reference bottom-left cluster: share-social, then the two cards to its
+  // right. Wraps to two rows before either half is squeezed.
+  &__widgets {
+    display: flex;
+    flex-wrap: wrap;
+    // Column gap stays tight so social + cards clear the left column at lg;
+    // below that they wrap and the row gap takes over.
+    gap: space(5) space(4);
+    align-items: flex-end;
+    margin-block-start: space(7);
+  }
+
+  &__social {
+    flex: 0 0 auto;
+  }
+
+  &__social-label {
+    margin-block-end: space(3);
+    font-size: var(--fs-sm);
+    color: var(--c-muted, #656565);
+  }
+
+  &__social-list {
+    display: flex;
+    gap: space(2);
+    align-items: center;
+    list-style: none;
+  }
+
+  // 44px is the reference's round white chip, pulled down to our tap-target
+  // floor rather than its 50px — it has to sit beside the cards, not alone.
+  &__social-link {
+    @include focusable;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--c-ink);
+    background-color: #fff;
+    border: 1px solid var(--c-clay);
+    border-radius: 50%;
+    transition:
+      color $dur-micro $ease-out,
+      background-color $dur-micro $ease-out,
+      border-color $dur-micro $ease-out;
+
+    &:hover,
+    &:focus-visible {
+      color: #fff;
+      background-color: var(--c-heart);
+      border-color: var(--c-heart);
+    }
+  }
+
+  // Two cards, breaking the grid edge as the reference does.
+  &__stats {
+    display: grid;
+    flex: 1 1 264px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: space(4);
+    max-width: 360px;
+  }
+
+  &__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+
+    @include mq-below(lg) {
+      margin-block-start: space(6);
+    }
+
+    @include mq(lg) {
+      align-self: stretch;
+      aspect-ratio: auto;
+      min-height: min(84svh, 760px);
+    }
+  }
+
+  &__media-inner {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  // Swiper needs a real height here — the slides are the only thing filling
+  // the absolutely-positioned media panel.
+  &__slider {
+    width: 100%;
+    height: 100%;
+
+    .swiper-wrapper,
+    .swiper-slide {
+      height: 100%;
+    }
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  // Reference puts prev/next at the slider's bottom-right corner.
+  &__nav {
+    position: absolute;
+    right: space(4);
+    bottom: space(4);
+    z-index: 3;
+    display: flex;
+    gap: space(2);
+
+    @include mq(lg) {
+      right: space(6);
+      bottom: space(6);
+    }
+  }
+
+  &__nav-btn {
+    @include focusable;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--c-ink);
+    background-color: rgb(255 255 255 / 88%);
+    border-radius: 50%;
+    backdrop-filter: blur(6px);
+    transition:
+      color $dur-micro $ease-out,
+      background-color $dur-micro $ease-out;
+
+    &:hover,
+    &:focus-visible {
+      color: #fff;
+      background-color: var(--c-heart);
+    }
+  }
+}
+
+@keyframes hero-caret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+// Trust strip directly beneath the hero. Carries the job of the cut section 02
+// — it sat inside the hero before, but the reference's hero has no such row and
+// squeezing it in broke the two-line headline composition.
+.s-trust-strip {
+  position: relative;
+  z-index: 2;
+  padding-block: space(6);
+  background-color: #fff;
+  border-block-end: 1px solid var(--c-clay);
+
+  &__list {
+    display: grid;
+    // App mode: one claim per row. Against half of a 375px screen every label
+    // wrapped — "Certn background checks" onto three lines — and four wrapped
+    // labels read as a block of broken text rather than as a checklist. Full
+    // width puts each claim on its own line, which is the point of the strip.
+    grid-template-columns: minmax(0, 1fr);
+    gap: space(4) space(6);
+
+    // The 2-up returns as soon as there is width for it. Unchanged from md up.
+    @include mq(md) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @include mq(lg) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  &__item {
+    display: flex;
+    gap: space(3);
+    align-items: center;
+    max-width: none;
+    font-size: var(--fs-sm);
+    color: var(--c-ink);
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    // Leaf Green carries verification meaning only.
+    color: var(--c-leaf);
+  }
+}

@@ -1,0 +1,130 @@
+@use '../abstracts' as *;
+
+// Section 09 — the caregiver side, in its own voice.
+//
+// The ONE dark section on the page. More than one and the paper concept
+// collapses. The tonal break is the point: it signals this is a marketplace
+// with two sides, which the live site never says at all.
+.s-for-caregivers {
+  position: relative;
+  z-index: 2;
+  color: var(--c-ink-inverse);
+  background-color: var(--c-deep);
+
+  &__layout {
+    display: grid;
+    gap: space(8);
+    align-items: center;
+
+    @include mq(lg) {
+      grid-template-columns: 1fr 1fr;
+      gap: space(9);
+    }
+  }
+
+  &__figure {
+    margin-block: space(6);
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    letter-spacing: -0.03em;
+  }
+
+  &__figure-sub {
+    display: block;
+    max-width: 30ch;
+    margin-block-start: space(3);
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    font-weight: 400;
+    line-height: 1.6;
+    color: rgb(250 247 242 / 74%);
+    letter-spacing: normal;
+  }
+
+  &__list {
+    display: grid;
+    gap: space(4);
+    margin-block-end: space(7);
+
+    @include mq(sm) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &__item {
+    display: flex;
+    gap: space(3);
+    align-items: flex-start;
+    max-width: none;
+    font-size: var(--fs-sm);
+    color: rgb(250 247 242 / 88%);
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    margin-block-start: 3px;
+    color: var(--c-leaf);
+  }
+
+  // The photograph sits in a mat: a hairline outline offset behind it, the way a
+  // mounted print sits on a board. On hover the mat closes in and the photograph
+  // lifts a little.
+  //
+  // The whole gesture is one step of 8px over 200ms. A decorative element on a
+  // near-black ground cannot take much more than that before it reads as a toy
+  // rather than as craft — and this image is not a link, so the motion has to
+  // suggest quality, not invite a click.
+  &__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    // Not clipped: the mat is drawn outside the image's own box.
+    overflow: visible;
+
+    // The mat.
+    &::after {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      content: '';
+      border: 1px solid rgb(250 247 242 / 26%);
+      border-radius: 20px;
+      transition:
+        transform $dur-micro $ease-out,
+        border-color $dur-micro $ease-out;
+      transform: translate(16px, 16px);
+      pointer-events: none;
+    }
+
+    @include hover {
+      &::after {
+        border-color: rgb(250 247 242 / 52%);
+        transform: translate(8px, 8px);
+      }
+
+      .s-for-caregivers__img {
+        transform: scale(1.02);
+      }
+    }
+  }
+
+  // The file is cropped to this box's 4:3, so `cover` scales without trimming.
+  &__img {
+    position: relative;
+    // Above the mat, so the offset outline reads as sitting behind the print.
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    // A hairline to separate the photograph from the near-black ground, plus a
+    // deep soft cast so it sits above the section rather than on it.
+    box-shadow:
+      0 0 0 1px rgb(250 247 242 / 14%),
+      0 26px 60px -30px rgb(0 0 0 / 78%);
+    transition: transform 600ms $ease-out;
+  }
+}

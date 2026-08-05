@@ -1,0 +1,7 @@
+# Playwright MCP scratch output (screenshots, snapshots, console logs)
+.playwright-mcp/
+kindredcare-home.png
+
+# OS / editor
+.DS_Store
+Thumbs.db

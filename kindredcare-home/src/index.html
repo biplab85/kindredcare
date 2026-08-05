@@ -1,0 +1,2228 @@
+<!doctype html>
+<html lang="en-CA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>KindredCare — Trusted caregivers and companions for seniors in Durham Region</title>
+    <meta
+      name="description"
+      content="Book verified local caregivers by the hour in Durham Region — from companionship, gardening and tech help to personal care. Families pay a 7.5% platform fee, not an agency's 15% markup."
+    />
+    <meta name="theme-color" content="#faf7f2" />
+    <!--
+      The live site's own mark, taken from kindredcare.ca and self-hosted rather
+      than hotlinked. Same three files it serves: 32px for the tab, 192px for
+      Android's home screen, 180px for iOS.
+    -->
+    <link rel="icon" href="img/favicon-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="icon" href="img/favicon-192x192.png" sizes="192x192" type="image/png" />
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+
+    <!--
+      Work Sans (display) + Inter (body) — two faces, matching kindredcare.ca.
+      Before launch: self-host as subset WOFF2, delete these three tags, and
+      uncomment the @font-face blocks in base/_fonts.scss (plan §13).
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+
+  <body>
+    <a class="u-skip-link" href="#main">Skip to content</a>
+
+    <!-- ================================================================== -->
+    <!-- Top utility strip — reference: dark bar, note left, phone + CTA     -->
+    <!-- right. Carries the caregiver side so the bottom app bar can own the -->
+    <!-- family side; neither audience is buried.                            -->
+    <!-- ================================================================== -->
+    <div class="l-topbar">
+      <div class="l-container l-topbar__inner">
+        <p class="l-topbar__note">
+          Now serving <strong>Durham Region, Ontario</strong>
+        </p>
+        <div class="l-topbar__actions">
+          <a class="l-topbar__phone" href="tel:+14376658486">+1 (437) 665-8486</a>
+          <a class="c-btn c-btn--primary c-btn--sm" href="#for-caregivers">
+            Join as a caregiver
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- 00 — Header                                                        -->
+    <!-- Reference structure: logo · nav · search · circular menu button.    -->
+    <!-- ================================================================== -->
+    <header class="l-header" data-header>
+      <div class="l-container l-header__inner">
+        <a class="l-header__brand" href="/" aria-label="KindredCare Global — home">
+          <img
+            class="l-header__logo"
+            src="img/logo.png"
+            width="162"
+            height="36"
+            alt="KindredCare Global"
+          />
+        </a>
+
+        <nav class="l-header__nav" aria-label="Site">
+          <a class="l-header__link is-active" href="#hero-title" aria-current="page">Home</a>
+          <a class="l-header__link" href="#how-it-works">How it works</a>
+          <a class="l-header__link" href="#services">Services</a>
+          <a class="l-header__link" href="#safety">Trust &amp; safety</a>
+          <a class="l-header__link" href="/blog/">Blog</a>
+        </nav>
+
+        <div class="l-header__tools">
+          <form class="c-search" action="#services" role="search">
+            <svg
+              class="c-search__icon"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+              <path d="m16.5 16.5 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <label class="u-sr-only" for="site-search">What help do you need?</label>
+            <input
+              class="c-search__input"
+              id="site-search"
+              type="search"
+              name="q"
+              placeholder="What help do you need?"
+            />
+          </form>
+
+          <button
+            class="c-menu-btn"
+            type="button"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="site-menu"
+            data-offcanvas-open
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ================================================================ -->
+      <!-- 01 — Hero                                                        -->
+      <!-- Asymmetric split: type panel left, photograph bleeding right.    -->
+      <!-- No carousel. The headline must be readable within 200ms.         -->
+      <!-- ================================================================ -->
+      <section class="s-hero" data-hero aria-labelledby="hero-title">
+        <div class="s-hero__content">
+          <span class="u-eyebrow s-hero__eyebrow" data-hero-item>
+            Senior care in Durham Region
+          </span>
+
+          <!--
+            Typewriter headline. The ghost copy is in normal flow and reserves
+            the final two-line box, so nothing below it moves while the visible
+            copy types over the top. Both are aria-hidden and the h1 carries the
+            full string as its accessible name — assistive tech never sees a
+            half-typed heading. With JS off, the typed span still holds the
+            complete text.
+          -->
+          <h1
+            class="s-hero__title"
+            id="hero-title"
+            data-hero-item
+            aria-label="Kind care, close to home."
+          >
+            <span class="s-hero__title-ghost" aria-hidden="true">Kind care, close to home.</span>
+            <span class="s-hero__typed" aria-hidden="true" data-typewriter>Kind care, close to home.</span>
+          </h1>
+
+          <p class="s-hero__lead" data-hero-item>
+            From gardening and tech help to personal care — book verified local
+            caregivers by the hour, for 7.5% instead of an agency's 15%.
+          </p>
+
+          <!-- Arrow comes from .c-btn::after now, on every button. -->
+          <a class="c-btn c-btn--primary c-btn--lg s-hero__cta" href="#services" data-hero-item>
+            Explore services
+          </a>
+
+          <!--
+            The reference's stat-card pair, form matched exactly. Its content
+            is not: it shows "10+ Winning awards" / "20+ Years of services" and
+            we have neither. Inventing them is how the live site ended up
+            publishing "0% Verified care-giver". Real starting rates instead.
+          -->
+          <!--
+            Reference bottom-left cluster: .share-social sits to the LEFT of
+            .third-hero-widget, both riding the hero's bottom edge.
+          -->
+          <div class="s-hero__widgets" data-hero-item>
+            <div class="s-hero__social">
+              <p class="s-hero__social-label">Connect with us</p>
+              <ul class="s-hero__social-list">
+                <li>
+                  <a
+                    class="s-hero__social-link"
+                    href="https://www.facebook.com/kindredcareglobal"
+                    aria-label="KindredCare on Facebook"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H16.7V3.6c-.3-.04-1.3-.13-2.47-.13-2.45 0-4.13 1.5-4.13 4.24V9.9H7.4V13h2.7v8z" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="s-hero__social-link"
+                    href="https://linkedin.com/company/kindredcare/"
+                    aria-label="KindredCare on LinkedIn"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5ZM3 9h4v12H3zM9 9h3.8v1.7h.06c.53-1 1.83-2.06 3.76-2.06C20.5 8.64 21 11.1 21 14.3V21h-4v-5.9c0-1.4-.03-3.2-1.95-3.2-1.96 0-2.26 1.53-2.26 3.1V21H9z" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="s-hero__social-link"
+                    href="https://www.instagram.com/kindredcareglobal/"
+                    aria-label="KindredCare on Instagram"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 6.01a3.83 3.83 0 1 0 0 7.66 3.83 3.83 0 0 0 0-7.66Zm0 6.32a2.49 2.49 0 1 1 0-4.98 2.49 2.49 0 0 1 0 4.98Zm4.88-6.47a.9.9 0 1 1-1.79 0 .9.9 0 0 1 1.79 0Z" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="s-hero__social-link"
+                    href="https://x.com/kindredcare"
+                    aria-label="KindredCare on X"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M17.53 3h3.02l-6.6 7.54L21.7 21h-6.06l-4.75-6.2L5.46 21H2.44l7.06-8.07L2.3 3h6.21l4.29 5.67L17.53 3Zm-1.06 16.17h1.67L7.6 4.73H5.81l10.66 14.44Z" />
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="s-hero__stats">
+              <article class="c-stat-card c-stat-card--tint-a">
+                <div class="c-stat-card__media">
+                  <img
+                    class="c-stat-card__img"
+                    src="img/hero/third-hero-small1.jpg"
+                    width="528"
+                    height="384"
+                    alt=""
+                    loading="lazy"
+                  />
+                </div>
+                <span class="c-stat-card__label">Companionship</span>
+              </article>
+
+              <article class="c-stat-card c-stat-card--tint-b">
+                <div class="c-stat-card__media">
+                  <img
+                    class="c-stat-card__img"
+                    src="img/hero/third-hero-small2.jpg"
+                    width="528"
+                    height="384"
+                    alt=""
+                    loading="lazy"
+                  />
+                </div>
+                <span class="c-stat-card__label">Technology help</span>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <!--
+          Reference: .third-hero-slider — three photographs, loop, 1400ms,
+          prev/next only. Autoplay stays OFF (plan §12): the images rotate on
+          demand, the headline never moves.
+        -->
+        <div class="s-hero__media">
+          <div class="s-hero__media-inner">
+            <div class="swiper s-hero__slider" data-slider="hero">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                  <img
+                    class="s-hero__img"
+                    src="img/hero/third-hero1.jpg"
+                    width="1458"
+                    height="1350"
+                    alt="A caregiver and an older woman sitting together at home"
+                    fetchpriority="high"
+                  />
+                </div>
+                <div class="swiper-slide">
+                  <img
+                    class="s-hero__img"
+                    src="img/hero/third-hero2.jpg"
+                    width="1458"
+                    height="1350"
+                    alt="A caregiver helping an older man in his living room"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="swiper-slide">
+                  <img
+                    class="s-hero__img"
+                    src="img/hero/third-hero3.jpg"
+                    width="1458"
+                    height="1350"
+                    alt="An older couple sharing a moment with their companion"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="s-hero__nav">
+              <button
+                class="s-hero__nav-btn"
+                type="button"
+                data-slider-prev="hero"
+                aria-label="Previous photograph"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M15 5 8 12l7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+              <button
+                class="s-hero__nav-btn"
+                type="button"
+                data-slider-next="hero"
+                aria-label="Next photograph"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trust strip — the job of the cut section 02. Specificity, never
+           numbers: it exists because the live site's counters all read zero. -->
+      <div class="s-trust-strip">
+        <div class="l-container">
+          <ul class="s-trust-strip__list">
+            <li class="s-trust-strip__item">
+              <svg class="s-trust-strip__icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Certn background checks
+            </li>
+            <li class="s-trust-strip__item">
+              <svg class="s-trust-strip__icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Identity verified
+            </li>
+            <li class="s-trust-strip__item">
+              <svg class="s-trust-strip__icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              GPS-verified visits
+            </li>
+            <li class="s-trust-strip__item">
+              <svg class="s-trust-strip__icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Payment held by the platform
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ================================================================ -->
+      <!-- 01b — Founded / how to reach us                                   -->
+      <!-- Sekare's .about-founded-area, matched: portrait image left with a -->
+      <!-- rotated label and a heart badge straddling its corner, copy right -->
+      <!-- ending in a phone + email row.                                    -->
+      <!--                                                                   -->
+      <!-- The reference heading reads "Founded in 2000 … a trusted name for -->
+      <!-- 24 years". KindredCare has neither a 2000 founding nor 24 years,  -->
+      <!-- and inventing them is the exact failure the plan calls out. Same  -->
+      <!-- sentence shape, true claims: who built it and where it starts.    -->
+      <!-- ================================================================ -->
+      <section class="l-section s-founded" id="our-story" aria-labelledby="founded-title">
+        <div class="l-container">
+          <div class="s-founded__layout">
+            <div class="s-founded__media" data-reveal="left">
+              <div class="s-founded__frame">
+                <img
+                  class="s-founded__img"
+                  src="img/about/third-about.jpg"
+                  width="941"
+                  height="1101"
+                  alt="A caregiver sitting and talking with an older woman at home"
+                  loading="lazy"
+                />
+                <p class="s-founded__vertical">Chosen by you, every visit</p>
+                <div class="s-founded__badge">
+                  <img
+                    src="img/about/founded-heart.svg"
+                    width="102"
+                    height="104"
+                    alt=""
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="s-founded__content" data-reveal="up">
+              <h2 class="s-founded__title" id="founded-title">
+                Starting in Durham Region,
+                <span class="s-founded__brand">KindredCare</span>
+                is built by four founders who have spent their careers in care,
+                medicine and finance.
+              </h2>
+
+              <p class="s-founded__text">
+                We each went looking for care for someone we love, and found the
+                same thing every time — agencies that cost a fortune and send a
+                different stranger each week. So we built the alternative we
+                wanted: verified local caregivers, booked by the hour, and the
+                person who shows up is the person you chose.
+              </p>
+
+              <div class="s-founded__contact">
+                <div class="s-founded__contact-item">
+                  <span class="s-founded__contact-label">Phone</span>
+                  <a class="s-founded__contact-link" href="tel:+14376658486">
+                    +1 (437) 665-8486
+                  </a>
+                </div>
+
+                <div class="s-founded__contact-item">
+                  <span class="s-founded__contact-label">Email</span>
+                  <a class="s-founded__contact-link" href="mailto:info@kindredcare.ca">
+                    info@kindredcare.ca
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 01c — Service groups (sticky intro / scrolling cards)             -->
+      <!-- Sekare demo-four .demo-four-service-area, matched. The intro pins -->
+      <!-- while the five cards pass, then releases into section 03. Pure    -->
+      <!-- CSS position:sticky — see sections/_service-groups.scss.          -->
+      <!--                                                                   -->
+      <!-- The five groups are the taxonomy from final-thoughts.md §"The     -->
+      <!-- Expanded Service Taxonomy" — 31 services in total. Each card      -->
+      <!-- lists four and counts the rest, so every card holds the           -->
+      <!-- reference's five content lines and its 354px height.              -->
+      <!-- ================================================================ -->
+      <section
+        class="l-section s-service-groups"
+        id="service-groups"
+        aria-labelledby="service-groups-title"
+      >
+        <!--
+          Decorative layer. A SIBLING of .l-container, never an ancestor of it:
+          the clipping lives on this div, because `overflow: hidden` anywhere
+          above the sticky intro column would make that box the sticky scroll
+          container and the pin would stop working.
+        -->
+        <div class="s-service-groups__deco" aria-hidden="true">
+          <!-- Heart -->
+          <svg class="s-service-groups__mote s-service-groups__mote--1" viewBox="0 0 24 24" fill="none">
+            <path d="M12 20.5S4 15.6 4 10.2A4.9 4.9 0 0 1 12 6.5a4.9 4.9 0 0 1 8 3.7c0 5.4-8 10.3-8 10.3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+          </svg>
+
+          <!-- Leaf / gardening -->
+          <svg class="s-service-groups__mote s-service-groups__mote--2" viewBox="0 0 24 24" fill="none">
+            <path d="M12 21v-7M12 14c0-3.5 2.5-6 6-6 0 3.5-2.5 6-6 6ZM12 14c0-3.5-2.5-6-6-6 0 3.5 2.5 6 6 6Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+
+          <!-- Speech bubble / companionship -->
+          <svg class="s-service-groups__mote s-service-groups__mote--3" viewBox="0 0 24 24" fill="none">
+            <path d="M4 5h16v10H9l-5 4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+          </svg>
+
+          <!-- Tablet / technology help -->
+          <svg class="s-service-groups__mote s-service-groups__mote--4" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="4" width="16" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5" />
+            <path d="M9 20h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+
+          <!-- Cup / a visit -->
+          <svg class="s-service-groups__mote s-service-groups__mote--5" viewBox="0 0 24 24" fill="none">
+            <path d="M4 8h12v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4zM16 10h2.5a2.5 2.5 0 0 1 0 5H16" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+          </svg>
+
+          <!-- Shield / verified -->
+          <svg class="s-service-groups__mote s-service-groups__mote--6" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3.5 19 6v5.5c0 4.2-2.9 7.4-7 8.9-4.1-1.5-7-4.7-7-8.9V6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+          </svg>
+        </div>
+
+        <div class="l-container">
+          <div class="s-service-groups__layout">
+            <div class="s-service-groups__intro">
+              <div class="s-service-groups__intro-inner" data-reveal="left">
+                <span class="u-eyebrow">Services we provide</span>
+                <h2 class="s-service-groups__title" id="service-groups-title">
+                  Five kinds of help, from a cup of tea to certified dementia
+                  care.
+                </h2>
+                <a class="c-btn c-btn--primary c-btn--lg" href="#services">
+                  View all services
+                </a>
+              </div>
+            </div>
+
+            <ul class="s-service-groups__list" data-reveal-group>
+              <li data-reveal="up">
+                <article class="c-group-card c-group-card--ground-1">
+                  <div class="c-group-card__body">
+                    <h3 class="c-group-card__title">
+                      <a class="c-group-card__link" href="#services">
+                        Traditional care
+                      </a>
+                    </h3>
+                    <ul class="c-group-card__list">
+                      <li class="c-group-card__item">
+                        Personal care — bathing, dressing, grooming
+                      </li>
+                      <li class="c-group-card__item">Medication reminders</li>
+                      <li class="c-group-card__item">Mobility &amp; transfer assistance</li>
+                      <li class="c-group-card__item">Wound care</li>
+                      <li class="c-group-card__more">+2 more, including meal preparation</li>
+                    </ul>
+                    <span class="c-group-card__icon" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="c-group-card__media">
+                    <img
+                      class="c-group-card__img"
+                      src="img/services/service-group1.jpg"
+                      width="306"
+                      height="354"
+                      alt=""
+                      loading="lazy"
+                    />
+                  </div>
+                </article>
+              </li>
+
+              <li data-reveal="up">
+                <article class="c-group-card c-group-card--ground-2">
+                  <div class="c-group-card__body">
+                    <h3 class="c-group-card__title">
+                      <a class="c-group-card__link" href="#services">
+                        Companionship &amp; social
+                      </a>
+                    </h3>
+                    <ul class="c-group-card__list">
+                      <li class="c-group-card__item">Storytelling &amp; reading aloud</li>
+                      <li class="c-group-card__item">Conversation in a first language</li>
+                      <li class="c-group-card__item">Holiday &amp; event company</li>
+                      <li class="c-group-card__item">Social outings</li>
+                      <li class="c-group-card__more">+3 more, including hobby partners</li>
+                    </ul>
+                    <span class="c-group-card__icon" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="c-group-card__media">
+                    <img
+                      class="c-group-card__img"
+                      src="img/services/service-group2.jpg"
+                      width="306"
+                      height="354"
+                      alt=""
+                      loading="lazy"
+                    />
+                  </div>
+                </article>
+              </li>
+
+              <li data-reveal="up">
+                <article class="c-group-card c-group-card--ground-3">
+                  <div class="c-group-card__body">
+                    <h3 class="c-group-card__title">
+                      <a class="c-group-card__link" href="#services">
+                        Practical help
+                      </a>
+                    </h3>
+                    <ul class="c-group-card__list">
+                      <li class="c-group-card__item">Technology assistance</li>
+                      <li class="c-group-card__item">Groceries &amp; errands</li>
+                      <li class="c-group-card__item">Transportation to appointments</li>
+                      <li class="c-group-card__item">Paperwork &amp; admin</li>
+                      <li class="c-group-card__more">+3 more, including seasonal help</li>
+                    </ul>
+                    <span class="c-group-card__icon" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="c-group-card__media">
+                    <img
+                      class="c-group-card__img"
+                      src="img/services/service-group3.jpg"
+                      width="306"
+                      height="354"
+                      alt=""
+                      loading="lazy"
+                    />
+                  </div>
+                </article>
+              </li>
+
+              <li data-reveal="up">
+                <article class="c-group-card c-group-card--ground-4">
+                  <div class="c-group-card__body">
+                    <h3 class="c-group-card__title">
+                      <a class="c-group-card__link" href="#services">
+                        Wellness &amp; lifestyle
+                      </a>
+                    </h3>
+                    <ul class="c-group-card__list">
+                      <li class="c-group-card__item">Walking companion</li>
+                      <li class="c-group-card__item">Gardening assistance</li>
+                      <li class="c-group-card__item">Meal prep for dietary needs</li>
+                      <li class="c-group-card__item">Meditation &amp; relaxation</li>
+                      <li class="c-group-card__more">+1 more, gentle yoga &amp; stretching</li>
+                    </ul>
+                    <span class="c-group-card__icon" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="c-group-card__media">
+                    <img
+                      class="c-group-card__img"
+                      src="img/services/service-group4.jpg"
+                      width="306"
+                      height="354"
+                      alt=""
+                      loading="lazy"
+                    />
+                  </div>
+                </article>
+              </li>
+
+              <li data-reveal="up">
+                <article class="c-group-card c-group-card--ground-5">
+                  <div class="c-group-card__body">
+                    <h3 class="c-group-card__title">
+                      <a class="c-group-card__link" href="#services">
+                        Specialised care — certified
+                      </a>
+                    </h3>
+                    <ul class="c-group-card__list">
+                      <li class="c-group-card__item">Dementia &amp; Alzheimer's care</li>
+                      <li class="c-group-card__item">Diabetes management</li>
+                      <li class="c-group-card__item">Palliative companionship</li>
+                      <li class="c-group-card__item">Post-surgery recovery</li>
+                      <li class="c-group-card__more">+2 more, including rehab exercise support</li>
+                    </ul>
+                    <span class="c-group-card__icon" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="c-group-card__media">
+                    <img
+                      class="c-group-card__img"
+                      src="img/services/service-group5.jpg"
+                      width="306"
+                      height="354"
+                      alt=""
+                      loading="lazy"
+                    />
+                  </div>
+                </article>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 03 — How It Works                                                -->
+      <!-- Removes procedural uncertainty. Families will not create an       -->
+      <!-- account to find out how a thing works.                           -->
+      <!-- ================================================================ -->
+      <section class="l-section s-how" id="how-it-works" aria-labelledby="how-title">
+        <div class="l-container">
+          <div class="c-section-head c-section-head--split" data-reveal="up">
+            <div>
+              <span class="u-eyebrow c-section-head__eyebrow">How it works</span>
+              <h2 class="c-section-head__title" id="how-title">Booked in four steps.</h2>
+            </div>
+            <p class="c-section-head__lead">
+              You see the caregiver, the service and the price before you commit.
+              No consultation call, no contract, no minimum hours.
+            </p>
+          </div>
+
+          <div class="s-how__track" data-how-timeline>
+            <!--
+              Staggered-capsule layout. The dashed medallion is wider than its
+              capsule and breaks both side edges, so nothing in this subtree may
+              clip — see _how-it-works.scss.
+
+              The connecting SVG path is injected here as the first child by
+              js/modules/how-steps.js, which also owns the scroll-driven reveal
+              of these capsules. They carry data-how-step rather than
+              data-reveal: the shared reveal in reveal.js writes the same
+              transform channel and the two would fight.
+            -->
+            <div class="swiper" data-slider="how">
+              <div class="swiper-wrapper s-how__grid" data-how-track>
+                <div class="swiper-slide s-how__step" data-how-step>
+                  <div class="s-how__medallion">
+                    <span class="s-how__dial" aria-hidden="true"></span>
+                    <span class="s-how__num" aria-hidden="true">1</span>
+                    <span class="s-how__icon" aria-hidden="true">
+                      <!-- Intake: a profile being filled in -->
+                      <svg viewBox="0 0 64 64" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="11" y="9" width="42" height="46" rx="7" stroke="currentColor" stroke-width="2.2" />
+                        <circle class="s-how__pop" cx="32" cy="26" r="7" />
+                        <path d="M20 44.5c0-6.4 5.4-9.5 12-9.5s12 3.1 12 9.5" stroke="currentColor" stroke-width="2.2" />
+                        <path d="M24.5 50.5h15" stroke="currentColor" stroke-width="2.2" />
+                      </svg>
+                    </span>
+                  </div>
+                  <h3 class="s-how__title">Tell us who you're caring for</h3>
+                  <p class="s-how__text">
+                    Their address, the languages they speak, any conditions, and
+                    what they enjoy. It takes two minutes and it is what the
+                    matching runs on.
+                  </p>
+                  <span class="u-sr-only">Step 1 of 4</span>
+                </div>
+
+                <div class="swiper-slide s-how__step" data-how-step>
+                  <div class="s-how__medallion">
+                    <span class="s-how__dial" aria-hidden="true"></span>
+                    <span class="s-how__num" aria-hidden="true">2</span>
+                    <span class="s-how__icon" aria-hidden="true">
+                      <!-- Browse: a ranked list, searched -->
+                      <svg viewBox="0 0 64 64" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="12" width="30" height="9" rx="3" stroke="currentColor" stroke-width="2.2" />
+                        <rect x="9" y="27" width="34" height="9" rx="3" stroke="currentColor" stroke-width="2.2" />
+                        <rect x="9" y="42" width="24" height="9" rx="3" stroke="currentColor" stroke-width="2.2" />
+                        <polygon
+                          class="s-how__pop"
+                          points="52,9 53.53,12.9 57.71,13.15 54.47,15.8 55.53,19.85 52,17.6 48.47,19.85 49.53,15.8 46.29,13.15 50.47,12.9"
+                        />
+                        <circle cx="44" cy="44" r="9" stroke="currentColor" stroke-width="2.2" />
+                        <path d="M50.4 50.4 56 56" stroke="currentColor" stroke-width="2.6" />
+                      </svg>
+                    </span>
+                  </div>
+                  <h3 class="s-how__title">Browse gigs ranked for them</h3>
+                  <p class="s-how__text">
+                    Every listing shows what's included, the hourly rate, the
+                    caregiver's verification tier and their reviews. Filter by
+                    language, distance, budget or gender.
+                  </p>
+                  <span class="u-sr-only">Step 2 of 4</span>
+                </div>
+
+                <div class="swiper-slide s-how__step" data-how-step>
+                  <div class="s-how__medallion">
+                    <span class="s-how__dial" aria-hidden="true"></span>
+                    <span class="s-how__num" aria-hidden="true">3</span>
+                    <span class="s-how__icon" aria-hidden="true">
+                      <!-- Book: a date picked, at a time -->
+                      <svg viewBox="0 0 64 64" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="13" width="38" height="38" rx="6" stroke="currentColor" stroke-width="2.2" />
+                        <path d="M9 24h38" stroke="currentColor" stroke-width="2.2" />
+                        <path d="M19 13V8M37 13V8" stroke="currentColor" stroke-width="2.2" />
+                        <rect class="s-how__pop" x="15" y="30" width="10" height="8" rx="2.5" />
+                        <circle cx="46" cy="46" r="11" fill="var(--c-how-surface)" stroke="currentColor" stroke-width="2.2" />
+                        <path d="M46 40.5V46.5l4.2 2.6" stroke="currentColor" stroke-width="2.2" />
+                      </svg>
+                    </span>
+                  </div>
+                  <h3 class="s-how__title">Book the date, time and address</h3>
+                  <p class="s-how__text">
+                    One visit or a repeating weekly slot. The caregiver accepts
+                    or declines — and if they decline, we offer you the next best
+                    match straight away.
+                  </p>
+                  <span class="u-sr-only">Step 3 of 4</span>
+                </div>
+
+                <div class="swiper-slide s-how__step" data-how-step>
+                  <div class="s-how__medallion">
+                    <span class="s-how__dial" aria-hidden="true"></span>
+                    <span class="s-how__num" aria-hidden="true">4</span>
+                    <span class="s-how__icon" aria-hidden="true">
+                      <!-- Check-in: notified, confirmed -->
+                      <svg viewBox="0 0 64 64" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M32 11V7.5" stroke="currentColor" stroke-width="2.2" />
+                        <path
+                          d="M21 29v-7a11 11 0 0 1 22 0v7l3.5 6.5H17.5L21 29Z"
+                          stroke="currentColor"
+                          stroke-width="2.2"
+                        />
+                        <path d="M27.5 38.5a4.5 4.5 0 0 0 9 0" stroke="currentColor" stroke-width="2.2" />
+                        <circle class="s-how__pop" cx="47" cy="45" r="9" />
+                        <path d="M43 45.2l2.8 2.8 5.4-5.6" stroke="#fff" stroke-width="2.6" />
+                      </svg>
+                    </span>
+                  </div>
+                  <h3 class="s-how__title">They check in, you're notified</h3>
+                  <p class="s-how__text">
+                    You get a message when they arrive and a summary when they
+                    leave. Payment runs through the platform afterwards — no
+                    cash, no invoicing.
+                  </p>
+                  <span class="u-sr-only">Step 4 of 4</span>
+                </div>
+              </div>
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 04 — Expanded service taxonomy ⭐ THE CENTREPIECE                -->
+      <!-- Proves we are not an agency. Laid out on the Sekare "Service We   -->
+      <!-- Provide" pattern: a pastel mosaic whose heading is one of the      -->
+      <!-- tiles rather than a band above it. See _taxonomy.scss.            -->
+      <!-- ================================================================ -->
+      <section class="l-section s-taxonomy" id="services" aria-labelledby="services-title">
+        <div class="l-container">
+          <!-- App-mode filter chips -->
+          <div class="s-taxonomy__chips" data-chips role="group" aria-label="Filter services">
+            <button class="s-taxonomy__chip" type="button" data-chip="all" aria-pressed="true">All</button>
+            <button class="s-taxonomy__chip" type="button" data-chip="company" aria-pressed="false">Companionship</button>
+            <button class="s-taxonomy__chip" type="button" data-chip="practical" aria-pressed="false">Practical help</button>
+            <button class="s-taxonomy__chip" type="button" data-chip="wellness" aria-pressed="false">Wellness</button>
+            <button class="s-taxonomy__chip" type="button" data-chip="care" aria-pressed="false">Personal care</button>
+          </div>
+
+          <div class="s-taxonomy__grid" data-cat-grid data-reveal-group>
+            <!--
+              The heading tile. First in the DOM so the stacked mobile order still
+              reads heading-then-services; from md up it spans half the row and two
+              rows deep, with the two tall feature tiles closing the band beside it.
+            -->
+            <div class="c-cat-head" data-reveal="up">
+              <span class="u-eyebrow">What you can book</span>
+              <h2 class="c-cat-head__title" id="services-title">
+                Agencies offer six services. We offer thirty.
+              </h2>
+              <p class="c-cat-head__lead">
+                An agency&#39;s menu is built around what its insurance and training
+                allow. A marketplace isn&#39;t. Start with something small — someone
+                to garden with, help with the tablet — and move to personal care
+                when you&#39;re ready.
+              </p>
+              <a class="c-btn c-btn--primary c-cat-head__action" href="#final-cta">Browse all services</a>
+            </div>
+
+            <button
+              class="c-cat c-cat--cream c-cat--tall c-cat--rr c-cat--duo c-cat--duo-stack c-cat--arrow"
+              type="button"
+              data-reveal="up"
+              data-group="company"
+              data-category
+              data-name="Companionship"
+              data-rate="$22–28 / hour"
+              data-tier="Basic — Verified"
+              data-blurb="Someone to sit with, talk to, and share an afternoon. Tea and conversation, a walk to the shops, company on a long day. The most-requested service on the platform, and the easiest place to start."
+            >
+              <span class="c-cat__name">Companionship</span>
+              <span class="c-cat__arrow" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="c-cat__photo" aria-hidden="true">
+                <img src="img/services/companionship-1.jpg" alt="" loading="lazy" decoding="async">
+                <img src="img/services/companionship-2.jpg" alt="" loading="lazy" decoding="async">
+              </span>
+            </button>
+
+            <button
+              class="c-cat c-cat--sage c-cat--bm c-cat--frame c-cat--arrow"
+              type="button"
+              data-reveal="up"
+              data-group="care"
+              data-category
+              data-name="Dementia &amp; Alzheimer&#39;s care"
+              data-rate="$32–45 / hour"
+              data-tier="Professional — Certified"
+              data-blurb="Matched by stage — early, moderate or advanced — and by the caregiver&#39;s specific dementia training, not just general experience. No other platform in Canada matches at this level of detail."
+            >
+              <span class="c-cat__name">Dementia &amp; <span>Alzheimer&#39;s care</span></span>
+              <span class="c-cat__arrow" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="c-cat__photo" aria-hidden="true">
+                <img src="img/services/dementia.jpg" alt="" loading="lazy" decoding="async">
+              </span>
+            </button>
+
+            <button
+              class="c-cat c-cat--grey c-cat--tr"
+              type="button"
+              data-reveal="up"
+              data-group="practical"
+              data-category
+              data-name="Technology help"
+              data-rate="$25–32 / hour"
+              data-tier="Basic — Verified"
+              data-blurb="Setting up a tablet, teaching video calls with the grandchildren, sorting out the TV, making the phone&#39;s text bigger. Patient, unhurried, as many times as it takes."
+            >
+              <span class="c-cat__name">Technology help</span>
+              <span class="c-cat__photo" aria-hidden="true">
+                <img src="img/services/technology.jpg" alt="" loading="lazy" decoding="async">
+              </span>
+            </button>
+
+            <button
+              class="c-cat c-cat--rose c-cat--bl"
+              type="button"
+              data-reveal="up"
+              data-group="practical"
+              data-category
+              data-name="Transportation"
+              data-rate="$26–34 / hour"
+              data-tier="Enhanced — Trusted"
+              data-blurb="Driving to appointments and waiting through them, then driving home. Includes helping in and out of the car and carrying what needs carrying."
+            >
+              <span class="c-cat__name">Transportation</span>
+              <span class="c-cat__photo" aria-hidden="true">
+                <img src="img/services/transportation.jpg" alt="" loading="lazy" decoding="async">
+              </span>
+            </button>
+
+            <button
+              class="c-cat c-cat--blue c-cat--tm c-cat--frame"
+              type="button"
+              data-reveal="up"
+              data-group="wellness"
+              data-category
+              data-name="Meal preparation"
+              data-rate="$24–30 / hour"
+              data-tier="Enhanced — Trusted"
+              data-blurb="Cooking for specific needs — diabetic, low-sodium, soft foods, or the dishes they grew up with. Batch cooking for the week is the most common booking."
+            >
+              <span class="c-cat__name">Meal preparation</span>
+              <span class="c-cat__photo" aria-hidden="true">
+                <img src="img/services/meal-prep.jpg" alt="" loading="lazy" decoding="async">
+              </span>
+            </button>
+
+            <button
+              class="c-cat c-cat--sage c-cat--tall c-cat--tl c-cat--arrow"
+              type="button"
+              data-reveal="up"
+              data-group="care"
+              data-category
+              data-name="Personal care"
+              data-rate="$28–38 / hour"
+              data-tier="Enhanced — Trusted"
+              data-blurb="Bathing, dressing, grooming and mobility support, delivered with dignity. Requires a Vulnerable Sector Check on top of the standard background check."
+            >
+              <span class="c-cat__name">Personal care</span>
+              <span class="c-cat__photo" aria-hidden="true">
+                <img src="img/services/personal-care.jpg" alt="" loading="lazy" decoding="async">
+              </span>
+            </button>
+
+            <button
+              class="c-cat c-cat--cream c-cat--bn"
+              type="button"
+              data-reveal="up"
+              data-group="wellness"
+              data-category
+              data-name="Gardening"
+              data-rate="$24–30 / hour"
+              data-tier="Basic — Verified"
+              data-blurb="Keeping the garden they built going, together. Weeding, planting, pots on the balcony, or just sitting outside while the work gets done."
+            >
+              <span class="c-cat__name">Gardening</span>
+              <span class="c-cat__photo" aria-hidden="true">
+                <img src="img/services/gardening.jpg" alt="" loading="lazy" decoding="async">
+              </span>
+            </button>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 04b — Benefits                                                    -->
+      <!-- Sekare demo-three .several-service-area, matched: heading + image -->
+      <!-- left, bordered card centre, counter rail right on the amber       -->
+      <!-- ground.                                                           -->
+      <!--                                                                   -->
+      <!-- The reference's counters read 24/7, 20k+ happy customers and      -->
+      <!-- 100% home safety. We have none of those, and inventing them is    -->
+      <!-- precisely what produced "0% Verified care-giver" on the live      -->
+      <!-- site. Same three slots, three figures that are actually true and  -->
+      <!-- sourced from the project docs.                                    -->
+      <!-- ================================================================ -->
+      <section class="l-section s-benefits" aria-labelledby="benefits-title">
+        <div class="l-container">
+          <!--
+            The portrait moves to the foot of the layout below md — see
+            js/modules/benefits-figure.js. Both attributes are inert at every
+            other width; the module puts the node back on the way up.
+          -->
+          <div class="s-benefits__layout" data-benefits-layout>
+            <div class="s-benefits__intro" data-reveal="left">
+              <h2 class="s-benefits__title" id="benefits-title">
+                Choosing an independent caregiver can offer several benefits
+              </h2>
+
+              <div class="s-benefits__figure" data-benefits-figure>
+                <img
+                  class="s-benefits__portrait"
+                  src="img/benefits/several-service1.png"
+                  width="306"
+                  height="389"
+                  alt=""
+                  loading="lazy"
+                />
+                <img
+                  class="s-benefits__blob"
+                  src="img/benefits/sevaral.svg"
+                  width="526"
+                  height="358"
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                />
+                <img
+                  class="s-benefits__shape"
+                  src="img/benefits/sevarel-shape1.png"
+                  width="101"
+                  height="101"
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            <div class="s-benefits__panels">
+              <div class="s-benefits__card" data-reveal="up">
+                <div class="s-benefits__card-media">
+                  <img
+                    src="img/benefits/several-service2.jpg"
+                    width="1125"
+                    height="601"
+                    alt=""
+                    loading="lazy"
+                  />
+                </div>
+                <p class="s-benefits__card-text">
+                  Here are several reasons why families in Durham Region choose a
+                  caregiver directly rather than an agency.
+                </p>
+                <ul class="s-benefits__list">
+                  <li class="s-benefits__list-item">Personalised matching</li>
+                  <li class="s-benefits__list-item">Independence and dignity</li>
+                  <li class="s-benefits__list-item">Verified, background-checked</li>
+                  <li class="s-benefits__list-item">Transparent hourly pricing</li>
+                </ul>
+              </div>
+
+              <div class="s-benefits__counters" data-reveal="up">
+                <div class="s-benefits__counter">
+                  <p class="s-benefits__figure-value">
+                    <span
+                      data-count-to="7.5"
+                      data-count-decimals="1"
+                      data-count-suffix="%"
+                      >7.5%</span
+                    >
+                  </p>
+                  <p class="s-benefits__counter-label">Platform fee, not 15%</p>
+                </div>
+
+                <div class="s-benefits__counter">
+                  <p class="s-benefits__figure-value">
+                    <span data-count-to="5">5</span>
+                  </p>
+                  <p class="s-benefits__counter-label">Durham municipalities</p>
+                </div>
+
+                <div class="s-benefits__counter">
+                  <p class="s-benefits__figure-value">
+                    <span data-count-to="3">3</span>
+                  </p>
+                  <p class="s-benefits__counter-label">Verification tiers</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 05 — Founding caregivers                                         -->
+      <!-- At launch this slot does SUPPLY ACQUISITION, not liquidity proof: -->
+      <!-- there are 0 listings and fabricating caregivers is forbidden.     -->
+      <!-- ================================================================ -->
+      <section class="l-section s-caregivers" aria-labelledby="founding-title">
+        <div class="l-container">
+          <!--
+            Ambient layer: a few line icons drifting slowly behind the content.
+            Decorative only — aria-hidden, pointer-events: none, and every
+            animation is switched off under prefers-reduced-motion.
+          -->
+          <div class="s-caregivers__deco" aria-hidden="true">
+            <span class="s-caregivers__deco-icon"><svg class="s-caregivers__deco-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20.3S4.2 15.6 4.2 10.3A4.8 4.8 0 0 1 12 6.6a4.8 4.8 0 0 1 7.8 3.7c0 5.3-7.8 10-7.8 10Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+            <span class="s-caregivers__deco-icon"><svg class="s-caregivers__deco-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 5 6.2v5.3c0 4.3 2.9 7.6 7 9 4.1-1.4 7-4.7 7-9V6.2z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2.2 2.2L15.4 10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="s-caregivers__deco-icon"><svg class="s-caregivers__deco-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+            <span class="s-caregivers__deco-icon"><svg class="s-caregivers__deco-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 20v-7M12 13c0-4 3-7 7-7 0 4-3 7-7 7Zm0 0c0-4-3-7-7-7 0 4 3 7 7 7Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="s-caregivers__deco-icon"><svg class="s-caregivers__deco-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16v10H9l-5 4z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+            <span class="s-caregivers__deco-icon"><svg class="s-caregivers__deco-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 4.5 2.3 4.9 5.2.6-3.8 3.5 1 5.1-4.7-2.6-4.7 2.6 1-5.1L4.5 10l5.2-.6z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+            <span class="s-caregivers__deco-icon"><svg class="s-caregivers__deco-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 13V6.5a1.6 1.6 0 0 1 3.2 0V12m0-1.5a1.6 1.6 0 0 1 3.2 0V13m0-1a1.6 1.6 0 0 1 3.2 0v4.5A4.5 4.5 0 0 1 13 21h-1.5A5 5 0 0 1 6.6 17L5 13.4a1.6 1.6 0 0 1 2.8-1.5L8 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="s-caregivers__deco-icon"><svg class="s-caregivers__deco-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="5" width="16" height="11" rx="1.6" stroke="currentColor" stroke-width="1.7"/><path d="M3 19h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+          </div>
+
+          <div class="s-caregivers__layout">
+            <div data-reveal="left">
+              <span class="u-eyebrow">We're just getting started</span>
+              <h2 class="c-section-head__title" id="founding-title">
+                Be one of our founding caregivers.
+              </h2>
+
+              <div class="s-caregivers__benefits">
+                <p class="s-caregivers__benefit">
+                  <svg class="s-caregivers__benefit-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  Top placement in Durham Region while we're small
+                </p>
+                <p class="s-caregivers__benefit">
+                  <svg class="s-caregivers__benefit-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  We cover your first background check
+                </p>
+                <p class="s-caregivers__benefit">
+                  <svg class="s-caregivers__benefit-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  Set your own rate and choose your own gigs
+                </p>
+              </div>
+
+              <a class="c-btn c-btn--primary c-btn--lg" href="#for-caregivers">Apply to join</a>
+            </div>
+
+            <div class="s-caregivers__slider" data-reveal="up">
+              <div class="swiper" data-slider="gigs">
+                <div class="swiper-wrapper">
+                  <!--
+                    The caregiver's own journey, drawn from the onboarding flow in
+                    final-thoughts.md (146-189). Deliberately NOT service names,
+                    rates or tiers — the taxonomy section already carries those, and
+                    a slider that repeats the page is worse than no slider. No card
+                    carries a name or a face either, which is what the "never
+                    fabricate a caregiver" rule exists to protect.
+                  -->
+                  <div class="swiper-slide">
+                    <article class="c-gig-card">
+                      <div class="c-gig-card__top">
+                        <span class="c-gig-card__icon" aria-hidden="true">
+                          <svg class="c-gig-card__icon-svg" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.6" stroke="currentColor" stroke-width="1.7"/><path d="M7.6 17.2a4.8 4.8 0 0 1 8.8 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                        </span>
+                        <span class="c-gig-card__step" aria-hidden="true">01</span>
+                      </div>
+
+                      <span class="u-sr-only">Step 1 of 6</span>
+
+                      <h3 class="c-gig-card__name">Build your profile</h3>
+                      <p class="c-gig-card__headline">Your languages, your interests, the hours you’re free and how far you’ll travel.</p>
+
+                      <div class="c-gig-card__foot">
+                        <span class="c-gig-card__meta">Languages · Availability</span>
+                      </div>
+                    </article>
+                  </div>
+                  <div class="swiper-slide">
+                    <article class="c-gig-card">
+                      <div class="c-gig-card__top">
+                        <span class="c-gig-card__icon" aria-hidden="true">
+                          <svg class="c-gig-card__icon-svg" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 5 6.2v5.3c0 4.3 2.9 7.6 7 9 4.1-1.4 7-4.7 7-9V6.2z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2.2 2.2L15.4 10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                        <span class="c-gig-card__step" aria-hidden="true">02</span>
+                      </div>
+
+                      <span class="u-sr-only">Step 2 of 6</span>
+
+                      <h3 class="c-gig-card__name">Get verified</h3>
+                      <p class="c-gig-card__headline">Photo ID, a police check, and any certificates you upload are read automatically.</p>
+
+                      <div class="c-gig-card__foot">
+                        <span class="c-gig-card__meta">ID · Police check</span>
+                      </div>
+                    </article>
+                  </div>
+                  <div class="swiper-slide">
+                    <article class="c-gig-card">
+                      <div class="c-gig-card__top">
+                        <span class="c-gig-card__icon" aria-hidden="true">
+                          <svg class="c-gig-card__icon-svg" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4" width="16" height="7" rx="2" stroke="currentColor" stroke-width="1.7"/><rect x="4" y="14" width="10" height="6" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="M17 17h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                        </span>
+                        <span class="c-gig-card__step" aria-hidden="true">03</span>
+                      </div>
+
+                      <span class="u-sr-only">Step 3 of 6</span>
+
+                      <h3 class="c-gig-card__name">Publish your gigs</h3>
+                      <p class="c-gig-card__headline">One listing per service you offer. Draft it, publish it, or pause it whenever you like.</p>
+
+                      <div class="c-gig-card__foot">
+                        <span class="c-gig-card__meta">Draft · Published · Paused</span>
+                      </div>
+                    </article>
+                  </div>
+                  <div class="swiper-slide">
+                    <article class="c-gig-card">
+                      <div class="c-gig-card__top">
+                        <span class="c-gig-card__icon" aria-hidden="true">
+                          <svg class="c-gig-card__icon-svg" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13h4l1.5 2.5h5L16 13h4" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M4 13 6.5 6h11L20 13v5a1.6 1.6 0 0 1-1.6 1.6H5.6A1.6 1.6 0 0 1 4 18z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+                        </span>
+                        <span class="c-gig-card__step" aria-hidden="true">04</span>
+                      </div>
+
+                      <span class="u-sr-only">Step 4 of 6</span>
+
+                      <h3 class="c-gig-card__name">Choose your bookings</h3>
+                      <p class="c-gig-card__headline">You see the family, the date and the address before you answer — then it’s your call.</p>
+
+                      <div class="c-gig-card__foot">
+                        <span class="c-gig-card__meta">Accept or decline</span>
+                      </div>
+                    </article>
+                  </div>
+                  <div class="swiper-slide">
+                    <article class="c-gig-card">
+                      <div class="c-gig-card__top">
+                        <span class="c-gig-card__icon" aria-hidden="true">
+                          <svg class="c-gig-card__icon-svg" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s6.5-6 6.5-10.5a6.5 6.5 0 0 0-13 0C5.5 15 12 21 12 21Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9.4 11 1.9 1.9 3.4-3.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                        <span class="c-gig-card__step" aria-hidden="true">05</span>
+                      </div>
+
+                      <span class="u-sr-only">Step 5 of 6</span>
+
+                      <h3 class="c-gig-card__name">Check in on site</h3>
+                      <p class="c-gig-card__headline">Arrival confirmed by GPS, tasks logged as you go, check out when you’re done.</p>
+
+                      <div class="c-gig-card__foot">
+                        <span class="c-gig-card__meta">GPS-verified arrival</span>
+                      </div>
+                    </article>
+                  </div>
+                  <div class="swiper-slide">
+                    <article class="c-gig-card">
+                      <div class="c-gig-card__top">
+                        <span class="c-gig-card__icon" aria-hidden="true">
+                          <svg class="c-gig-card__icon-svg" width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 18.5 9 13l3.5 3L20 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 8H20v4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </span>
+                        <span class="c-gig-card__step" aria-hidden="true">06</span>
+                      </div>
+
+                      <span class="u-sr-only">Step 6 of 6</span>
+
+                      <h3 class="c-gig-card__name">Grow your standing</h3>
+                      <p class="c-gig-card__headline">Reviews and on-time arrivals lift your Trust Score, and that ranks your listings.</p>
+
+                      <div class="c-gig-card__foot">
+                        <span class="c-gig-card__meta">Reviews · On-time arrival</span>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </div>
+
+              <div class="s-caregivers__controls">
+                <div class="swiper-pagination" data-pagination="gigs"></div>
+
+                <div class="c-slider-nav">
+                  <button class="c-slider-nav__btn" type="button" data-slider-prev="gigs" aria-label="Previous">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+                  <button class="c-slider-nav__btn" type="button" data-slider-next="gigs" aria-label="Next">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 07 — Verification tiers                                          -->
+      <!-- "We do background checks" is what Care.com says. Be specific.     -->
+      <!-- ================================================================ -->
+      <section class="l-section s-tiers" aria-labelledby="tiers-title">
+        <div class="l-container">
+          <div class="c-section-head c-section-head--split" data-reveal="up">
+            <div>
+              <span class="u-eyebrow c-section-head__eyebrow">Verification</span>
+              <h2 class="c-section-head__title" id="tiers-title">
+                Three tiers. Each one unlocks more.
+              </h2>
+            </div>
+            <p class="c-section-head__lead">
+              Nobody offers a service they aren't cleared for. A caregiver
+              offering companionship passes different checks from one offering
+              personal care, and the badge on every listing tells you which.
+            </p>
+          </div>
+
+          <div class="s-tiers__grid" data-tier-stack>
+            <article class="c-tier c-tier--1" data-tier-card>
+              <div class="c-tier__top">
+                <span class="c-tier__badge">
+                <svg width="14" height="14" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Verified
+              </span>
+                <span class="c-tier__meter" aria-hidden="true"><i></i><i></i><i></i></span>
+              </div>
+              <h3 class="c-tier__name">Basic</h3>
+              <p class="c-tier__desc">The floor. Nobody appears on the marketplace below this.</p>
+
+              <div class="c-tier__list">
+                <p class="c-tier__item">
+                  <svg class="c-tier__check" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Identity verified (eKYC, document + face)
+                </p>
+                <p class="c-tier__item">
+                  <svg class="c-tier__check" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Criminal record check (CPIC, via Certn)
+                </p>
+              </div>
+
+              <p class="c-tier__unlocks">
+                Unlocks companionship, errands, tech help, gardening
+              </p>
+
+              <button class="c-tier__more" type="button" data-fancybox-inline data-src="#tier-basic">
+                What's actually checked?
+                <svg class="c-tier__more-icon" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </article>
+
+            <article class="c-tier c-tier--2" data-tier-card>
+              <div class="c-tier__top">
+                <span class="c-tier__badge">
+                <svg width="14" height="14" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                Trusted
+              </span>
+                <span class="c-tier__meter" aria-hidden="true"><i></i><i></i><i></i></span>
+              </div>
+              <h3 class="c-tier__name">Enhanced</h3>
+              <p class="c-tier__desc">Required before anyone enters a home to give hands-on help.</p>
+
+              <div class="c-tier__list">
+                <p class="c-tier__item">
+                  <svg class="c-tier__check" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Everything in Basic
+                </p>
+                <p class="c-tier__item">
+                  <svg class="c-tier__check" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Vulnerable Sector Check
+                </p>
+                <p class="c-tier__item">
+                  <svg class="c-tier__check" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Two professional references, contacted by us
+                </p>
+              </div>
+
+              <p class="c-tier__unlocks">
+                Adds personal care, meal prep, transportation
+              </p>
+
+              <button class="c-tier__more" type="button" data-fancybox-inline data-src="#tier-enhanced">
+                What's actually checked?
+                <svg class="c-tier__more-icon" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </article>
+
+            <article class="c-tier c-tier--3" data-tier-card>
+              <div class="c-tier__top">
+                <span class="c-tier__badge">
+                <svg width="14" height="14" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                Certified
+              </span>
+                <span class="c-tier__meter" aria-hidden="true"><i></i><i></i><i></i></span>
+              </div>
+              <h3 class="c-tier__name">Professional</h3>
+              <p class="c-tier__desc">For chronic conditions, where training is the whole point.</p>
+
+              <div class="c-tier__list">
+                <p class="c-tier__item">
+                  <svg class="c-tier__check" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Everything in Enhanced
+                </p>
+                <p class="c-tier__item">
+                  <svg class="c-tier__check" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Certifications verified (PSW, First Aid, CPR)
+                </p>
+                <p class="c-tier__item">
+                  <svg class="c-tier__check" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Live video identity check
+                </p>
+              </div>
+
+              <p class="c-tier__unlocks">
+                Adds dementia care, diabetes support, post-surgery recovery
+              </p>
+
+              <button class="c-tier__more" type="button" data-fancybox-inline data-src="#tier-professional">
+                What's actually checked?
+                <svg class="c-tier__more-icon" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 08 — Safety during the visit                                     -->
+      <!-- 07 covers who we let in; this covers what happens inside.        -->
+      <!-- Framed as family transparency, NOT compliance — EVV is not       -->
+      <!-- mandated in any Canadian province.                               -->
+      <!-- ================================================================ -->
+      <section class="l-section s-safety" id="safety" aria-labelledby="safety-title">
+        <div class="l-container">
+          <div class="s-safety__layout">
+            <div data-reveal="left">
+              <span class="u-eyebrow">During the visit</span>
+              <h2 class="c-section-head__title" id="safety-title">
+                You'll know they arrived before they've taken their coat off.
+              </h2>
+
+              <div class="s-safety__list">
+                <div class="s-safety__item">
+                  <span class="s-safety__icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 21s7-6 7-11a7 7 0 1 0-14 0c0 5 7 11 7 11Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                      <circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="s-safety__item-title">GPS-verified check-in and check-out</p>
+                    <p class="s-safety__item-text">
+                      The app confirms they're at the right address. Hours are
+                      recorded from the real arrival time, not an estimate.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="s-safety__item">
+                  <span class="s-safety__icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M5 6h14v11H9l-4 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="s-safety__item-title">A message when they arrive and when they leave</p>
+                    <p class="s-safety__item-text">
+                      Sent to whoever in the family needs it — including if you
+                      live in another province.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="s-safety__item">
+                  <span class="s-safety__icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M6 4h12v16l-6-3-6 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="s-safety__item-title">A visit summary, every time</p>
+                    <p class="s-safety__item-text">
+                      What was done, how long it took, and any note the caregiver
+                      left. Kept on record.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="s-safety__item">
+                  <span class="s-safety__icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 3 4 6.5v5.2c0 4.6 3.2 8.4 8 9.3 4.8-.9 8-4.7 8-9.3V6.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="s-safety__item-title">Two-way ratings and an emergency button</p>
+                    <p class="s-safety__item-text">
+                      Caregivers rate clients too, and all in-app messages are
+                      kept in case anything is ever disputed.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="s-safety__visual" data-reveal="up">
+              <div class="s-safety__visual-head">
+                <p class="s-safety__visual-title">Tuesday's visit — Margaret</p>
+                <span class="s-safety__visual-chip">Verified</span>
+              </div>
+              <div class="s-safety__timeline">
+                <div class="s-safety__event">
+                  <span class="s-safety__event-time">9:02 AM</span>
+                  <span class="s-safety__event-text">Anita checked in — location confirmed</span>
+                </div>
+                <div class="s-safety__event">
+                  <span class="s-safety__event-time">9:05 AM</span>
+                  <span class="s-safety__event-text">You were notified she arrived</span>
+                </div>
+                <div class="s-safety__event">
+                  <span class="s-safety__event-time">9:05–11:50 AM</span>
+                  <span class="s-safety__event-text">Companionship, a walk, lunch prepared</span>
+                </div>
+                <div class="s-safety__event">
+                  <span class="s-safety__event-time">11:58 AM</span>
+                  <span class="s-safety__event-text">
+                    Checked out · 2h 56m · “Good morning, ate well”
+                  </span>
+                </div>
+                <div class="s-safety__event">
+                  <span class="s-safety__event-time">12:00 PM</span>
+                  <span class="s-safety__event-text">$72.33 paid — $5.42 platform fee</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 09 — For caregivers. THE one dark section.                       -->
+      <!-- A two-sided marketplace that markets to one side does not start.  -->
+      <!-- ================================================================ -->
+      <section class="l-section s-for-caregivers" id="for-caregivers" aria-labelledby="cg-title">
+        <div class="l-container">
+          <div class="s-for-caregivers__layout">
+            <div data-reveal="left">
+              <span class="u-eyebrow">For caregivers</span>
+              <h2 class="c-section-head__title c-section-head--inverse" id="cg-title" style="color: var(--c-ink-inverse)">
+                Set your rate. Choose your gigs. Keep 92.5%.
+              </h2>
+
+              <p class="s-for-caregivers__figure">
+                92.5%
+                <span class="s-for-caregivers__figure-sub">
+                  of what the family pays goes to you. An agency keeps 30–40% of
+                  the same visit.
+                </span>
+              </p>
+
+              <div class="s-for-caregivers__list">
+                <p class="s-for-caregivers__item">
+                  <svg class="s-for-caregivers__icon" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Work the hours you actually want
+                </p>
+                <p class="s-for-caregivers__item">
+                  <svg class="s-for-caregivers__icon" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Accept or decline every booking
+                </p>
+                <p class="s-for-caregivers__item">
+                  <svg class="s-for-caregivers__icon" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Paid automatically after each visit
+                </p>
+                <p class="s-for-caregivers__item">
+                  <svg class="s-for-caregivers__icon" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Build a Trust Score that ranks your listings
+                </p>
+                <p class="s-for-caregivers__item">
+                  <svg class="s-for-caregivers__icon" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  No certification needed for companionship work
+                </p>
+                <p class="s-for-caregivers__item">
+                  <svg class="s-for-caregivers__icon" width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="m4 9.2 3.2 3.2L14 5.6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  Annual earnings statement for your taxes
+                </p>
+              </div>
+
+              <a class="c-btn c-btn--inverse c-btn--lg" href="#final-cta">Join as a caregiver</a>
+            </div>
+
+            <div class="s-for-caregivers__media" data-reveal="up">
+              <img
+                class="s-for-caregivers__img"
+                src="img/home-care.webp"
+                alt="A caregiver visiting a client at home."
+                width="1500"
+                height="952"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 10 — Founders + why we're building this                          -->
+      <!-- Absorbs the story that the cut section 11 placeholder carried.    -->
+
+      <!--
+        11 — Testimonials. BUILT BUT NOT RENDERED.
+        Zero real reviews exist and fabricating them is forbidden (plan §3).
+        Its draft placeholder duplicated section 10, so an empty slot is more
+        honest than a padded one. Renders here, between 10 and 12, when real
+        reviews arrive — no rebuild needed.
+      -->
+
+      <!-- ================================================================ -->
+      <!-- 12 — FAQ                                                         -->
+      <!-- ================================================================ -->
+      <section class="l-section s-faq" id="faq" aria-labelledby="faq-title">
+        <div class="l-container">
+          <div class="s-faq__layout">
+            <div data-reveal="left">
+              <span class="u-eyebrow">Questions</span>
+              <h2 class="c-section-head__title" id="faq-title">The things families ask first.</h2>
+
+              <div class="s-faq__aside">
+                <p class="s-faq__aside-title">Still not sure?</p>
+                <p class="s-faq__aside-text">
+                  Call us and speak to a person. We would rather answer your
+                  questions than have you guess.
+                </p>
+                <a class="c-btn c-btn--outline" href="tel:+14376658486">+1 (437) 665-8486</a>
+              </div>
+            </div>
+
+            <div class="s-faq__list" data-reveal="up">
+              <details class="c-accordion" data-accordion>
+                <summary class="c-accordion__summary">
+                  Are caregivers background checked?
+                  <span class="c-accordion__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg></span>
+                </summary>
+                <div class="c-accordion__body" data-accordion-body>
+                  <p class="c-accordion__text">
+                    Yes — every caregiver on the marketplace has passed identity
+                    verification and a CPIC criminal record check through Certn
+                    before their listing goes live. Anyone offering personal care
+                    also passes a Vulnerable Sector Check, which is the same check
+                    required to work with children and vulnerable adults in
+                    Ontario. The badge on each listing tells you which tier they
+                    hold.
+                  </p>
+                </div>
+              </details>
+
+              <details class="c-accordion" data-accordion>
+                <summary class="c-accordion__summary">
+                  Are you an agency?
+                  <span class="c-accordion__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg></span>
+                </summary>
+                <div class="c-accordion__body" data-accordion-body>
+                  <p class="c-accordion__text">
+                    No. KindredCare is a marketplace — we connect you directly
+                    with independent caregivers and handle verification, booking
+                    and payment. We do not employ caregivers and we do not train
+                    them. That is why the fee is 7.5% rather than an agency's
+                    30–40% cut, and why you choose the specific person rather than
+                    being assigned whoever is free.
+                  </p>
+                </div>
+              </details>
+
+              <details class="c-accordion" data-accordion>
+                <summary class="c-accordion__summary">
+                  How does payment work?
+                  <span class="c-accordion__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg></span>
+                </summary>
+                <div class="c-accordion__body" data-accordion-body>
+                  <p class="c-accordion__text">
+                    Your card is authorised when the caregiver accepts the
+                    booking, but you are only charged after the visit is
+                    completed and checked out. We deduct 7.5% and pay the
+                    caregiver the rest on a set schedule. No cash changes hands
+                    and there is nothing to invoice.
+                  </p>
+                </div>
+              </details>
+
+              <details class="c-accordion" data-accordion>
+                <summary class="c-accordion__summary">
+                  What if we don't get along with someone?
+                  <span class="c-accordion__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg></span>
+                </summary>
+                <div class="c-accordion__body" data-accordion-body>
+                  <p class="c-accordion__text">
+                    You are never locked in. Every booking is a single visit or a
+                    recurring slot you can stop at any time — there is no contract
+                    and no minimum hours. Book someone else and, if something went
+                    wrong, tell us: reviews and reports feed directly into whether
+                    a caregiver stays on the platform.
+                  </p>
+                </div>
+              </details>
+
+              <details class="c-accordion" data-accordion>
+                <summary class="c-accordion__summary">
+                  Can we book the same person every week?
+                  <span class="c-accordion__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg></span>
+                </summary>
+                <div class="c-accordion__body" data-accordion-body>
+                  <p class="c-accordion__text">
+                    Yes, and most families do. You can set a repeating weekly or
+                    biweekly booking with the same caregiver. Continuity is the
+                    thing families most often say agencies get wrong, and here you
+                    are booking a specific person rather than a slot.
+                  </p>
+                </div>
+              </details>
+
+              <details class="c-accordion" data-accordion>
+                <summary class="c-accordion__summary">
+                  Who is responsible if something goes wrong?
+                  <span class="c-accordion__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg></span>
+                </summary>
+                <div class="c-accordion__body" data-accordion-body>
+                  <p class="c-accordion__text">
+                    Caregivers on KindredCare are independent contractors, not our
+                    employees, and our terms set that out plainly. What we are
+                    responsible for is the verification behind every listing, the
+                    record of every visit, and the process for handling a
+                    complaint. Report an incident and we investigate it, with the
+                    messages and visit logs to hand.
+                  </p>
+                </div>
+              </details>
+
+              <details class="c-accordion" data-accordion>
+                <summary class="c-accordion__summary">
+                  Do you serve my area?
+                  <span class="c-accordion__icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg></span>
+                </summary>
+                <div class="c-accordion__body" data-accordion-body>
+                  <p class="c-accordion__text">
+                    We are starting in Durham Region — Oshawa, Whitby, Ajax,
+                    Pickering and Clarington — and expanding across the GTA from
+                    there. If you are just outside, leave us your email and we
+                    will tell you the moment we reach you.
+                  </p>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- 13 — Final CTA                                                   -->
+      <!-- ================================================================ -->
+      <section class="l-section s-final" id="final-cta" aria-labelledby="final-title">
+        <div class="l-container">
+          <div class="s-final__panel" data-reveal="up">
+            <span class="u-eyebrow s-final__eyebrow">Ready when you are</span>
+            <h2 class="s-final__title" id="final-title">
+              Find someone kind, this week.
+            </h2>
+            <p class="s-final__lead">
+              Browsing is free and takes a few minutes. You will see real people,
+              real rates and real verification before you decide anything.
+            </p>
+
+            <div class="s-final__actions">
+              <a class="c-btn c-btn--primary c-btn--lg" href="#services">Find a caregiver</a>
+              <a class="c-btn c-btn--ink c-btn--lg" href="#for-caregivers">Join as a caregiver</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================================================================== -->
+    <!-- 14 — Footer                                                        -->
+    <!-- ================================================================== -->
+    <footer class="l-footer">
+      <div class="l-container">
+        <!-- Subscription band: oversized contact line left, newsletter right. -->
+        <div class="l-footer__subscribe">
+          <div class="l-footer__contact-lead">
+            <h2 class="l-footer__shout">
+              <a class="l-footer__shout-link" href="mailto:info@kindredcare.ca">
+                Let's talk
+                <svg class="l-footer__shout-icon" width="42" height="42" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </h2>
+          </div>
+
+          <div class="l-footer__newsletter">
+            <h3 class="l-footer__newsletter-title">Subscribe to our newsletter</h3>
+            <!--
+              TODO before launch: this posts nowhere. Wire `action` to the list
+              provider and handle the response, or remove the form. A subscribe
+              box that silently swallows an address is worse than no box.
+            -->
+            <form class="l-footer__form" method="post" data-newsletter>
+              <label class="u-sr-only" for="newsletter-email">Email address</label>
+              <input
+                class="l-footer__input"
+                id="newsletter-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="Enter your email"
+                required
+              />
+              <button class="l-footer__submit" type="submit" aria-label="Subscribe">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Four widgets, split by hairline rules. -->
+        <div class="l-footer__widgets">
+          <div class="l-footer__widget">
+            <a class="l-footer__brand" href="/" aria-label="KindredCare Global — home">
+              <img
+                class="l-footer__logo"
+                src="img/logo.png"
+                width="162"
+                height="36"
+                alt="KindredCare Global"
+                loading="lazy"
+              />
+            </a>
+            <h3 class="l-footer__heading">Where we serve</h3>
+            <ul class="l-footer__plain">
+              <li>Durham Region, Ontario</li>
+              <li>Oshawa · Whitby · Ajax · Pickering · Clarington</li>
+            </ul>
+          </div>
+
+          <!--
+            The three list columns collapse below md — see
+            js/modules/footer-accordion.js. The attribute is inert at every
+            other width; the module builds and unbuilds around its own media
+            query, so the desktop footer never carries accordion markup.
+          -->
+          <div class="l-footer__widget" data-footer-acc>
+            <h3 class="l-footer__heading">Quick links</h3>
+            <ul class="l-footer__list">
+              <li><a class="l-footer__link" href="#how-it-works">How it works</a></li>
+              <li><a class="l-footer__link" href="#our-story">About us</a></li>
+              <li><a class="l-footer__link" href="#faq">FAQ</a></li>
+              <li><a class="l-footer__link" href="/terms-of-use/">Terms of use</a></li>
+              <li><a class="l-footer__link" href="/privacy-policy/">Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div class="l-footer__widget" data-footer-acc>
+            <h3 class="l-footer__heading">Type of care</h3>
+            <ul class="l-footer__list">
+              <li><a class="l-footer__link" href="#services">Traditional care</a></li>
+              <li><a class="l-footer__link" href="#services">Companionship &amp; social</a></li>
+              <li><a class="l-footer__link" href="#services">Practical help</a></li>
+              <li><a class="l-footer__link" href="#services">Wellness &amp; lifestyle</a></li>
+              <li><a class="l-footer__link" href="#services">Specialised care</a></li>
+              <li><a class="l-footer__link" href="#safety">Trust &amp; safety</a></li>
+            </ul>
+          </div>
+
+          <div class="l-footer__widget l-footer__widget--last" data-footer-acc>
+            <h3 class="l-footer__heading">Contact information</h3>
+            <ul class="l-footer__contact">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M3 6.5h18v11H3zM3 7l9 6 9-6" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+                </svg>
+                <a class="l-footer__link" href="mailto:info@kindredcare.ca">info@kindredcare.ca</a>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 4h4l2 5-2.5 1.5a12 12 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A15 15 0 0 1 4 5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+                </svg>
+                <a class="l-footer__link" href="tel:+14376658486">+1 (437) 665-8486</a>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+                  <circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.7" />
+                </svg>
+                <span>Oshawa, Ontario</span>
+              </li>
+            </ul>
+
+            <div class="l-footer__connect">
+              <h3 class="l-footer__heading">Connect with us</h3>
+              <ul class="l-footer__social">
+                <li>
+                  <a class="l-footer__social-link" href="https://www.facebook.com/kindredcareglobal" aria-label="KindredCare on Facebook">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H16.7V3.6c-.3-.04-1.3-.13-2.47-.13-2.45 0-4.13 1.5-4.13 4.24V9.9H7.4V13h2.7v8z" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a class="l-footer__social-link" href="https://linkedin.com/company/kindredcare/" aria-label="KindredCare on LinkedIn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5ZM3 9h4v12H3zM9 9h3.8v1.7h.06c.53-1 1.83-2.06 3.76-2.06C20.5 8.64 21 11.1 21 14.3V21h-4v-5.9c0-1.4-.03-3.2-1.95-3.2-1.96 0-2.26 1.53-2.26 3.1V21H9z" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <a class="l-footer__social-link" href="https://www.instagram.com/kindredcareglobal/" aria-label="KindredCare on Instagram">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 6.01a3.83 3.83 0 1 0 0 7.66 3.83 3.83 0 0 0 0-7.66Zm0 6.32a2.49 2.49 0 1 1 0-4.98 2.49 2.49 0 0 1 0 4.98Zm4.88-6.47a.9.9 0 1 1-1.79 0 .9.9 0 0 1 1.79 0Z" />
+                    </svg>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="l-footer__copyright">
+        <div class="l-container">
+          <p>© 2026 KindredCare Global Inc. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ================================================================== -->
+    <!-- 15 — Mobile bottom app bar (below 768px)                           -->
+    <!-- Present at rest; hides on scroll down, returns on scroll up.       -->
+    <!-- ================================================================== -->
+    <nav class="l-bottom-bar" aria-label="Primary" data-bottom-bar>
+      <ul class="l-bottom-bar__list">
+        <li class="l-bottom-bar__item">
+          <a class="l-bottom-bar__link" href="#services" data-spy-target="services" aria-label="Services">
+            <svg class="l-bottom-bar__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3.5" y="3.5" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.9" />
+              <rect x="13.5" y="3.5" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.9" />
+              <rect x="3.5" y="13.5" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.9" />
+              <rect x="13.5" y="13.5" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.9" />
+            </svg>
+            Services
+          </a>
+        </li>
+
+        <li class="l-bottom-bar__item">
+          <a class="l-bottom-bar__link" href="#how-it-works" data-spy-target="how-it-works" aria-label="How it works">
+            <svg class="l-bottom-bar__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="14" width="5" height="6" rx="1.4" stroke="currentColor" stroke-width="1.9" />
+              <rect x="9.5" y="9" width="5" height="11" rx="1.4" stroke="currentColor" stroke-width="1.9" />
+              <rect x="16" y="4" width="5" height="16" rx="1.4" stroke="currentColor" stroke-width="1.9" />
+            </svg>
+            Steps
+          </a>
+        </li>
+
+        <li class="l-bottom-bar__item l-bottom-bar__fab-slot">
+          <a class="l-bottom-bar__fab" href="#services" aria-label="Find care">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2" />
+              <path d="m16 16 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </a>
+          <span class="l-bottom-bar__fab-label" aria-hidden="true">Find care</span>
+        </li>
+
+        <li class="l-bottom-bar__item">
+          <a class="l-bottom-bar__link" href="#safety" data-spy-target="safety" aria-label="Trust and safety">
+            <svg class="l-bottom-bar__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3.5 5 6.2v5.3c0 4.3 2.9 7.6 7 9 4.1-1.4 7-4.7 7-9V6.2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+            </svg>
+            Safety
+          </a>
+        </li>
+
+        <li class="l-bottom-bar__item">
+          <!--
+            Opens the same off-canvas drawer as the header button. It carried a
+            `data-sheet-trigger="menu"` placeholder for a separate bottom sheet
+            that was never built, so the control did nothing when tapped. Now
+            that the drawer slides in from the right at every width, a second
+            mobile-only menu surface has no reason to exist.
+          -->
+          <button class="l-bottom-bar__link" type="button" aria-label="Open menu" aria-expanded="false" data-offcanvas-open>
+            <svg class="l-bottom-bar__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            Menu
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- ================================================================== -->
+    <!-- Inline modal content (Fancybox). Hidden until opened.              -->
+    <!-- Category modals are generated from tile data attributes instead —  -->
+    <!-- twelve blocks of hidden markup would be unmaintainable.            -->
+    <!-- ================================================================== -->
+    <div style="display: none">
+      <div class="c-tier-modal" id="tier-basic">
+        <h2 class="c-tier-modal__title">Basic — what's actually checked</h2>
+        <dl class="c-tier-modal__list">
+          <div class="c-tier-modal__item">
+            <dt class="c-tier-modal__term">Identity verification (eKYC)</dt>
+            <dd class="c-tier-modal__def">
+              Government photo ID is uploaded and machine-read, then matched
+              against a live selfie. Confirms the person listing is the person
+              in the document.
+            </dd>
+          </div>
+          <div class="c-tier-modal__item">
+            <dt class="c-tier-modal__term">CPIC criminal record check</dt>
+            <dd class="c-tier-modal__def">
+              Run through Certn against the Canadian Police Information Centre
+              database. A listing cannot go live until this clears.
+            </dd>
+          </div>
+          <div class="c-tier-modal__item">
+            <dt class="c-tier-modal__term">Address verification</dt>
+            <dd class="c-tier-modal__def">
+              Confirms the caregiver lives where they say, so the service-area
+              distance shown on their listing is real.
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="c-tier-modal" id="tier-enhanced">
+        <h2 class="c-tier-modal__title">Enhanced — what's actually checked</h2>
+        <dl class="c-tier-modal__list">
+          <div class="c-tier-modal__item">
+            <dt class="c-tier-modal__term">Everything in Basic</dt>
+            <dd class="c-tier-modal__def">Identity, CPIC and address, all cleared.</dd>
+          </div>
+          <div class="c-tier-modal__item">
+            <dt class="c-tier-modal__term">Vulnerable Sector Check</dt>
+            <dd class="c-tier-modal__def">
+              A deeper police check used in Canada for anyone working with
+              children or vulnerable adults. It searches records a standard
+              criminal record check does not reach, including pardoned sexual
+              offences.
+            </dd>
+          </div>
+          <div class="c-tier-modal__item">
+            <dt class="c-tier-modal__term">Two professional references</dt>
+            <dd class="c-tier-modal__def">
+              Contacted by us, not self-reported. We ask about reliability,
+              judgement and how they were with the person in their care.
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="c-tier-modal" id="tier-professional">
+        <h2 class="c-tier-modal__title">Professional — what's actually checked</h2>
+        <dl class="c-tier-modal__list">
+          <div class="c-tier-modal__item">
+            <dt class="c-tier-modal__term">Everything in Enhanced</dt>
+            <dd class="c-tier-modal__def">
+              Including the Vulnerable Sector Check and both references.
+            </dd>
+          </div>
+          <div class="c-tier-modal__item">
+            <dt class="c-tier-modal__term">Certification verification</dt>
+            <dd class="c-tier-modal__def">
+              PSW, nursing, First Aid and CPR certificates are uploaded, read
+              automatically, and checked for validity and expiry. Expired
+              certificates suspend the services they unlock.
+            </dd>
+          </div>
+          <div class="c-tier-modal__item">
+            <dt class="c-tier-modal__term">Live video identity check</dt>
+            <dd class="c-tier-modal__def">
+              A short recorded video call confirming the person holding the
+              certifications is the person on the listing.
+            </dd>
+          </div>
+          <div class="c-tier-modal__item">
+            <dt class="c-tier-modal__term">Condition-specific experience</dt>
+            <dd class="c-tier-modal__def">
+              Years of experience per condition — dementia stage, diabetes type,
+              post-surgery recovery — recorded so matching can use it.
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+    </div>
+
+    <!-- ================================================================== -->
+    <!-- Off-canvas panel — behind the circular menu button.                -->
+    <!-- Slides from the right on desktop, rises as a sheet below md.       -->
+    <!-- ================================================================== -->
+    <div class="c-offcanvas" id="site-menu" data-offcanvas>
+      <div class="c-offcanvas__backdrop" data-offcanvas-close></div>
+      <div
+        class="c-offcanvas__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site menu"
+        data-offcanvas-panel
+      >
+        <span class="c-offcanvas__handle" aria-hidden="true"></span>
+
+        <div class="c-offcanvas__head">
+          <span class="c-offcanvas__title">Menu</span>
+          <button class="c-offcanvas__close" type="button" aria-label="Close menu" data-offcanvas-close>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        <nav class="c-offcanvas__nav" aria-label="Menu">
+          <a class="c-offcanvas__link" href="#how-it-works">
+            <span>How it works</span>
+            <svg class="c-offcanvas__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+          <a class="c-offcanvas__link" href="#services">
+            <span>Services</span>
+            <svg class="c-offcanvas__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+          <a class="c-offcanvas__link" href="#safety">
+            <span>Trust &amp; safety</span>
+            <svg class="c-offcanvas__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+          <a class="c-offcanvas__link" href="#for-caregivers">
+            <span>Join as a caregiver</span>
+            <svg class="c-offcanvas__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+          <a class="c-offcanvas__link" href="/blog/">
+            <span>Blog</span>
+            <svg class="c-offcanvas__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+          <a class="c-offcanvas__link" href="/about/">
+            <span>About us</span>
+            <svg class="c-offcanvas__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+          <a class="c-offcanvas__link" href="/contact-us/">
+            <span>Contact us</span>
+            <svg class="c-offcanvas__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 12 12 4M12 4H5.5M12 4v6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </a>
+        </nav>
+
+        <div class="c-offcanvas__contact">
+          <span class="c-offcanvas__contact-label">Talk to a person</span>
+          <a class="c-offcanvas__contact-link" href="tel:+14376658486">+1 (437) 665-8486</a>
+          <a class="c-offcanvas__contact-link" href="mailto:info@kindredcare.ca">info@kindredcare.ca</a>
+          <span class="c-offcanvas__contact-place">Oshawa, Ontario</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="vendor/gsap/gsap.min.js" defer></script>
+    <script src="vendor/gsap/ScrollTrigger.min.js" defer></script>
+    <script src="vendor/swiper/swiper-bundle.min.js" defer></script>
+    <script src="vendor/fancybox/fancybox.umd.js" defer></script>
+    <script type="module" src="js/main.js"></script>
+
+    <!-- FAQPage structured data — the cheapest durable SEO on the page. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Are caregivers background checked?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Every caregiver on the marketplace has passed identity verification and a CPIC criminal record check through Certn before their listing goes live. Anyone offering personal care also passes a Vulnerable Sector Check."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is KindredCare an agency?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. KindredCare is a marketplace connecting families directly with independent caregivers, handling verification, booking and payment. We do not employ caregivers. The platform fee is 7.5%."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does payment work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Your card is authorised when the caregiver accepts the booking and charged after the visit is completed. KindredCare deducts 7.5% and pays the caregiver the remainder on a set schedule."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can we book the same caregiver every week?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. You can set a repeating weekly or biweekly booking with the same caregiver, and you are booking a specific person rather than a slot."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which areas does KindredCare serve?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "KindredCare is starting in Durham Region, Ontario — Oshawa, Whitby, Ajax, Pickering and Clarington — and expanding across the Greater Toronto Area."
+            }
+          }
+        ]
+      }
+    </script>
+  </body>
+</html>
