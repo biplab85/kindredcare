@@ -57,6 +57,15 @@
     inset: 0;
   }
 
+  // [data-typing-ready] is set by the inline script in <head>, before the first
+  // paint; .is-live by the module on the frame typing begins. Between the two
+  // the copy is hidden, so the finished headline never flashes while the script
+  // is still on the wire. Neither is present with JS off or under reduced
+  // motion — then this rule never matches and the headline is simply there.
+  [data-typing-ready] &__typed:not(.is-live) {
+    visibility: hidden;
+  }
+
   // Caret — only present while characters are still arriving.
   &__typed.is-typing::after {
     display: inline-block;

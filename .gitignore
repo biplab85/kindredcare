@@ -1,6 +1,8 @@
-# Playwright MCP scratch output (screenshots, snapshots, console logs)
+# Playwright MCP scratch output (screenshots, snapshots, console logs).
+# Browser screenshots land at the repo root under whatever name the run gave
+# them, so ignore root-level PNGs. logo.png is already tracked and unaffected.
 .playwright-mcp/
-kindredcare-home.png
+/*.png
 
 # OS / editor
 .DS_Store

@@ -31,6 +31,37 @@
     />
 
     <link rel="stylesheet" href="css/main.css" />
+
+    <!--
+      Arms the hero typewriter before the first paint.
+
+      The headline text lives in the markup so it survives with JS off, which
+      also means it is painted in full and then wiped when the typewriter
+      finally runs — a flash of the finished line. This hides the typed copy up
+      front so typing starts from empty. Inline and in <head> on purpose: a
+      fetched file would land after the paint it exists to precede.
+
+      The timeout is the safety net. If the module never arrives, the headline
+      comes back rather than staying blank forever.
+    -->
+    <script>
+      (function () {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var root = document.documentElement;
+        root.setAttribute('data-typing-ready', '');
+        window.setTimeout(function () {
+          if (!root.hasAttribute('data-typing-started')) {
+            root.removeAttribute('data-typing-ready');
+          }
+        }, 3000);
+      })();
+    </script>
+
+    <!--
+      The headline types on its own entry point, not from main.js — see the
+      comment in js/hero-type.js for why it cannot wait for the boot sequence.
+    -->
+    <script type="module" src="js/hero-type.js"></script>
   </head>
 
   <body>
@@ -137,11 +168,14 @@
             full string as its accessible name — assistive tech never sees a
             half-typed heading. With JS off, the typed span still holds the
             complete text.
+
+            No data-hero-item here: the headline's entrance is the typing. It
+            types before the vendor scripts land, so letting the hero timeline
+            also fade it would blank a half-typed line and start it over.
           -->
           <h1
             class="s-hero__title"
             id="hero-title"
-            data-hero-item
             aria-label="Kind care, close to home."
           >
             <span class="s-hero__title-ghost" aria-hidden="true">Kind care, close to home.</span>

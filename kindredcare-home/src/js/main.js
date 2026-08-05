@@ -10,7 +10,6 @@ import { initModals } from './modules/modals.js';
 import { initCounters, initStepLine } from './modules/counters.js';
 import { initAccordion } from './modules/accordion.js';
 import { initChips } from './modules/chips.js';
-import { initTypewriter } from './modules/typewriter.js';
 import { initHowSteps } from './modules/how-steps.js';
 import { initTierStack } from './modules/tier-stack.js';
 
@@ -31,9 +30,10 @@ function boot() {
   initChips();
   initAccordion();
 
-  // Motion — last, so it measures final layout
+  // Motion — last, so it measures final layout.
+  // The hero headline is not here: it types from js/hero-type.js, which runs
+  // before the vendor scripts this function waits on.
   initHeroIntro();
-  initTypewriter();
   initStepLine();
   initHowSteps();
   initTierStack();
