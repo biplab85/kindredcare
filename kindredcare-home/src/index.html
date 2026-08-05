@@ -41,8 +41,13 @@
       front so typing starts from empty. Inline and in <head> on purpose: a
       fetched file would land after the paint it exists to precede.
 
-      The timeout is the safety net. If the module never arrives, the headline
-      comes back rather than staying blank forever.
+      Recovery is the onerror below, not this timeout: a module that fails to
+      load says so, and a slow one is not a failed one. An earlier 3s timer
+      proved that the hard way — on a cold edge the module arrived at 3.9s, so
+      the timer fired first and put the finished headline on screen for the
+      900ms before typing began, which is the exact flash this all exists to
+      prevent. The timeout is now only a backstop for a request that hangs
+      without ever resolving or erroring.
     -->
     <script>
       (function () {
@@ -53,15 +58,22 @@
           if (!root.hasAttribute('data-typing-started')) {
             root.removeAttribute('data-typing-ready');
           }
-        }, 3000);
+        }, 8000);
       })();
     </script>
 
     <!--
       The headline types on its own entry point, not from main.js — see the
       comment in js/hero-type.js for why it cannot wait for the boot sequence.
+
+      onerror is the real safety net: if this never loads, the headline is shown
+      immediately rather than waiting out the backstop above.
     -->
-    <script type="module" src="js/hero-type.js"></script>
+    <script
+      type="module"
+      src="js/hero-type.js"
+      onerror="document.documentElement.removeAttribute('data-typing-ready')"
+    ></script>
   </head>
 
   <body>
