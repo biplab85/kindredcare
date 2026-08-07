@@ -4,6 +4,10 @@
 .playwright-mcp/
 /*.png
 
+# WordPress runtime logs. WP_DEBUG_LOG writes here on every local notice, so the
+# file churns constantly and says nothing about the code.
+wp-content/debug.log
+
 # OS / editor
 .DS_Store
 Thumbs.db

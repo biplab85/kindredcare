@@ -1,0 +1,83 @@
+@use '../abstracts' as *;
+
+// =============================================================================
+// Q&A — the article FAQ, rebuilt from alternating paragraphs.
+//
+// Native <details>, so it needs no JavaScript and stays readable with CSS off.
+// The first item is open on render: an accordion that starts fully closed
+// hides the fact that there is anything inside it.
+// =============================================================================
+
+.c-qa {
+  display: flex;
+  flex-direction: column;
+  gap: space(3);
+  margin-block: space(6);
+
+  &__item {
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid var(--c-clay);
+    border-radius: $radius-md;
+    transition: border-color $dur-micro $ease-out;
+
+    &[open] {
+      border-color: color-mix(in oklab, var(--c-trust) 35%, var(--c-clay));
+    }
+
+    @include hover {
+      border-color: color-mix(in oklab, var(--c-trust) 35%, var(--c-clay));
+    }
+  }
+
+  &__q {
+    display: flex;
+    gap: space(4);
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: space(5);
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--c-ink);
+    cursor: pointer;
+    list-style: none;
+
+    // Safari draws its own disclosure triangle without this.
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &:focus-visible {
+      @include focus-ring(-3px);
+    }
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    margin-block-start: 3px;
+    color: var(--c-ink-soft);
+    transition: transform $dur-micro $ease-out;
+
+    [open] & {
+      transform: rotate(180deg);
+    }
+
+    @include reduced-motion {
+      transition: none;
+    }
+  }
+
+  &__a {
+    padding: 0 space(5) space(5);
+
+    p {
+      max-width: 62ch;
+      margin: 0;
+      font-size: var(--fs-body);
+      line-height: 1.7;
+      color: var(--c-ink-soft);
+    }
+  }
+}

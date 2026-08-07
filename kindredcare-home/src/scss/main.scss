@@ -31,6 +31,16 @@
 @use 'components/swiper';
 @use 'components/fancybox';
 
+// Blog components. Grouped rather than interleaved because they are only ever
+// used by home.php, archive.php, search.php and single.php — nothing on the
+// marketing homepage reaches for them.
+@use 'components/post-card';
+@use 'components/pager';
+@use 'components/share';
+@use 'components/toc';
+@use 'components/qa';
+@use 'components/prose';
+
 // -- Layout -------------------------------------------------------------------
 @use 'layout/container';
 @use 'layout/topbar';
@@ -51,3 +61,9 @@
 @use 'sections/for-caregivers'; // 09
 @use 'sections/faq'; // 12
 @use 'sections/final-cta'; // 13
+
+// -- Blog ---------------------------------------------------------------------
+// Not part of the numbered homepage sequence: these are their own templates.
+@use 'sections/blog';
+@use 'sections/article';
+@use 'sections/contact';

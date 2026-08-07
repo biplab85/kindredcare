@@ -1,0 +1,230 @@
+@use '../abstracts' as *;
+
+// =============================================================================
+// Contact page.
+//
+// The enquiry form beside a card of direct details. Two columns from lg, the
+// form taking the greater share — it is the thing the page is for, and the card
+// is the alternative for people who would rather not use a form at all.
+// =============================================================================
+
+.s-contact {
+  &__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(48px, 6vw, 72px);
+    padding-block: clamp(48px, 6vw, 88px) clamp(64px, 8vw, 112px);
+
+    @include mq(lg) {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: clamp(48px, 5vw, 96px);
+      align-items: start;
+    }
+  }
+
+  &__heading,
+  &__card-title {
+    font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+    letter-spacing: -0.02em;
+  }
+
+  &__heading {
+    margin-block-end: space(6);
+  }
+
+  // -- Details card -----------------------------------------------------------
+  &__card {
+    padding: clamp(28px, 3vw, 40px);
+    background-color: #fff;
+    border: 1px solid var(--c-clay);
+    border-radius: $radius-lg;
+    box-shadow: var(--shadow-sm);
+
+    @include mq(lg) {
+      position: sticky;
+      inset-block-start: 96px;
+    }
+  }
+
+  &__card-title {
+    margin-block-end: space(6);
+  }
+
+  &__list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  &__item {
+    max-width: none;
+    padding-block: space(4);
+    border-block-start: 1px solid var(--c-clay);
+
+    &:first-child {
+      padding-block-start: 0;
+      border-block-start: 0;
+    }
+  }
+
+  &__label {
+    display: block;
+    margin-block-end: space(1);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--c-ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  &__value {
+    @include focusable(3px);
+
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--c-ink);
+    text-decoration: none;
+    transition: color $dur-micro $ease-out;
+  }
+
+  a.s-contact__value {
+    @include hover {
+      color: var(--c-trust);
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+  }
+
+  &__note {
+    padding-block-start: space(5);
+    margin-block-start: space(5);
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+    color: var(--c-ink-soft);
+    border-block-start: 1px solid var(--c-clay);
+  }
+}
+
+// =============================================================================
+// Form
+// =============================================================================
+.c-form {
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: space(5);
+
+    @include mq(sm) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &__field {
+    max-width: none;
+    margin: 0;
+  }
+
+  // Message, and anything else that needs the full row.
+  &__field--wide {
+    @include mq(sm) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  &__label {
+    display: block;
+    margin-block-end: space(2);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--c-ink);
+  }
+
+  &__req {
+    color: var(--c-heart);
+  }
+
+  &__input {
+    @include tap-target(52px);
+
+    width: 100%;
+    padding: space(3) space(4);
+    font-family: var(--font-body);
+    // 16px is also what stops iOS zooming the page on focus.
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    color: var(--c-ink);
+    background-color: #fff;
+    border: 1px solid var(--c-clay);
+    border-radius: $radius-md;
+    transition:
+      border-color $dur-micro $ease-out,
+      box-shadow $dur-micro $ease-out;
+
+    &::placeholder {
+      color: color-mix(in oklab, var(--c-ink-soft) 65%, transparent);
+    }
+
+    &:hover {
+      border-color: color-mix(in oklab, var(--c-trust) 40%, var(--c-clay));
+    }
+
+    &:focus {
+      outline: 0;
+      border-color: var(--c-trust);
+      // A ring rather than an outline so it follows the rounded corner.
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--c-trust) 18%, transparent);
+    }
+
+    // Only after the field has been touched — :invalid alone would mark every
+    // required field red before anyone has typed anything.
+    &:user-invalid {
+      border-color: var(--c-heart);
+    }
+  }
+
+  &__input--area {
+    min-height: 9rem;
+    resize: vertical;
+  }
+
+  &__submit {
+    margin-block-start: space(6);
+  }
+
+  // The honeypot. Off-screen rather than display:none — some bots skip fields
+  // they can tell are hidden.
+  &__trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+}
+
+// =============================================================================
+// Notice — the banner after a form submission.
+// =============================================================================
+.c-notice {
+  max-width: none;
+  padding: space(4) space(5);
+  margin-block-end: space(6);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  border: 1px solid;
+  border-radius: $radius-md;
+
+  &--ok {
+    color: color-mix(in oklab, var(--c-leaf) 72%, var(--c-ink));
+    background-color: color-mix(in oklab, var(--c-leaf) 8%, transparent);
+    border-color: color-mix(in oklab, var(--c-leaf) 32%, transparent);
+  }
+
+  &--error {
+    color: color-mix(in oklab, var(--c-heart) 72%, var(--c-ink));
+    background-color: color-mix(in oklab, var(--c-heart) 8%, transparent);
+    border-color: color-mix(in oklab, var(--c-heart) 32%, transparent);
+  }
+}

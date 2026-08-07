@@ -1,0 +1,116 @@
+@use '../abstracts' as *;
+
+// =============================================================================
+// Table of contents — the sticky rail beside a long article or policy page.
+//
+// A panel, not a loose list: the same white surface, hairline border and soft
+// shadow the post cards carry, so the rail reads as a component of the page
+// rather than text that happens to sit in the margin.
+//
+// Built server-side from the headings the document actually contains
+// (inc/blog.php), and only rendered past three of them. The highlight is
+// progressive enhancement — with the script blocked this is still a working
+// set of anchors.
+// =============================================================================
+
+.c-toc {
+  padding: space(5) space(4) space(4);
+  background-color: #fff;
+  border: 1px solid var(--c-clay);
+  border-radius: $radius-lg;
+  box-shadow: var(--shadow-sm);
+
+  &__label {
+    display: flex;
+    gap: space(3);
+    align-items: center;
+    max-width: none;
+    padding-inline: space(2);
+    margin-block-end: space(4);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--c-ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+
+    // A short rule closing the label off, echoing the kicker in the hero.
+    &::after {
+      flex: 1;
+      height: 1px;
+      content: '';
+      background-color: var(--c-clay);
+    }
+  }
+
+  &__list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    counter-reset: toc;
+  }
+
+  &__item {
+    max-width: none;
+    margin: 0;
+    counter-increment: toc;
+  }
+
+  &__link {
+    @include focusable(-2px);
+
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.6em 1fr;
+    gap: space(2);
+    align-items: baseline;
+    padding: space(2) space(2);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    color: var(--c-ink-soft);
+    text-decoration: none;
+    border-radius: $radius-sm;
+    transition:
+      color $dur-micro $ease-out,
+      background-color $dur-micro $ease-out;
+
+    // Numbered, because a contents list is an ordered thing and the numbers
+    // tell you how far in a section sits. Tabular so they form a column.
+    &::before {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--c-clay);
+      content: counter(toc, decimal-leading-zero);
+      transition: color $dur-micro $ease-out;
+    }
+
+    @include hover {
+      color: var(--c-ink);
+      background-color: var(--c-sand);
+
+      &::before {
+        color: var(--c-ink-soft);
+      }
+    }
+
+    // Current section: filled rather than underlined. At this size a weight
+    // change alone is too quiet to find while scrolling.
+    &.is-current {
+      font-weight: 600;
+      color: var(--c-trust);
+      background-color: color-mix(in oklab, var(--c-trust) 7%, transparent);
+
+      &::before {
+        color: var(--c-trust);
+      }
+    }
+
+    @include reduced-motion {
+      transition: none;
+
+      &::before {
+        transition: none;
+      }
+    }
+  }
+}
