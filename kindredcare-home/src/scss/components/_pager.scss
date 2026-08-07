@@ -1,0 +1,101 @@
+@use '../abstracts' as *;
+
+// =============================================================================
+// Pager — numbered archive pagination.
+//
+// Every control is a 48px tap target (plan §12) and every label stays at the
+// 16px floor. That is what decides the size here: the pills are large because
+// the type inside them is not allowed to shrink.
+// =============================================================================
+
+.c-pager {
+  display: flex;
+  flex-direction: column;
+  gap: space(4);
+  align-items: center;
+  margin-block-start: clamp(56px, 7vw, 88px);
+  padding-block-start: clamp(40px, 5vw, 56px);
+  border-block-start: 1px solid var(--c-clay);
+
+  &__status {
+    max-width: none;
+    font-size: var(--fs-sm);
+    color: var(--c-ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: space(2);
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  &__item {
+    max-width: none;
+    margin: 0;
+  }
+
+  // paginate_links() emits <a class="page-numbers">, <span class="current"> and
+  // <span class="dots">; they are styled here rather than being rewritten in
+  // PHP, because the anchors it builds already carry the right hrefs.
+  .page-numbers {
+    @include tap-target(48px);
+    @include focusable;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: space(3);
+    font-family: var(--font-body);
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--c-ink);
+    text-decoration: none;
+    background-color: transparent;
+    border: 1px solid var(--c-clay);
+    border-radius: 999px;
+    transition:
+      color $dur-micro $ease-out,
+      background-color $dur-micro $ease-out,
+      border-color $dur-micro $ease-out;
+  }
+
+  a.page-numbers {
+    @include hover {
+      color: var(--c-trust);
+      background-color: #fff;
+      border-color: var(--c-trust);
+    }
+  }
+
+  .page-numbers.current {
+    color: var(--c-ink-inverse);
+    background-color: var(--c-ink);
+    border-color: var(--c-ink);
+  }
+
+  // Ellipsis is not a control — no border, no target size.
+  .page-numbers.dots {
+    min-width: auto;
+    padding-inline: space(1);
+    color: var(--c-ink-soft);
+    border-color: transparent;
+  }
+
+  .page-numbers.prev,
+  .page-numbers.next {
+    padding-inline: 0;
+    color: var(--c-ink-soft);
+  }
+
+  .page-numbers.prev svg {
+    transform: rotate(180deg);
+  }
+}
