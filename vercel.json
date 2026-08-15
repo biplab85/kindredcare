@@ -1,6 +1,0 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "npm install --prefix kindredcare-home",
-  "buildCommand": "npm run build --prefix kindredcare-home",
-  "outputDirectory": "kindredcare-home/dist"
-}
