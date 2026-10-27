@@ -1,0 +1,2029 @@
+/**
+ * KindredCare — shared admin panel styles.
+ *
+ * Scoped entirely under .kc-admin so nothing here can leak into the rest of
+ * wp-admin. Colours are drawn from the theme's own palette rather than the
+ * admin grey, so the screen reads as part of the product being edited.
+ *
+ * No external fonts or images: the admin already ships a system font stack, and
+ * a screen that blocks on a webfont feels slower than one that does not.
+ */
+
+.kc-admin {
+  --kc-ink: #101a28;
+  --kc-ink-soft: #5b6779;
+  --kc-line: #e3e8ef;
+  --kc-line-strong: #cfd7e3;
+  --kc-surface: #fff;
+  --kc-canvas: #f6f8fb;
+  --kc-trust: #2f80d8;
+  --kc-trust-dark: #1f63ad;
+  --kc-deep: #101a28;
+  --kc-sand: #faf7f2;
+  --kc-ok: #1f9254;
+  --kc-warn: #a15c00;
+  --kc-radius: 12px;
+  --kc-radius-sm: 8px;
+  --kc-shadow: 0 1px 2px rgb(16 26 40 / 6%), 0 8px 24px -12px rgb(16 26 40 / 18%);
+
+  max-width: 1080px;
+  margin-inline-end: 20px;
+  color: var(--kc-ink);
+}
+
+.kc-admin *,
+.kc-admin *::before,
+.kc-admin *::after {
+  box-sizing: border-box;
+}
+
+/* -- Masthead ------------------------------------------------------------- */
+
+.kc-admin__masthead {
+  position: relative;
+  overflow: hidden;
+  padding: 28px 32px;
+  margin-block: 4px 24px;
+  color: #fff;
+  background: linear-gradient(135deg, #16233a 0%, #101a28 55%, #16283f 100%);
+  border-radius: var(--kc-radius);
+  box-shadow: var(--kc-shadow);
+}
+
+/* A soft wash so the band is not a flat rectangle. */
+.kc-admin__masthead::after {
+  position: absolute;
+  inset-block-start: -60%;
+  inset-inline-end: -10%;
+  width: 420px;
+  height: 420px;
+  content: '';
+  background: radial-gradient(circle, rgb(47 128 216 / 38%) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.kc-admin__eyebrow {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 4px 12px;
+  margin-block-end: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgb(255 255 255 / 12%);
+  border-radius: 999px;
+}
+
+.kc-admin__masthead h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.kc-admin__masthead p {
+  max-width: 62ch;
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: rgb(255 255 255 / 74%);
+}
+
+.kc-admin__masthead a {
+  color: #fff;
+  text-decoration-color: rgb(255 255 255 / 45%);
+  text-underline-offset: 3px;
+}
+
+/* -- Panels --------------------------------------------------------------- */
+
+.kc-panel {
+  margin-block-end: 20px;
+  background: var(--kc-surface);
+  border: 1px solid var(--kc-line);
+  border-radius: var(--kc-radius);
+  box-shadow: var(--kc-shadow);
+}
+
+.kc-panel__head {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px 22px;
+  border-block-end: 1px solid var(--kc-line);
+}
+
+.kc-panel__icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  color: var(--kc-trust);
+  background: color-mix(in srgb, var(--kc-trust) 12%, #fff);
+  border-radius: var(--kc-radius-sm);
+}
+
+.kc-panel__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.kc-panel__titles {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.kc-panel__titles h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--kc-ink);
+}
+
+.kc-panel__titles p {
+  max-width: 68ch;
+  margin: 3px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--kc-ink-soft);
+}
+
+.kc-panel__body {
+  padding: 22px;
+}
+
+.kc-panel__body > .kc-field:last-child {
+  margin-block-end: 0;
+}
+
+/* -- Fields --------------------------------------------------------------- */
+
+.kc-field {
+  margin-block-end: 20px;
+  transition: opacity 0.18s ease;
+}
+
+/* A field switched off stays editable — only its emphasis drops, so the wording
+   can still be written or corrected before the switch goes back on. Matches how
+   .kc-row and .kc-repeat__item behave. */
+.kc-field.is-off {
+  opacity: 0.55;
+}
+
+/* The label and the switch that governs the field, on one line. The label keeps
+   its own bottom margin for the fields that have no switch, so the margin is
+   dropped here rather than removed from the label itself. */
+.kc-field__head {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: 6px;
+}
+
+.kc-field__head .kc-field__label {
+  margin-block-end: 0;
+}
+
+.kc-field__label {
+  display: block;
+  margin-block-end: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--kc-ink);
+}
+
+.kc-field__hint {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--kc-ink-soft);
+}
+
+.kc-admin input[type='text'],
+.kc-admin input[type='url'],
+.kc-admin textarea {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--kc-ink);
+  background: #fff;
+  border: 1px solid var(--kc-line-strong);
+  border-radius: var(--kc-radius-sm);
+  box-shadow: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.kc-admin input[type='text']:focus,
+.kc-admin input[type='url']:focus,
+.kc-admin textarea:focus {
+  border-color: var(--kc-trust);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kc-trust) 22%, transparent);
+}
+
+.kc-admin textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.kc-field--split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* A fixed run of inputs — the card's service lines, which must stay in order
+   and keep their empty slots. */
+.kc-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* -- Toggle --------------------------------------------------------------- */
+
+.kc-toggle {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.kc-toggle input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.kc-toggle__track {
+  position: relative;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 22px;
+  background: #c3ccd9;
+  border-radius: 999px;
+  transition: background-color 0.18s ease;
+}
+
+.kc-toggle__track::after {
+  position: absolute;
+  inset-block-start: 3px;
+  inset-inline-start: 3px;
+  width: 16px;
+  height: 16px;
+  content: '';
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgb(16 26 40 / 28%);
+  transition: transform 0.18s ease;
+}
+
+.kc-toggle input:checked + .kc-toggle__track {
+  background: var(--kc-ok);
+}
+
+.kc-toggle input:checked + .kc-toggle__track::after {
+  transform: translateX(18px);
+}
+
+.kc-toggle input:focus-visible + .kc-toggle__track {
+  outline: 2px solid var(--kc-trust);
+  outline-offset: 2px;
+}
+
+.kc-toggle__text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--kc-ink-soft);
+}
+
+.kc-toggle input:checked ~ .kc-toggle__text {
+  color: var(--kc-ok);
+}
+
+/* -- Rows (social + repeater items) --------------------------------------- */
+
+.kc-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 16px;
+  margin-block-end: 10px;
+  background: var(--kc-canvas);
+  border: 1px solid var(--kc-line);
+  border-radius: var(--kc-radius-sm);
+  transition: opacity 0.18s ease, border-color 0.18s ease;
+}
+
+.kc-row:last-child {
+  margin-block-end: 0;
+}
+
+.kc-row.is-off {
+  opacity: 0.55;
+}
+
+/* The editable half of a fixed row: the field, and the switch that governs it.
+   .kc-row is a two-column grid, so a third child would drop to its own line. */
+.kc-row__control {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+}
+
+.kc-row__control input[type='text'] {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.kc-row__brand {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 132px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.kc-row__brand svg {
+  width: 16px;
+  height: 16px;
+  color: var(--kc-ink-soft);
+}
+
+/* A section switched off stays editable — only its emphasis drops, so the
+   fields can still be prepared before the switch goes back on. */
+.kc-panel__body.is-off {
+  opacity: 0.5;
+}
+
+/* -- Spec note ------------------------------------------------------------ */
+
+.kc-note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  margin-block-end: 16px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--kc-ink);
+  background: color-mix(in srgb, var(--kc-trust) 7%, #fff);
+  border: 1px solid color-mix(in srgb, var(--kc-trust) 24%, #fff);
+  border-radius: var(--kc-radius-sm);
+}
+
+.kc-note svg {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin-block-start: 1px;
+  color: var(--kc-trust);
+}
+
+.kc-note strong {
+  font-weight: 700;
+}
+
+.kc-note code {
+  padding: 1px 6px;
+  font-size: 12px;
+  background: color-mix(in srgb, var(--kc-trust) 14%, #fff);
+  border-radius: 4px;
+}
+
+/* `display: flex` above is an author rule and the `hidden` attribute is only a
+   user-agent one, so a hidden note would otherwise still be laid out. Any note
+   that is shown conditionally needs this to disappear at all. */
+.kc-note[hidden] {
+  display: none;
+}
+
+/* A note that reports a state rather than explaining one — something is
+   currently switched off and the page is missing because of it. Amber, not red:
+   nothing is broken and nothing was lost, it is just not showing. */
+.kc-note--warn {
+  color: var(--kc-warn);
+  background: color-mix(in srgb, var(--kc-warn) 8%, #fff);
+  border-color: color-mix(in srgb, var(--kc-warn) 28%, #fff);
+}
+
+/* -- Icon button ---------------------------------------------------------- */
+
+.kc-admin .kc-iconbtn {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--kc-ink-soft);
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid var(--kc-line-strong);
+  border-radius: var(--kc-radius-sm);
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.kc-admin .kc-iconbtn svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Neutral by default — reverting to the bundled image is not destructive, and
+   colouring it like the delete control would say that it is. */
+.kc-admin .kc-iconbtn:hover:not([disabled]),
+.kc-admin .kc-iconbtn:focus-visible:not([disabled]) {
+  color: var(--kc-trust-dark);
+  background: color-mix(in srgb, var(--kc-trust) 8%, #fff);
+  border-color: color-mix(in srgb, var(--kc-trust) 40%, #fff);
+}
+
+.kc-admin .kc-iconbtn--danger:hover:not([disabled]),
+.kc-admin .kc-iconbtn--danger:focus-visible:not([disabled]) {
+  color: #b32d2e;
+  background: #fdf5f5;
+  border-color: #e3b3b3;
+}
+
+.kc-admin .kc-iconbtn:focus-visible {
+  outline: 2px solid var(--kc-trust);
+  outline-offset: 2px;
+}
+
+.kc-admin .kc-iconbtn[disabled] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* -- Repeater ------------------------------------------------------------- */
+
+.kc-repeat__item {
+  display: grid;
+  grid-template-columns: 148px 1fr;
+  gap: 18px;
+  padding: 16px;
+  margin-block-end: 12px;
+  background: var(--kc-canvas);
+  border: 1px solid var(--kc-line);
+  border-radius: var(--kc-radius-sm);
+  transition: opacity 0.18s ease;
+}
+
+.kc-repeat__item.is-off {
+  opacity: 0.55;
+}
+
+.kc-repeat__main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.kc-repeat__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kc-repeat__index {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.kc-repeat__num {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
+  color: #fff;
+  background: var(--kc-deep);
+  border-radius: 50%;
+}
+
+.kc-repeat__tools {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.kc-repeat__add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  padding-block-start: 4px;
+}
+
+.kc-repeat__count {
+  font-size: 12px;
+  color: var(--kc-ink-soft);
+}
+
+/* -- Accordion rows ------------------------------------------------------- */
+
+/* Opt-in: a repeater whose rows are long enough that five of them open at once
+   is a wall. The hero's slides stay flat — they are one field and a picture. */
+.kc-repeat__item.kc-acc {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+}
+
+.kc-acc__head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 12px;
+}
+
+.kc-acc__toggle {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  padding: 8px;
+  font: inherit;
+  color: var(--kc-ink);
+  text-align: start;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-radius: var(--kc-radius-sm);
+  transition: background-color 0.15s ease;
+}
+
+.kc-acc__toggle:hover {
+  background: color-mix(in srgb, var(--kc-trust) 8%, transparent);
+}
+
+.kc-acc__toggle:focus-visible {
+  outline: 2px solid var(--kc-trust);
+  outline-offset: -2px;
+}
+
+.kc-acc__title {
+  overflow: hidden;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* A row saved without a name still needs something to point at. */
+.kc-acc__title:empty::before {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--kc-ink-soft);
+  content: attr(data-empty);
+}
+
+/* Last in the header, after the remove button. A mouse affordance only — the
+   title button beside it is the real, focusable expander. */
+.kc-admin .kc-acc__chevron {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--kc-ink-soft);
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-radius: var(--kc-radius-sm);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.kc-admin .kc-acc__chevron:hover {
+  color: var(--kc-ink);
+  background: color-mix(in srgb, var(--kc-trust) 10%, transparent);
+}
+
+.kc-admin .kc-acc__chevron svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.kc-acc.is-open .kc-acc__chevron svg {
+  transform: rotate(180deg);
+}
+
+/* -- Nested line repeater ------------------------------------------------- */
+
+.kc-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.kc-lines__row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  transition: opacity 0.18s ease;
+}
+
+.kc-lines__row input[type='text'] {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* A line switched off stays editable — only its emphasis drops, matching the
+   card rows in .kc-repeat__item. The wording is still there to switch back on,
+   so it must stay readable. */
+.kc-lines__row.is-off {
+  opacity: 0.55;
+}
+
+.kc-lines__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-block-start: 8px;
+}
+
+/* A line row whose content stacks instead of sitting on one line — the tier
+   panel's term-and-explanation pair. The remove button aligns to the first
+   field rather than floating at the vertical middle of a two-field block. */
+.kc-lines__row--stack {
+  align-items: flex-start;
+  padding: 12px;
+  background: var(--kc-canvas);
+  border: 1px solid var(--kc-line);
+  border-radius: var(--kc-radius-sm);
+}
+
+/* A secondary block inside an accordion body: fields that belong to the row
+   above but are not the row itself — the FAQ's structured-data pair. Dashed,
+   so it reads as an annexe rather than as more of the same form. */
+.kc-subpanel {
+  margin-block-start: 16px;
+  padding: 14px 16px 16px;
+  background: var(--kc-canvas);
+  border: 1px dashed var(--kc-line-strong);
+  border-radius: var(--kc-radius-sm);
+}
+
+.kc-acc__body {
+  display: grid;
+  grid-template-columns: 148px 1fr;
+  gap: 18px;
+  padding: 16px 16px 18px;
+  border-block-start: 1px solid var(--kc-line);
+}
+
+/* Rows with no image have nothing to put in the media column. */
+.kc-acc__body--full {
+  grid-template-columns: 1fr;
+}
+
+.kc-acc__body[hidden] {
+  display: none;
+}
+
+/* -- Buttons -------------------------------------------------------------- */
+
+.kc-admin .kc-btn {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 20px;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--kc-ink);
+  text-decoration: none;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid var(--kc-line-strong);
+  border-radius: 999px;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    box-shadow 0.16s ease,
+    transform 0.16s ease,
+    color 0.16s ease;
+}
+
+.kc-admin .kc-btn svg {
+  flex: 0 0 auto;
+  width: 15px;
+  height: 15px;
+}
+
+.kc-admin .kc-btn:focus-visible {
+  outline: 2px solid var(--kc-trust);
+  outline-offset: 2px;
+}
+
+.kc-admin .kc-btn--sm {
+  padding: 6px 14px;
+  font-size: 12.5px;
+}
+
+.kc-admin .kc-btn--primary {
+  color: #fff;
+  background: linear-gradient(135deg, var(--kc-trust) 0%, var(--kc-trust-dark) 100%);
+  border-color: transparent;
+  box-shadow: 0 6px 16px -9px rgb(47 128 216 / 95%);
+}
+
+.kc-admin .kc-btn--primary:hover {
+  box-shadow: 0 10px 22px -10px rgb(47 128 216 / 95%);
+  transform: translateY(-1px);
+}
+
+.kc-admin .kc-btn--primary:active {
+  box-shadow: 0 3px 10px -6px rgb(47 128 216 / 95%);
+  transform: translateY(0);
+}
+
+/* Dashed until hovered: it adds something that is not there yet. */
+.kc-admin .kc-btn--ghost {
+  color: var(--kc-trust-dark);
+  background: color-mix(in srgb, var(--kc-trust) 6%, #fff);
+  border: 1px dashed color-mix(in srgb, var(--kc-trust) 45%, #fff);
+}
+
+.kc-admin .kc-btn--ghost:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--kc-trust) 12%, #fff);
+  border-style: solid;
+  border-color: var(--kc-trust);
+}
+
+.kc-admin .kc-btn[disabled] {
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.45;
+  transform: none;
+}
+
+/* -- Colour field --------------------------------------------------------- */
+
+/* Label, swatch, state and reset all on one line — the control is a single
+   short decision and does not deserve three rows of the form. */
+.kc-field--inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.kc-field--inline > .kc-field__label {
+  margin-block-end: 0;
+}
+
+.kc-colour {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* The browser's own colour input, stripped back to a swatch. */
+.kc-admin .kc-colour__swatch {
+  width: 44px;
+  height: 32px;
+  padding: 3px;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid var(--kc-line-strong);
+  border-radius: var(--kc-radius-sm);
+}
+
+.kc-admin .kc-colour__swatch::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.kc-admin .kc-colour__swatch::-webkit-color-swatch {
+  border: 1px solid rgb(16 26 40 / 12%);
+  border-radius: 5px;
+}
+
+.kc-admin .kc-colour__swatch::-moz-color-swatch {
+  border: 1px solid rgb(16 26 40 / 12%);
+  border-radius: 5px;
+}
+
+.kc-colour__state {
+  font-size: 12.5px;
+  color: var(--kc-ink-soft);
+}
+
+.kc-colour__custom,
+.kc-colour.is-custom .kc-colour__auto {
+  display: none;
+}
+
+.kc-colour.is-custom .kc-colour__custom {
+  display: inline;
+  font-weight: 600;
+  color: var(--kc-ink);
+}
+
+/*
+ * The reset button is always present, and disabled while the card is already on
+ * automatic. Hiding it instead would move the row's contents every time a
+ * colour was picked or cleared.
+ */
+
+/* -- Media picker --------------------------------------------------------- */
+
+.kc-media {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.kc-media__frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  cursor: pointer;
+  background: #edf1f6;
+  border: 1px solid var(--kc-line-strong);
+  border-radius: var(--kc-radius-sm);
+}
+
+.kc-media__frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.kc-media__frame::after {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  content: attr(data-label);
+  background: rgb(16 26 40 / 55%);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.kc-media__frame:hover::after,
+.kc-media__frame:focus-visible::after {
+  opacity: 1;
+}
+
+.kc-media__origin {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--kc-ink-soft);
+}
+
+.kc-media.is-set .kc-media__origin {
+  display: none;
+}
+
+.kc-media__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+/* -- Save bar ------------------------------------------------------------- */
+
+.kc-savebar {
+  position: sticky;
+  inset-block-end: 0;
+  z-index: 10;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  margin-block-start: 24px;
+  background: rgb(255 255 255 / 92%);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--kc-line);
+  border-radius: var(--kc-radius);
+  box-shadow: 0 -2px 18px -8px rgb(16 26 40 / 28%);
+}
+
+.kc-savebar__note {
+  font-size: 12px;
+  color: var(--kc-ink-soft);
+}
+
+.kc-savebar .kc-btn--primary {
+  min-width: 190px;
+  padding-inline: 26px;
+}
+
+/* -- Save button, busy state ---------------------------------------------- */
+
+.kc-btn__spinner,
+.kc-btn__busy {
+  display: none;
+}
+
+.kc-btn__spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgb(255 255 255 / 35%);
+  border-block-start-color: #fff;
+  border-radius: 50%;
+}
+
+.kc-admin .kc-btn.is-saving {
+  cursor: progress;
+}
+
+.kc-admin .kc-btn.is-saving .kc-btn__tick,
+.kc-admin .kc-btn.is-saving .kc-btn__idle {
+  display: none;
+}
+
+.kc-admin .kc-btn.is-saving .kc-btn__spinner {
+  display: block;
+  animation: kc-spin 0.7s linear infinite;
+}
+
+.kc-admin .kc-btn.is-saving .kc-btn__busy {
+  display: inline;
+}
+
+/* The button is disabled while posting, but this is progress rather than
+   refusal, so it keeps its filled look instead of fading out. */
+.kc-admin .kc-btn--primary.is-saving[disabled] {
+  opacity: 1;
+}
+
+@keyframes kc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kc-admin .kc-btn.is-saving .kc-btn__spinner {
+    animation-duration: 2.4s;
+  }
+}
+
+/* -- Narrow screens ------------------------------------------------------- */
+
+@media screen and (max-width: 782px) {
+  .kc-admin {
+    margin-inline-end: 0;
+  }
+
+  .kc-repeat__item {
+    grid-template-columns: 1fr;
+  }
+
+  .kc-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* -- Select and photo slots ----------------------------------------------- */
+
+.kc-admin .kc-select {
+  width: 100%;
+  max-width: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--kc-ink);
+  background-color: #fff;
+  border: 1px solid var(--kc-line-strong);
+  border-radius: var(--kc-radius-sm);
+}
+
+.kc-admin .kc-select:focus {
+  border-color: var(--kc-trust);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kc-trust) 22%, transparent);
+}
+
+/* Side-by-side image slots — a tile shows one or two. */
+.kc-photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 160px));
+  gap: 16px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Services page — catalogue meta box                                 */
+/* ------------------------------------------------------------------ */
+
+/*
+ * This box lives on the page editor, not on a KindredCare screen, so it sits
+ * inside wp-admin's own chrome rather than the panel shell. It borrows the
+ * panel's media picker (.kc-media, styled above) and otherwise stays close to
+ * core's postbox look so it does not read as a bolted-on plugin.
+ */
+
+.kc-catalogue__bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #dcdcde;
+}
+
+.kc-catalogue__count {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.kc-catalogue__when,
+.kc-catalogue__hint {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #646970;
+}
+
+/* -- Endpoint ---------------------------------------------------------- */
+
+.kc-catalogue__endpoint {
+  display: grid;
+  gap: 6px;
+  max-width: 620px;
+  margin: 16px 0 0;
+}
+
+.kc-catalogue__endpoint-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.kc-catalogue__endpoint-input {
+  width: 100%;
+  padding: 6px 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+}
+
+.kc-catalogue__endpoint-input:disabled {
+  color: #646970;
+  background: #f0f0f1;
+}
+
+.kc-catalogue__endpoint-note {
+  font-size: 12px;
+  color: #646970;
+}
+
+.kc-catalogue__hint {
+  margin: 12px 0 0;
+}
+
+.kc-catalogue__empty {
+  margin: 16px 0 0;
+  color: #646970;
+}
+
+.kc-catalogue__list {
+  margin: 16px 0 0;
+  list-style: none;
+}
+
+.kc-catalogue__item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 20px 0;
+  margin: 0;
+  border-top: 1px solid #f0f0f1;
+}
+
+.kc-catalogue__item:first-child {
+  border-top: 0;
+}
+
+/*
+ * Fixed rather than fluid, so the pickers line up down the left edge whatever
+ * the length of the text beside them — a ragged column of thumbnails makes the
+ * list much harder to scan than a ragged column of paragraphs does.
+ */
+.kc-catalogue__media {
+  flex: 0 0 200px;
+  max-width: 200px;
+}
+
+.kc-catalogue__text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.kc-catalogue__name {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.kc-catalogue__blurb {
+  margin: 4px 0 0;
+  color: #3c434a;
+}
+
+.kc-catalogue__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 8px 0 0;
+  font-size: 12px;
+}
+
+.kc-catalogue__tier {
+  padding: 2px 8px;
+  color: #1d4b2c;
+  background: #edf7f0;
+  border-radius: 10px;
+}
+
+.kc-catalogue__tasks {
+  margin: 10px 0 0 18px;
+  font-size: 12px;
+  color: #646970;
+  list-style: disc;
+}
+
+@media (max-width: 782px) {
+  .kc-catalogue__item {
+    flex-direction: column;
+  }
+
+  .kc-catalogue__media {
+    flex-basis: auto;
+    max-width: 100%;
+  }
+}
+
+/* -- Endpoint list (Gigs screen) ------------------------------------------ */
+
+/*
+ * What the one stored address currently resolves to. Read-only on purpose: the
+ * paths belong to the theme and the host is the field above, so showing them
+ * assembled is the only way to make "save then fetch" verifiable without
+ * pressing anything.
+ */
+.kc-endpoints {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  overflow: hidden;
+  background: var(--kc-line);
+  border: 1px solid var(--kc-line);
+  border-radius: var(--kc-radius-sm);
+}
+
+.kc-endpoints li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 14px;
+  margin: 0;
+  background: var(--kc-surface);
+}
+
+.kc-endpoints span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.kc-endpoints code {
+  padding: 0;
+  font-size: 12px;
+  color: var(--kc-ink-soft);
+  word-break: break-all;
+  background: none;
+}
+
+.kc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  align-items: center;
+  margin: 20px 0 0;
+}
+
+.kc-actions .kc-field__hint {
+  margin: 0;
+}
+
+/* -- The imported-gigs table ---------------------------------------------- */
+
+/* Scrolls inside itself rather than widening the panel: seven columns do not
+   fit a narrow window, and a page that scrolls sideways loses the save bar. */
+.kc-gigs {
+  overflow-x: auto;
+  border: 1px solid var(--kc-line);
+  border-radius: var(--kc-radius-sm);
+}
+
+.kc-gigs__table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.kc-gigs__table th,
+.kc-gigs__table td {
+  padding: 10px 14px;
+  font-size: 13px;
+  text-align: start;
+  vertical-align: top;
+  border-bottom: 1px solid var(--kc-line);
+}
+
+.kc-gigs__table th {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--kc-ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--kc-canvas);
+}
+
+.kc-gigs__table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* A drafted gig is still listed — it has just stopped being public, and hiding
+   it here would make "set to draft, never deleted" impossible to verify. */
+.kc-gigs__row.is-off td {
+  background: var(--kc-sand);
+}
+
+.kc-gigs__title a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.kc-gigs__badge {
+  display: block;
+  margin-block-start: 2px;
+  font-size: 11px;
+  color: var(--kc-warn);
+}
+
+.kc-gigs__none {
+  color: var(--kc-ink-soft);
+}
+
+.kc-gigs__actions {
+  display: flex;
+  gap: 12px;
+  white-space: nowrap;
+}
+
+/* -- Gig editing screen --------------------------------------------------- */
+
+/*
+ * The panel tokens live on .kc-admin, so the boxes on the gig screen carry that
+ * class to inherit them — and then give back the width and margin it sets for a
+ * full-page screen, which a meta box is not.
+ */
+.postbox .kc-gigbox {
+  max-width: none;
+  margin: 0;
+}
+
+.postbox .kc-gigbox > .kc-field:first-child,
+.postbox .kc-gigbox > .kc-note:first-child {
+  margin-block-start: 0;
+}
+
+.kc-sync {
+  font-size: 13px;
+}
+
+.kc-sync p {
+  margin: 0 0 12px;
+}
+
+.kc-sync__state {
+  font-weight: 600;
+}
+
+.kc-sync__url code {
+  display: block;
+  padding: 6px 8px;
+  font-size: 11px;
+  word-break: break-all;
+  background: #f0f0f1;
+  border-radius: 4px;
+}
+
+.kc-sync__note {
+  font-size: 12px;
+  color: #646970;
+}
+
+.kc-sync__warn {
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #8a4b00;
+  background: #fcf3e6;
+  border-left: 3px solid #dba617;
+}
+
+.kc-sync__field label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.kc-sync__field input {
+  width: 100%;
+}
+
+/* Platform records shown for reference — see kindredcare_gig_records(). */
+.kc-records {
+  display: grid;
+  gap: 4px;
+  padding: 10px 14px;
+  margin: 0;
+  font-size: 13px;
+  background: var(--kc-canvas);
+  border: 1px solid var(--kc-line);
+  border-radius: var(--kc-radius-sm);
+}
+
+.kc-records li {
+  margin: 0;
+}
+
+.kc-catalogue__endpoint-value {
+  padding: 6px 10px;
+  font-size: 12px;
+  color: #1d2327;
+  word-break: break-all;
+  background: #f0f0f1;
+  border-radius: 4px;
+}
+
+/* Whether a picture has actually been brought onto this site — see
+   kindredcare_gig_copy_state(). The thumbnail is the proof: a line of text
+   saying "stored" is a claim, a picture that renders is the thing itself. */
+.kc-copy {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--kc-ink-soft);
+}
+
+.kc-copy img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border: 1px solid var(--kc-line);
+  border-radius: var(--kc-radius-sm);
+}
+
+.kc-copy.is-here {
+  color: var(--kc-ok);
+}
+
+.kc-copy.is-here a {
+  color: inherit;
+}
+
+/* -- Call-to-action cards ------------------------------------------------- */
+
+/* One card per link: text and destination side by side, and the new-tab
+   switch in the card's head where it reads as a property of the whole link. */
+.kc-linkcard {
+  padding: 16px 18px 18px;
+  margin-block-end: 14px;
+  background: var(--kc-canvas);
+  border: 1px solid var(--kc-line);
+  border-radius: var(--kc-radius-sm);
+}
+
+.kc-linkcard__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding-block-end: 12px;
+  margin-block-end: 14px;
+  border-block-end: 1px dashed var(--kc-line-strong);
+}
+
+.kc-linkcard__title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--kc-ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.kc-linkcard .kc-field--split {
+  gap: 16px;
+}
+
+/* -- Photograph slider ---------------------------------------------------- */
+
+.kc-slides__summary {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 24px;
+  align-items: center;
+  padding: 18px 20px;
+  margin-block-end: 20px;
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgb(214 168 79 / 22%), transparent 55%),
+    linear-gradient(135deg, #101a28 0%, #1b2a40 100%);
+  border-radius: var(--kc-radius);
+}
+
+.kc-slides__meter {
+  display: flex;
+  gap: 6px;
+}
+
+.kc-slides__pip {
+  width: 26px;
+  height: 6px;
+  background: rgb(255 255 255 / 18%);
+  border-radius: 999px;
+  transition: background-color 0.25s ease, width 0.25s ease;
+}
+
+.kc-slides__pip.is-on {
+  width: 38px;
+  background: linear-gradient(90deg, #e9c46a, #d6a84f);
+}
+
+.kc-slides__stats {
+  display: flex;
+  flex: 1 1 260px;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.kc-slides__stats strong {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.kc-slides__stats strong [data-kc-slides-on] {
+  color: #e9c46a;
+}
+
+.kc-slides__mode {
+  font-size: 12px;
+  color: rgb(255 255 255 / 68%);
+}
+
+.kc-slides__mode[data-state='0'] {
+  color: #ffb4a8;
+}
+
+.kc-slides__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.kc-slides__specs li {
+  padding: 5px 10px;
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgb(255 255 255 / 82%);
+  background: rgb(255 255 255 / 8%);
+  border: 1px solid rgb(255 255 255 / 14%);
+  border-radius: 999px;
+}
+
+.kc-slides__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.kc-slide {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--kc-surface);
+  border: 1px solid var(--kc-line);
+  border-radius: var(--kc-radius);
+  box-shadow: var(--kc-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.kc-slide:hover,
+.kc-slide:focus-within {
+  border-color: color-mix(in srgb, var(--kc-trust) 35%, var(--kc-line));
+  box-shadow: 0 1px 2px rgb(16 26 40 / 6%), 0 18px 36px -18px rgb(16 26 40 / 35%);
+  transform: translateY(-2px);
+}
+
+.kc-slide__bar {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgb(16 26 40 / 70%), transparent);
+}
+
+.kc-slide__num {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #101a28;
+  background: linear-gradient(135deg, #f1d38a, #d6a84f);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 25%);
+}
+
+.kc-slide__name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 35%);
+}
+
+.kc-slide__status {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.kc-slide__status > span {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+}
+
+.kc-slide__status-on {
+  color: #fff;
+  background: rgb(31 146 84 / 85%);
+}
+
+.kc-slide__status-on::before {
+  width: 6px;
+  height: 6px;
+  content: '';
+  background: #b8f5d0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgb(184 245 208 / 30%);
+}
+
+.kc-slide__status-off {
+  display: none !important;
+  color: #fff;
+  background: rgb(91 103 121 / 85%);
+}
+
+.kc-slide.is-off .kc-slide__status-on {
+  display: none;
+}
+
+.kc-slide.is-off .kc-slide__status-off {
+  display: inline-flex !important;
+}
+
+/* The picker, reshaped to the band's crop: tall, full-bleed, actions floating
+   over the bottom edge instead of sitting under the image. */
+.kc-slide__media .kc-media {
+  position: relative;
+  gap: 0;
+}
+
+.kc-slide__media .kc-media__frame {
+  aspect-ratio: 4 / 5;
+  background: #1b2a40;
+  border: 0;
+  border-radius: 0;
+}
+
+.kc-slide__media .kc-media__frame img {
+  transition: transform 0.5s ease, filter 0.25s ease;
+}
+
+.kc-slide:hover .kc-media__frame img {
+  transform: scale(1.03);
+}
+
+.kc-slide__media .kc-media__actions {
+  position: absolute;
+  inset: auto 12px 12px;
+  z-index: 2;
+  justify-content: flex-end;
+}
+
+.kc-slide__media .kc-media__actions .kc-btn,
+.kc-slide__media .kc-media__actions .kc-iconbtn {
+  background: rgb(255 255 255 / 94%);
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgb(16 26 40 / 25%);
+}
+
+.kc-slide__media .kc-media__origin {
+  position: absolute;
+  inset: auto auto 18px 12px;
+  z-index: 2;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  color: #fff;
+  pointer-events: none;
+  background: rgb(16 26 40 / 60%);
+  border-radius: 999px;
+}
+
+.kc-slide__body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border-block-start: 1px solid var(--kc-line);
+}
+
+.kc-slide__body .kc-field__label {
+  margin: 4px 0 0;
+}
+
+.kc-slide__body textarea {
+  min-height: 0;
+  resize: vertical;
+}
+
+.kc-slide__hint {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.kc-slide__count {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hidden slides stay editable; only the picture recedes. */
+.kc-slide.is-off {
+  opacity: 1;
+  box-shadow: none;
+}
+
+.kc-slide.is-off .kc-media__frame img {
+  filter: grayscale(1) brightness(0.7);
+}
+
+.kc-slide.is-off .kc-slide__num {
+  background: #c3ccd9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kc-slide,
+  .kc-slide__media .kc-media__frame img {
+    transition: none;
+  }
+
+  .kc-slide:hover,
+  .kc-slide:hover .kc-media__frame img {
+    transform: none;
+  }
+}
+
+/* -- Photograph slider: adding and deleting ------------------------------- */
+
+.kc-slide__status {
+  margin-inline-end: auto;
+}
+
+.kc-slide__tools {
+  pointer-events: auto;
+}
+
+.kc-admin .kc-slide__tools .kc-iconbtn {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+  background: rgb(16 26 40 / 45%);
+  border-color: rgb(255 255 255 / 25%);
+  backdrop-filter: blur(6px);
+}
+
+.kc-admin .kc-slide__tools .kc-iconbtn:hover:not([disabled]),
+.kc-admin .kc-slide__tools .kc-iconbtn:focus-visible:not([disabled]) {
+  color: #fff;
+  background: #c62f2f;
+  border-color: #c62f2f;
+}
+
+/* The last card cannot go — the repeater keeps at least one. */
+.kc-admin .kc-slide__tools .kc-iconbtn[disabled] {
+  opacity: 0.35;
+}
+
+/* A new card has no picture until one is chosen: an inviting empty frame
+   rather than a broken image. */
+.kc-slide__media .kc-media__frame img:not([src]) {
+  display: none;
+}
+
+.kc-slide__media .kc-media:not(.is-set) .kc-media__frame:has(img:not([src])) {
+  background:
+    repeating-linear-gradient(135deg, rgb(255 255 255 / 3%) 0 12px, transparent 12px 24px),
+    linear-gradient(160deg, #1b2a40, #101a28);
+}
+
+.kc-slide__media .kc-media:not(.is-set) .kc-media__frame:has(img:not([src]))::after {
+  font-size: 13px;
+  background: transparent;
+  opacity: 1;
+}
+
+.kc-slide.is-new {
+  animation: kc-slide-in 0.35s ease both;
+}
+
+@keyframes kc-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+.kc-slides__foot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-block-start: 18px;
+}
+
+.kc-admin .kc-slides__add {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  width: 100%;
+  padding: 16px 18px;
+  font: inherit;
+  color: var(--kc-ink);
+  text-align: start;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--kc-trust) 4%, #fff);
+  border: 1.5px dashed color-mix(in srgb, var(--kc-trust) 40%, var(--kc-line-strong));
+  border-radius: var(--kc-radius);
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.kc-admin .kc-slides__add:hover:not([disabled]),
+.kc-admin .kc-slides__add:focus-visible {
+  background: color-mix(in srgb, var(--kc-trust) 9%, #fff);
+  border-color: var(--kc-trust);
+  outline: none;
+}
+
+.kc-admin .kc-slides__add:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kc-trust) 22%, transparent);
+}
+
+.kc-slides__add-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: #101a28;
+  background: linear-gradient(135deg, #f1d38a, #d6a84f);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgb(214 168 79 / 35%);
+}
+
+.kc-slides__add-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.kc-slides__add-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.kc-slides__add-text strong {
+  font-size: 14px;
+}
+
+.kc-slides__add-text > span {
+  font-size: 12px;
+  color: var(--kc-ink-soft);
+}
+
+.kc-admin .kc-slides__add[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kc-slide.is-new {
+    animation: none;
+  }
+}
+
+/* -- Photograph slider: ordering ------------------------------------------ */
+
+.kc-slide__grip {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 30px;
+  margin-inline-end: -4px;
+  color: rgb(255 255 255 / 80%);
+  cursor: grab;
+  pointer-events: auto;
+  border-radius: 6px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.kc-slide__grip:hover {
+  color: #fff;
+  background: rgb(255 255 255 / 16%);
+}
+
+.kc-slide__grip:active {
+  cursor: grabbing;
+}
+
+.kc-slide__grip svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Order strip between the picture and the fields: ‹  Position [2]  › */
+.kc-slide__order {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, var(--kc-canvas), var(--kc-surface));
+  border-block-start: 1px solid var(--kc-line);
+}
+
+.kc-admin .kc-slide__order .kc-iconbtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.kc-slide__pos {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--kc-ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.kc-admin .kc-slide__pos select {
+  min-width: 64px;
+  min-height: 32px;
+  padding: 0 28px 0 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--kc-ink);
+  letter-spacing: 0;
+  background-color: var(--kc-surface);
+  border: 1px solid var(--kc-line-strong);
+  border-radius: 999px;
+}
+
+.kc-admin .kc-slide__pos select:focus {
+  border-color: var(--kc-trust);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--kc-trust) 22%, transparent);
+}
+
+.kc-slide__body {
+  border-block-start: 0;
+}
+
+/* While dragging: the picked-up card becomes a placeholder, the rest stay put. */
+.kc-slides.is-sorting .kc-slide {
+  transform: none;
+}
+
+.kc-slide.is-dragging {
+  opacity: 0.4;
+  border: 2px dashed var(--kc-trust);
+  box-shadow: none;
+}
+
+.kc-slide.is-moved {
+  animation: kc-slide-moved 0.6s ease;
+}
+
+@keyframes kc-slide-moved {
+  0% {
+    box-shadow: 0 0 0 0 rgb(214 168 79 / 0%);
+  }
+
+  30% {
+    box-shadow: 0 0 0 4px rgb(214 168 79 / 55%);
+  }
+
+  100% {
+    box-shadow: var(--kc-shadow);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kc-slide.is-moved {
+    animation: none;
+  }
+}
+
+/* -- "Open in a new tab" under a button's link ----------------------------- */
+
+.kc-newtab {
+  display: flex;
+  margin-block-start: 10px;
+}
+
+.kc-newtab .kc-toggle {
+  padding: 6px 12px 6px 8px;
+  background: var(--kc-canvas);
+  border: 1px solid var(--kc-line);
+  border-radius: 999px;
+}
+
+.kc-newtab .kc-toggle__track {
+  width: 34px;
+  height: 18px;
+}
+
+.kc-newtab .kc-toggle__track::after {
+  width: 12px;
+  height: 12px;
+}
+
+.kc-newtab .kc-toggle input:checked + .kc-toggle__track::after {
+  transform: translateX(16px);
+}
+
+.kc-newtab .kc-toggle__text {
+  font-size: 12px;
+}

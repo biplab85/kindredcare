@@ -1,0 +1,339 @@
+/*
+ * Second hero ("Hero — premium"). Markup in inc/hero-pro.php, slider in
+ * assets/js/modules/hero-pro.js.
+ *
+ * Hand-written, not part of the generated Sass bundle — same arrangement as
+ * services.css. Loads after main.css and relies on its tokens.
+ *
+ * Full width, like the first hero: type panel left, aligned to the container
+ * edge; photograph slider right, bleeding to the viewport edge.
+ */
+
+.s-hero-pro {
+  --hp-bg: #101b28;
+  --hp-line: rgb(255 255 255 / 16%);
+  --hp-text: #fff;
+  --hp-soft: rgb(255 255 255 / 86%);
+  --hp-gold: #f2c97d;
+  --hp-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--hp-text);
+  background:
+    radial-gradient(900px 600px at 0% 0%, rgb(66 147 207 / 22%), transparent 60%),
+    linear-gradient(160deg, #172a3e 0%, var(--hp-bg) 60%);
+}
+
+@media (min-width: 1024px) {
+  .s-hero-pro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-height: min(88svh, 800px);
+  }
+}
+
+/*
+ * The first hero is hidden, not removed: its markup, option and admin screen
+ * stay in place, so deleting this rule brings it straight back.
+ */
+.s-hero {
+  display: none;
+  visibility: hidden;
+}
+
+/* Content ---------------------------------------------------------------- */
+
+.s-hero-pro__content {
+  position: relative;
+  z-index: 2;
+  padding-block: clamp(56px, 8vw, 96px) 48px;
+  padding-inline: var(--gutter);
+}
+
+@media (min-width: 1024px) {
+  .s-hero-pro__content {
+    align-self: center;
+    padding-block: 88px;
+    padding-inline-start: max(var(--gutter), (100vw - var(--container-max)) / 2 + var(--gutter));
+    padding-inline-end: clamp(40px, 5vw, 88px);
+  }
+}
+
+/*
+ * Editorial serif, the register of private healthcare and advisory brands
+ * rather than a sales banner: an upright statement in white, the qualifier in
+ * italic champagne. Playfair is
+ * loaded for this heading only (inc/enqueue.php); Georgia holds the shape if it
+ * fails to arrive.
+ */
+.s-hero-pro__title {
+  position: relative;
+  max-width: 18ch;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 4.4vw, 4rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--hp-text);
+  text-wrap: balance;
+  font-optical-sizing: auto;
+}
+
+.s-hero-pro__accent {
+  display: block;
+  margin-block-start: 0.04em;
+  font-style: italic;
+  font-weight: 400;
+  color: #e6cf9f;
+}
+
+.s-hero-pro__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  align-items: center;
+  margin-block-start: 40px;
+}
+
+.s-hero-pro__link {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 48px;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--hp-text);
+  text-decoration: none;
+}
+
+.s-hero-pro__link span {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 300ms var(--hp-ease);
+}
+
+.s-hero-pro__link svg {
+  flex: none;
+  box-sizing: content-box;
+  padding: 8px;
+  border: 1px solid rgb(255 255 255 / 30%);
+  border-radius: 50%;
+  transition: transform 300ms var(--hp-ease), background-color 300ms var(--hp-ease);
+}
+
+.s-hero-pro__link:hover span,
+.s-hero-pro__link:focus-visible span {
+  background-size: 100% 1px;
+}
+
+.s-hero-pro__link:hover svg,
+.s-hero-pro__link:focus-visible svg {
+  background-color: rgb(255 255 255 / 12%);
+  transform: translateX(3px);
+}
+
+.s-hero-pro__link:focus-visible,
+.s-hero-pro__nav-btn:focus-visible {
+  outline: 3px solid var(--hp-gold);
+  outline-offset: 3px;
+}
+
+.s-hero-pro__link:focus-visible {
+  border-radius: 8px;
+}
+
+.s-hero-pro__proof {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-block-start: 48px;
+  padding-block-start: 28px;
+  border-top: 1px solid var(--hp-line);
+}
+
+.s-hero-pro__proof-item {
+  padding-inline: 20px;
+  border-inline-start: 1px solid var(--hp-line);
+}
+
+.s-hero-pro__proof-item:first-child {
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+
+.s-hero-pro__proof dt {
+  font-family: var(--font-display);
+  font-size: clamp(1.625rem, 2.4vw, 2.125rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--hp-text);
+}
+
+.s-hero-pro__proof dd {
+  margin: 8px 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--hp-soft);
+}
+
+@media (max-width: 599px) {
+  .s-hero-pro__proof {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .s-hero-pro__proof-item {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 16px;
+    align-items: baseline;
+    padding-inline: 0;
+    border-inline-start: 0;
+  }
+
+  .s-hero-pro__proof dd {
+    margin: 0;
+  }
+}
+
+/* Media: slider bleeding to the right edge -------------------------------- */
+
+.s-hero-pro__media {
+  position: relative;
+}
+
+/* The photograph box: slider and controls. */
+.s-hero-pro__frame {
+  position: relative;
+  aspect-ratio: 1 / 1;
+}
+
+@media (min-width: 600px) and (max-width: 1023.98px) {
+  .s-hero-pro__frame {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (min-width: 1024px) {
+  .s-hero-pro__media {
+    min-height: 100%;
+  }
+
+  .s-hero-pro__frame {
+    position: absolute;
+    inset: 0;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+}
+
+.s-hero-pro__slider {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.s-hero-pro__slider .swiper-wrapper,
+.s-hero-pro__slider .swiper-slide {
+  height: 100%;
+}
+
+.s-hero-pro__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* A light shade at the bottom only, so the controls read cleanly
+   without dimming the photograph itself. */
+.s-hero-pro__frame::after {
+  position: absolute;
+  z-index: 1;
+  inset: auto 0 0;
+  height: 40%;
+  content: "";
+  background: linear-gradient(180deg, transparent, rgb(16 27 40 / 55%));
+  pointer-events: none;
+}
+
+/* Counter + progress line + arrows, bottom right. */
+.s-hero-pro__nav {
+  position: absolute;
+  z-index: 3;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .s-hero-pro__nav {
+    right: 40px;
+    bottom: 40px;
+  }
+}
+
+.s-hero-pro__count {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  height: 44px;
+  padding-inline: 16px;
+  margin-inline-end: 4px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-ink, #1a1f26);
+  background: rgb(255 255 255 / 92%);
+  border-radius: 100px;
+}
+
+.s-hero-pro__count-bar {
+  position: relative;
+  width: 48px;
+  height: 2px;
+  overflow: hidden;
+  background: rgb(26 31 38 / 15%);
+  border-radius: 2px;
+}
+
+.s-hero-pro__count-bar > span {
+  position: absolute;
+  inset: 0;
+  background: var(--c-heart, #db4a2b);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.s-hero-pro__nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--c-ink, #1a1f26);
+  background: rgb(255 255 255 / 92%);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 200ms var(--hp-ease), background-color 200ms var(--hp-ease);
+}
+
+.s-hero-pro__nav-btn:hover,
+.s-hero-pro__nav-btn:focus-visible {
+  color: #fff;
+  background: var(--c-heart, #db4a2b);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s-hero-pro__link svg,
+  .s-hero-pro__link span,
+  .s-hero-pro__nav-btn {
+    transition: none;
+  }
+}

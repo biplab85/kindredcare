@@ -1,0 +1,348 @@
+/*
+ * Services page.
+ *
+ * WHY THIS IS A SEPARATE FILE, and not part of assets/css/main.css:
+ *
+ * main.css is a build artifact. Its header and inc/enqueue.php both state that
+ * it is compiled from kindredcare-home/src/scss/ and overwritten on every
+ * `npm run scss` — and that Sass source is not present in this repository, so
+ * the bundle currently cannot be regenerated at all. Editing it by hand would
+ * either be lost the moment the source is recovered and rebuilt, or lock the
+ * bundle out of ever being rebuilt. Neither is acceptable.
+ *
+ * So this page's styles live here, loaded only on the Services template (see
+ * inc/enqueue.php). Nothing below redefines anything main.css owns: it reads
+ * that file's design tokens and adds only new selectors. When the Sass pipeline
+ * is restored, this file is a clean candidate to fold back in as a partial —
+ * _services.scss — and delete.
+ *
+ * THE DESIGN
+ *
+ * A two-up grid of photograph-led cards. Every card carries a picture, because
+ * a catalogue of care work read entirely in type is colder than the work is,
+ * and because the pictures are the field an editor owns on this page.
+ *
+ * Held to one of everything: one surface colour (white, so the photograph is
+ * the card's colour and the bone page still shows an edge), one hairline in
+ * clay, one 18px radius carried by the card and echoed at 14px by the media
+ * frame and the icon chip. The four example tasks stay on the card rather than
+ * hiding behind a link — "Chat over tea or coffee" answers the question that
+ * "Companionship" only names, and that answer is why someone is reading.
+ *
+ * The one detail that is not standard: the icon sits as a chip on the
+ * photograph. Until an editor picks a picture per service they all show the
+ * same bundled default, and the chip is then the only thing distinguishing one
+ * card from the next.
+ *
+ * The scroll-in motion is not defined here — [data-reveal] is global in
+ * main.css, so the cards stagger with the same timing as the home page.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Masthead additions                                                 */
+/* ------------------------------------------------------------------ */
+
+/*
+ * The tally. A counted fact, so it is set as one — the figure in the display
+ * face at heading size, the words beside it at reading size, sharing a
+ * baseline. Not a stat card: no box, no border, no label above a number.
+ */
+.s-services__tally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  align-items: baseline;
+  margin: clamp(24px, 3vw, 36px) 0 0;
+  font-size: var(--fs-body);
+  line-height: 1.4;
+  color: var(--c-ink-soft);
+}
+
+.s-services__tally-figure {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: var(--display-weight);
+  line-height: 1;
+  color: var(--c-ink);
+}
+
+.s-services__assurance {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  max-width: 52ch;
+  margin: 16px 0 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  color: var(--c-ink-soft);
+}
+
+.s-services__assurance-dot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  background-color: var(--c-leaf);
+  border-radius: 50%;
+  transform: translateY(-2px);
+}
+
+.s-services__intro {
+  max-width: 68ch;
+  margin: clamp(48px, 6vw, 72px) auto 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* The grid                                                           */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Two per row, as briefed. One column until there is genuinely room for two
+ * full cards side by side — squeezing a pair into a tablet width makes both
+ * images too small to read and both task lists too narrow to scan.
+ */
+.s-services__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(20px, 2.4vw, 32px);
+
+  /*
+   * Narrower than the site container. At the full 1440 each card is wide enough
+   * that its photograph, whatever ratio it is cropped to, towers over the text
+   * beneath — the picture stops introducing the service and starts being the
+   * card. Capped so image and body carry roughly equal weight.
+   */
+  max-width: 1080px;
+  padding: 0;
+  margin: clamp(48px, 6vw, 80px) auto 0;
+  list-style: none;
+}
+
+@media (min-width: 860px) {
+  .s-services__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Card                                                               */
+/* ------------------------------------------------------------------ */
+
+.c-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  /*
+   * White on the page's bone, not another tint of it. The photograph is the
+   * card's colour; the surface under it should get out of the way, and a card
+   * that is nearly the same value as the page behind it has no edge at all.
+   */
+  background-color: #fff;
+  border: 1px solid var(--c-clay);
+  border-radius: 18px;
+
+  transition: transform 220ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 220ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@media (hover: hover) {
+  .c-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Media                                                              */
+/* ------------------------------------------------------------------ */
+
+.c-card__media {
+  position: relative;
+
+  /*
+   * One fixed frame for every card. The pictures come from the media library
+   * at whatever shape they were uploaded, and a row only reads as a row if the
+   * images share a silhouette — so they are cropped to this, never fitted.
+   */
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: var(--c-sand);
+}
+
+.c-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+ * The icon, drawn on the photograph.
+ *
+ * Not ornament. Every service shows the same bundled photograph until someone
+ * chooses one for it, and while that is true the icon is the only thing telling
+ * one card from another at a glance. It keeps its job afterwards as a quick
+ * visual key down the grid.
+ */
+.c-card__icon {
+  position: absolute;
+  bottom: 14px;
+  inset-inline-start: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  color: var(--c-ink);
+
+  /*
+   * Translucent white over a blur rather than a solid chip, so it reads as
+   * sitting on the photograph instead of punched through it — and so one rule
+   * works over a dark image and a light one.
+   */
+  background-color: rgb(255 255 255 / 82%);
+  backdrop-filter: blur(6px);
+  border-radius: 14px;
+}
+
+.c-card__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Body                                                               */
+/* ------------------------------------------------------------------ */
+
+.c-card__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(20px, 2vw, 28px);
+}
+
+.c-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.5vw, 1.5rem);
+  font-weight: var(--display-weight);
+  line-height: var(--lh-heading);
+  color: var(--c-ink);
+}
+
+.c-card__blurb {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  color: var(--c-ink-soft);
+}
+
+/* ------------------------------------------------------------------ */
+/* Tasks                                                              */
+/* ------------------------------------------------------------------ */
+
+/*
+ * A rule under the list separates the general description above from the
+ * specific examples below — the one place on the card where a divider is
+ * carrying meaning rather than filling space.
+ */
+.c-card__tasks {
+  display: grid;
+  row-gap: 8px;
+  padding: 16px 0 0;
+  margin: 6px 0 0;
+  list-style: none;
+  border-top: 1px solid var(--c-clay);
+}
+
+.c-card__task {
+  position: relative;
+  padding-inline-start: 26px;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--c-ink);
+}
+
+/*
+ * A short rule, not a tick. A tick claims each line is a feature being
+ * delivered; these are examples of what you could ask for.
+ */
+.c-card__task::before {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.66em;
+  width: 14px;
+  height: 2px;
+  content: "";
+  background-color: var(--c-clay);
+}
+
+/* ------------------------------------------------------------------ */
+/* Tier                                                               */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Only printed when the catalogue actually holds more than one tier — see
+ * kindredcare_services_tiers_vary(). The auto top margin pins it to the foot of
+ * the card so the badges share a baseline across a row.
+ */
+.c-card__tier {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: auto 0 0;
+  padding-top: 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--c-ink-soft);
+}
+
+.c-card__tier-dot {
+  width: 7px;
+  height: 7px;
+  background-color: var(--c-leaf);
+  border-radius: 50%;
+}
+
+/* ------------------------------------------------------------------ */
+/* Closing action / empty state                                       */
+/* ------------------------------------------------------------------ */
+
+.s-services__cta,
+.s-services__empty {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  max-width: 44ch;
+  margin: clamp(72px, 9vw, 128px) auto clamp(72px, 9vw, 128px);
+  text-align: center;
+}
+
+.s-services__cta-text,
+.s-services__empty-text {
+  margin: 0;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--c-ink);
+}
+
+/*
+ * The empty state is a failure notice, not a pitch — it sits on the sand
+ * surface so it reads as an aside rather than as the page's own content.
+ */
+.s-services__empty {
+  max-width: 52ch;
+  padding: clamp(32px, 5vw, 56px) 24px;
+  background-color: var(--c-sand);
+  border-radius: 18px;
+}
+
+/* The line only editors see. Quieter than the notice it sits under. */
+.s-services__empty-admin {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-body);
+  color: var(--c-ink-soft);
+}

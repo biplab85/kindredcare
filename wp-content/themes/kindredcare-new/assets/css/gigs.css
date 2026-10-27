@@ -1,0 +1,2314 @@
+/*
+ * Gigs — the archive, the category archives, and one listing.
+ *
+ * WHY THIS IS A SEPARATE FILE: the same reason assets/css/services.css is. See
+ * the note at the top of that file — main.css is a build artifact compiled from
+ * a Sass source that is not in this repository, so editing it by hand either
+ * gets overwritten or locks the bundle out of ever being rebuilt. Nothing below
+ * redefines anything main.css owns; it reads that file's tokens and adds only
+ * new selectors.
+ *
+ * THE DESIGN
+ *
+ * The rate leads, and the listings are a stack rather than a grid.
+ *
+ * That is one decision, taken for two reasons. The first is the site's own
+ * argument: the home page sells KindredCare on taking 7.5% where an agency
+ * takes 15%, and a marketplace that argues about money and then hides its
+ * prices behind "enquire for rates" has abandoned its case at the moment it
+ * matters. The second is that comparison happens down a column — a grid
+ * scatters fifteen prices across three columns and four rows, where a stack
+ * lines them up against one edge and lets an eye run down them.
+ *
+ * It is also the only thing that can lead. The photographs here are portraits,
+ * and the platform reuses one per caregiver across every listing they post, so
+ * a picture-led grid would show the same face four times running and
+ * distinguish nothing. The words and the number are what differ, so the words
+ * and the number are what the row is built from. The portrait stays, at 30px,
+ * as a mark beside a name — a person, not a hero image.
+ *
+ * On a single listing the same idea turns over: the archive shows the price an
+ * agency would hide, and the listing shows the paperwork an agency would
+ * summarise. The platform sends each verification check by name with the date
+ * it cleared, so the rail prints them — which is what turns "background-checked"
+ * from a claim into a document, and answers the home page's own question,
+ * "What's actually checked?", about a named person.
+ *
+ * Everything else is held quiet on purpose. One surface (white on the page's
+ * bone), one hairline (clay), one radius (18px), the site's existing type scale,
+ * and no motion of its own — [data-reveal] is global in main.css, so these rows
+ * stagger in with exactly the timing the home page uses.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Undoing the reading measure                                        */
+/* ------------------------------------------------------------------ */
+
+/*
+ * main.css caps every <p> and <li> at 68ch. That is right for prose and wrong
+ * for structure: a listing row is a <li> and a rate is a <p>, and left alone
+ * they stop at the width of a paragraph — which is why this reset comes first,
+ * before anything below tries to set a width of its own and quietly loses.
+ *
+ * Only the elements that are layout get it back.
+ *
+ * .s-gig__task is in that list now and was not before. It used to be a plain
+ * line of reading matter and a 68ch measure was right for it; it is a ruled
+ * row in a table of terms now, and a table row that stops 600px short of its
+ * own column looks like a rule that failed to draw rather than a measure being
+ * kept.
+ */
+.c-gig,
+.c-gig p,
+.s-gig__facts p,
+.s-gig__task,
+.c-carer p,
+.c-carer li {
+  max-width: none;
+}
+
+/* ------------------------------------------------------------------ */
+/* The masthead                                                       */
+/* ------------------------------------------------------------------ */
+
+/*
+ * WHY THIS SECTION EXISTS
+ *
+ * The shared masthead in main.css is written for an article: one column of
+ * type, set narrow, sitting above a body that is also one column. On a page
+ * whose body is a 960px rate card that reasoning stops holding, and at 1440 it
+ * shows — .s-article__head--no-media drops back to display:block above 1024px,
+ * so the content keeps a container-aware padding on its start edge and nothing
+ * at all on its end edge. The type stops around 880px and the remaining 40% of
+ * the masthead is empty wash. Not restraint; an unfinished edge.
+ *
+ * Everything below is scoped to .s-gigs, which is on this archive and the
+ * category archives and nowhere else. The Services page and a single listing
+ * carry the same classes and are deliberately left as they are.
+ *
+ * Nothing here is new markup. Every selector reads elements that main.css and
+ * the two templates already put on the page; the composition is done with grid
+ * placement and two pseudo-elements, so the templates, the classes and the
+ * reveal behaviour are untouched.
+ */
+
+/*
+ * A cover, not a band.
+ *
+ * A floor rather than a fixed height: on this archive the title, deck and tally
+ * already exceed it and the rule never binds, but a category archive whose term
+ * has no description is three short lines, and without a floor that page opens
+ * on a masthead half the height of this one. Two sibling screens under one
+ * navigation should not disagree about how tall the top of the site is.
+ */
+@media (min-width: 1024px) {
+  .s-gigs .s-article__head--no-media {
+    display: grid;
+
+    /*
+     * One column, explicitly. .s-article__head sets 0.94fr / 1.06fr above
+     * 1024px for the split masthead that carries a photograph, and --no-media
+     * only escapes it by falling back to display:block. Taking the grid back
+     * without also taking the template back drops the whole masthead into that
+     * first cell — 670px of a 1425px page, which is a narrower column than the
+     * one this section exists to widen.
+     */
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+    min-height: min(58svh, 520px);
+  }
+}
+
+/*
+ * Light aimed at the type.
+ *
+ * main.css puts its two blooms at 84%/4% and 97%/88% — correct for the split
+ * masthead that rule was written for, where the right-hand column holds a
+ * photograph. Here there is no photograph, so both land on empty ground and
+ * read as a stain rather than as light. Re-aimed: a soft lift behind the
+ * headline, and the cooler accent carried to the outer corner where it falls
+ * off the page instead of sitting in the middle of nothing.
+ */
+.s-gigs .s-article__head--no-media::before {
+  background-image:
+    radial-gradient(54rem 36rem at 10% -12%, color-mix(in oklab, #fff 72%, transparent) 0%, transparent 64%),
+    radial-gradient(40rem 30rem at 92% 112%, color-mix(in oklab, var(--c-accent) 15%, transparent) 0%, transparent 70%),
+    radial-gradient(30rem 24rem at 99% -8%, color-mix(in oklab, var(--c-heart) 7%, transparent) 0%, transparent 72%);
+}
+
+/*
+ * Grain.
+ *
+ * The one thing a flat CSS gradient cannot do is sit still — across a surface
+ * this wide it bands, and banding is the tell that separates a rendered
+ * background from a printed one. A single tile of fractal noise at a third
+ * opacity breaks the ramp up. Inline, so it costs no request, and z-index 1
+ * puts it over the gradients and under .s-article__head-content, which main.css
+ * already raises to 2.
+ */
+.s-gigs .s-article__head--no-media::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  content: "";
+  pointer-events: none;
+  opacity: 0.28;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+/* -- Composition -------------------------------------------------- */
+
+/*
+ * Two columns, and the rule between them.
+ *
+ * The title goes left and the deck and the tally go right, which is the honest
+ * fix for the empty edge: fill it with the half of the masthead that was
+ * queueing up underneath the headline for no reason. Both columns start on one
+ * top edge, so the split reads as a decision rather than as text that ran out.
+ *
+ * The hairline in the middle is the point of the whole section. Every row in
+ * the list below carries one at the same weight and the same clay, dividing the
+ * rate from the listing — see .c-gig__rate. Repeating it here means the
+ * masthead is built out of the same part as the thing it introduces, and the
+ * page has one idea in it instead of two.
+ *
+ * It is drawn as a 1px grid column rather than a border so it spans the rows it
+ * belongs to and stops, and it is a gradient rather than a flat fill so it
+ * fades out top and bottom instead of ending in two hard nicks.
+ *
+ * The :has() guard is for the category archive whose term has neither a
+ * description nor any listings: nothing would sit in the second column, and a
+ * rule beside an empty column is worse than no rule. That page falls back to
+ * the stack, which is what it should have been all along.
+ */
+@media (min-width: 1024px) {
+  .s-gigs .s-article__head-content:has(.s-article__deck, .s-services__tally) {
+    display: grid;
+    grid-template-columns: minmax(0, 1.04fr) 1px minmax(0, 0.96fr);
+    column-gap: clamp(36px, 4.4vw, 72px);
+    align-items: start;
+
+    /*
+     * The end edge main.css never gave it. Same expression as the start edge
+     * above, so the block sits centred in the site's 1440 container and shares
+     * both margins with every other section on the page — including the 960px
+     * rate card below, which is centred in the same container.
+     */
+    padding-block: clamp(72px, 7.5vw, 104px);
+    padding-inline-end: max(var(--gutter), (100vw - var(--container-max)) / 2 + var(--gutter));
+  }
+
+  .s-gigs .s-article__head-content:has(.s-article__deck, .s-services__tally)::before {
+    grid-column: 2;
+    grid-row: 2 / 4;
+
+    /*
+     * align-items: start on the container sizes every item to its content, and
+     * this one has none — without stretching itself back it is a 1px column
+     * that is also 0px tall, which is to say nothing at all.
+     */
+    align-self: stretch;
+    content: "";
+    background-image: linear-gradient(
+      180deg,
+      transparent 0%,
+      var(--c-clay) 16%,
+      var(--c-clay) 84%,
+      transparent 100%
+    );
+  }
+
+  .s-gigs .s-article__kicker {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  /*
+   * Centred against the column it is set beside, not aligned to the top of it.
+   *
+   * Top-aligning both columns is the obvious move and it is the wrong one here,
+   * because the two are not the same height: the headline is two lines and the
+   * deck and tally together are roughly twice that. Sharing a top edge then
+   * leaves the whole lower-left quadrant of the masthead empty, which is the
+   * same hole this section started out closing, moved a quarter turn. Hung on
+   * the centre line instead, the headline reads as weighed against the facts
+   * beside it, and the block closes on all four corners.
+   */
+  .s-gigs .s-article__title {
+    grid-column: 1;
+    grid-row: 2 / 4;
+    align-self: center;
+  }
+
+  .s-gigs .s-article__deck {
+    grid-column: 3;
+    grid-row: 2;
+
+    /* Level with the cap-height of the title, not 24px below where it was. */
+    margin-block-start: 0;
+  }
+
+  .s-gigs .s-services__tally {
+    grid-column: 3;
+    grid-row: 3;
+  }
+}
+
+/* -- The parts ---------------------------------------------------- */
+
+/*
+ * The kicker's rule, fading out rather than stopping. A hairline that ends in a
+ * square butt beside 0.14em-tracked caps is the sort of thing that is invisible
+ * until it is fixed.
+ */
+.s-gigs .s-article__kicker-rule {
+  width: clamp(36px, 5vw, 64px);
+  background-color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    currentcolor 0%,
+    color-mix(in oklab, currentcolor 12%, transparent) 100%
+  );
+}
+
+/*
+ * The headline at 2rem, matching the single listing.
+ *
+ * The line-height and tracking come with the size rather than being extra: the
+ * shared rule is tuned for display type up to 3.875rem, where 1.06 leading and
+ * -0.035em tracking read as confident. At 32px that leading is 34px under 32px
+ * of text — two lines nearly touching — and that tracking is just tight.
+ *
+ * The measure has to widen as the type shrinks, which is the opposite of the
+ * instinct. 18ch was a cap on a 56px headline; the same 18ch at 32px is a
+ * 320px column of type sitting in a 641px one, and the line would break three
+ * times for no reason. balance still evens whatever lines it does take.
+ */
+.s-gigs .s-article__title--page {
+  max-width: 26ch;
+  font-size: 2rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.s-gigs .s-article__deck {
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+/*
+ * The tally, given the weight of the fact it carries.
+ *
+ * "$20 to $30 an hour" is the single number a visitor arrives holding, and it
+ * was set as an afterthought at the bottom of the stack — a bare figure with
+ * grey text beside it and nothing to sit on. A hairline above turns it into a
+ * ruled entry rather than a stray line, and it is the same clay as the column
+ * rule and the row borders, so it joins the system instead of adding to it.
+ *
+ * Still not a stat card: no box, no fill, no label. The note in services.css
+ * about what this is not still applies — this only makes it louder, not
+ * different.
+ */
+.s-gigs .s-services__tally {
+  gap: 0.5em;
+  align-items: baseline;
+  padding-block-start: clamp(20px, 2.2vw, 28px);
+  margin-block-start: clamp(24px, 3vw, 34px);
+  border-block-start: 1px solid var(--c-clay);
+}
+
+/*
+ * Tabular figures, which the shared rule omits. Everything else on this page
+ * that prints a number sets them — the chip counts, the rate on every row, the
+ * dates in the verification record — and the one place they matter most is the
+ * figure a reader lands on first.
+ */
+.s-gigs .s-services__tally-figure {
+  font-size: clamp(2.5rem, 3.9vw, 3.125rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.035em;
+}
+
+/*
+ * The separator, quietened but still legible.
+ *
+ * .c-gig__sep sets this dot in flat clay, which works on the white of a row.
+ * The masthead is sand, clay on sand is very nearly clay on clay, and a
+ * separator that disappears does not read as restraint — it reads as a missing
+ * character between "listings" and the price. Mixed back toward the ink far
+ * enough to be seen and not far enough to be read as punctuation.
+ */
+.s-gigs .s-services__tally span[aria-hidden] {
+  color: color-mix(in oklab, var(--c-clay) 55%, var(--c-ink-soft));
+}
+
+/* -- Arrival ------------------------------------------------------ */
+
+/*
+ * A short stagger, in the order the masthead is meant to be read.
+ *
+ * The list below is revealed by GSAP through [data-reveal-group]; the masthead
+ * is not in a reveal group and never has been, so it appeared fully formed
+ * above a list that assembled itself. This closes that gap in CSS alone rather
+ * than putting the headline behind the vendor bundle — main.css owns the reveal
+ * timing and this borrows its restraint: opacity and transform only, four
+ * elements, done in under a second.
+ *
+ * animation-fill-mode: backwards holds the start state through the delay, so
+ * nothing is painted and then hidden. Under prefers-reduced-motion the block
+ * never applies and the masthead is simply there, which is the correct
+ * behaviour and also the behaviour with no CSS animation support at all.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .s-gigs .s-article__kicker,
+  .s-gigs .s-article__title,
+  .s-gigs .s-article__deck,
+  .s-gigs .s-services__tally {
+    animation: kc-gigs-head-in 640ms cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+  }
+
+  .s-gigs .s-article__kicker {
+    animation-delay: 40ms;
+  }
+
+  .s-gigs .s-article__title {
+    animation-delay: 120ms;
+  }
+
+  .s-gigs .s-article__deck {
+    animation-delay: 200ms;
+  }
+
+  .s-gigs .s-services__tally {
+    animation-delay: 280ms;
+  }
+}
+
+@keyframes kc-gigs-head-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Category chips                                                     */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Links to real archives, not a filter widget, so each carries a count that
+ * means what it says. Set on the sand surface rather than as outlined buttons:
+ * they are navigation between sibling pages, not calls to action, and should
+ * not compete with the button at the foot of the page.
+ */
+.s-gigs__filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  /*
+   * The same measure as the list below, so the chips and the rows share a left
+   * edge. Centred rather than flush left because the list is — see the note on
+   * .s-gigs__list — and two blocks under one masthead that disagree about
+   * where the page starts read as a mistake.
+   */
+  max-width: 960px;
+  margin: clamp(32px, 4vw, 48px) auto 0;
+}
+
+.c-chip {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 16px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--c-ink);
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid var(--c-clay);
+  border-radius: 999px;
+  transition: color 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    background-color 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@media (hover: hover) {
+  .c-chip:hover {
+    border-color: var(--c-trust);
+  }
+}
+
+.c-chip.is-current {
+  color: var(--c-bone);
+  background-color: var(--c-ink);
+  border-color: var(--c-ink);
+}
+
+.c-chip__count {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-ink-soft);
+}
+
+.c-chip.is-current .c-chip__count {
+  color: color-mix(in oklab, var(--c-bone) 66%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* Two columns — filter left, listings right                          */
+/* ------------------------------------------------------------------ */
+
+/*
+ * SCOPE
+ *
+ * .s-gigs, which is the full archive and the category archives and nothing
+ * else — a single listing is .s-gig and the Services page never loads this
+ * file at all.
+ *
+ * Both, not just the full archive. An earlier pass scoped this to the
+ * post-type-archive body class on the reasoning that a category page is
+ * already one category deep and does not need a category list pinned beside
+ * it. That was wrong, and it was wrong in the way layout decisions usually
+ * are: it read as a page rather than as a path. The filter's whole purpose is
+ * to be used more than once — Everything, then Tech Help, then Companionship —
+ * and a sidebar that survives the first click and vanishes on the second makes
+ * the second page look like a different site. The list is what changes between
+ * these two templates. The furniture around it should not.
+ *
+ * THE LAYOUT
+ *
+ * The article becomes the grid rather than either of its two .l-container
+ * children, because they are siblings and nothing else encloses them. Five
+ * columns, not two: the outer pair carry the site's own container padding —
+ * the same max() expression main.css uses on the masthead, so the sidebar's
+ * left edge and the headline's left edge are the same edge — and the middle
+ * three are sidebar, gap, listings.
+ *
+ * Doing the padding in the grid rather than on the article is what keeps the
+ * masthead full-bleed. It spans all five columns, so it still runs the width
+ * of the window and still handles its own inset, exactly as before.
+ */
+@media (min-width: 1024px) {
+  .s-gigs {
+    display: grid;
+    grid-template-columns:
+      [full-start] max(var(--gutter), (100vw - var(--container-max)) / 2 + var(--gutter))
+      [side-start] minmax(0, 288px) [side-end]
+      clamp(32px, 3.2vw, 56px)
+      [main-start] minmax(0, 1fr) [main-end]
+      max(var(--gutter), (100vw - var(--container-max)) / 2 + var(--gutter))
+      [full-end];
+
+    /*
+     * Both columns hang from the top of their row. Required, not cosmetic: a
+     * stretched grid item is as tall as the row, and a sticky box that is
+     * already the full height of the thing it is sticking inside has no room
+     * left to travel and never moves.
+     */
+    align-items: start;
+  }
+
+  .s-gigs > .s-article__head {
+    grid-column: full-start / full-end;
+    grid-row: 1;
+  }
+
+  /*
+   * Selected by what they contain rather than by their position. Both are
+   * div.l-container with nothing to tell them apart, and :nth-of-type() would
+   * silently pick the wrong one on any page where the category nav is absent —
+   * which is the state this archive is in before an editor has imported
+   * anything.
+   */
+  .s-gigs > .l-container:has(> .s-gigs__filter) {
+    position: sticky;
+    inset-block-start: 96px;
+    grid-column: side-start / side-end;
+    grid-row: 2;
+
+    /* The grid owns the gutters now; the container's own would double them. */
+    max-width: none;
+    padding-inline: 0;
+
+    /*
+     * A floor for the short viewport and the long category list. The site
+     * header is 74px and sticky, so this is what is left of a laptop window
+     * underneath it.
+     */
+    max-height: calc(100svh - 120px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .s-gigs > .l-container:has(> .s-gigs__list, > .s-services__empty) {
+    grid-column: main-start / main-end;
+    grid-row: 2;
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  /*
+   * The chips, turned down the page.
+   *
+   * Same component — same pill, same hairline, same count, same current state
+   * in ink. Only the axis changes, and the count is pushed to the far edge so
+   * the numbers line up into a column of their own, which is the one thing a
+   * vertical list can do that the horizontal row could not.
+   */
+  .s-gigs .s-gigs__filter {
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+    max-width: none;
+    margin: 0;
+  }
+
+  /*
+   * The count to the far edge, and only the count.
+   *
+   * justify-content: space-between would do it if the chip held two things,
+   * but it holds three — icon, name, count — and a bare text node between two
+   * elements is a flex item like any other, so space-between would strand the
+   * name in the middle of the row, away from the icon it belongs to. Pushing
+   * the last item alone leaves the first two together.
+   */
+  .s-gigs .s-gigs__filter .c-chip {
+    padding-block: 11px;
+  }
+
+  .s-gigs .s-gigs__filter .c-chip__count {
+    margin-inline-start: auto;
+  }
+
+  /*
+   * The two columns start on one line. The list carries a top margin of its
+   * own for the stacked layout; here the toolbar above it holds that space, so
+   * the sidebar takes the same value and the list gives it up.
+   */
+  .s-gigs .s-gigs__toolbar,
+  .s-gigs > .l-container:has(> .s-gigs__filter) {
+    margin-block-start: clamp(40px, 5vw, 64px);
+  }
+
+  .s-gigs .s-gigs__list {
+    max-width: none;
+    margin-block-start: 20px;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* The filter panel                                                   */
+/* ------------------------------------------------------------------ */
+
+/*
+ * The chips, on a surface of their own.
+ *
+ * Loose pills floating on the page's sand read as seven separate objects that
+ * happen to be near each other. Sat on one white panel they read as one
+ * control with seven positions in it — which is what they are, and what the
+ * word "filter" leads a reader to expect.
+ *
+ * The panel is the object this page already uses for anything that holds
+ * content: white on the bone, one clay hairline, the 18px radius shared by a
+ * listing row and the caregiver card. No shadow, no second fill. It is the
+ * .c-gig row and the .c-carer card in a third size, not a new kind of box.
+ */
+.s-gigs .s-gigs__filter {
+  gap: 2px;
+  padding: 8px;
+  background-color: #fff;
+  border: 1px solid var(--c-clay);
+  border-radius: 18px;
+}
+
+/*
+ * With a border around the whole set, each chip's own border is a second line
+ * a few pixels inside the first. The pills give theirs up and become tabs:
+ * nothing at rest, sand under the pointer, ink when they are the one in force.
+ * Only the shape changes — the type, the count and the current state are the
+ * component's own and are left alone.
+ */
+.s-gigs .s-gigs__filter .c-chip {
+  border-radius: 12px;
+}
+
+/*
+ * :not(.is-current) is load-bearing, not tidiness. .c-chip.is-current is two
+ * classes; this selector is three, so without the exclusion it wins on
+ * specificity and strips the ink off the current chip while leaving the bone
+ * text .c-chip.is-current sets — which is bone on white, and invisible.
+ */
+.s-gigs .s-gigs__filter .c-chip:not(.is-current) {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+@media (hover: hover) {
+  .s-gigs .s-gigs__filter .c-chip:not(.is-current):hover {
+    background-color: var(--c-sand);
+    border-color: transparent;
+  }
+}
+
+/*
+ * Trust blue at rest, so the column of marks carries the same accent as the
+ * masthead kicker and the category line on every row. It goes to currentcolor
+ * on the one in force, because trust on ink is two dark colours arguing and
+ * the bone the chip already sets is legible against it.
+ */
+/*
+ * On a phone the icons make every chip too wide to share a line, so all seven
+ * wrap one per row anyway — but wrapped at their own widths, which leaves the
+ * counts scattered down a ragged edge. Setting the column deliberately gets
+ * the same seven rows with the counts lined up, the way they are in the
+ * sidebar. Between 700px and the sidebar the chips still fit several to a row,
+ * so the wrap is left alone there.
+ */
+@media (max-width: 699px) {
+  .s-gigs .s-gigs__filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .s-gigs .s-gigs__filter .c-chip__count {
+    margin-inline-start: auto;
+  }
+}
+
+.c-chip__icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--c-trust);
+}
+
+.c-chip__icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.c-chip.is-current .c-chip__icon {
+  color: currentcolor;
+}
+
+/* ------------------------------------------------------------------ */
+/* List / grid view                                                   */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Neither an auto margin nor a width cap.
+ *
+ * Both were set to match a list that was itself capped at 960px and centred.
+ * In the sidebar layout that list is max-width: none and fills its column, so
+ * the pair left the Grid button 67px short of the right edge every card below
+ * it lines up on.
+ *
+ * Dropping the cap here rather than overriding it above 1024px, because it
+ * never did anything below that: .l-container is the viewport less two 32px
+ * gutters, which at 1023px is already 959px.
+ *
+ * The selector is written out properly again. An earlier pass rescoped this
+ * file with a text replace that put ".s-gigs " in front of the comment rather
+ * than in front of the selector — which still parsed as .s-gigs .s-gigs__toolbar,
+ * so it worked, and quietly outranked the override meant to fix it.
+ */
+.s-gigs .s-gigs__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-block: clamp(40px, 5vw, 64px) 0;
+  margin-inline: 0;
+}
+
+/*
+ * The same object as .c-chip, in the same two states — clay hairline on white,
+ * ink when it is the one in force. A view switch and a category chip are both
+ * "this one, not those", and the page should only own one way of saying it.
+ */
+.c-viewswitch {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background-color: #fff;
+  border: 1px solid var(--c-clay);
+  border-radius: 999px;
+}
+
+/*
+ * Taken out of the layout, left in the accessibility tree and in the tab
+ * order. display: none would remove the radios from both, which would leave
+ * two labels that only a mouse can reach.
+ */
+.c-viewswitch__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.c-viewswitch__label {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+
+  min-height: 40px;
+  padding-inline: 16px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--c-ink-soft);
+  cursor: pointer;
+  border-radius: 999px;
+  transition: color 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    background-color 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/*
+ * The label is the target — the input behind it is a clipped pixel and the 4px
+ * of track around it belongs to .c-viewswitch, where a tap does nothing. So the
+ * minimum has to be met by the label itself, and only where a finger is doing
+ * the tapping; on a mouse the shorter pill sits better against the chips.
+ */
+@media (pointer: coarse) {
+  .c-viewswitch__label {
+    min-height: 44px;
+  }
+}
+
+.c-viewswitch__label svg {
+  width: 16px;
+  height: 16px;
+}
+
+.c-viewswitch__input:checked + .c-viewswitch__label {
+  color: var(--c-bone);
+  background-color: var(--c-ink);
+}
+
+/*
+ * The ring is on the label because the input it belongs to is a clipped pixel
+ * somewhere behind it. Same weight and colour as .s-article__kicker-link's.
+ */
+.c-viewswitch__input:focus-visible + .c-viewswitch__label {
+  outline: 3px solid var(--c-trust);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .c-viewswitch__input:not(:checked) + .c-viewswitch__label:hover {
+    color: var(--c-ink);
+    background-color: var(--c-sand);
+  }
+}
+
+/* -- Grid view ---------------------------------------------------- */
+
+/*
+ * :has() on the article, so one checked radio in the toolbar re-lays the whole
+ * list below it without a line of script.
+ *
+ * What changes is only the axis and what the rule divides. A row is a rate
+ * beside a listing, split by a vertical hairline; a card is a rate above a
+ * listing, split by a horizontal one. Same parts, same hairline, same clay —
+ * the card is the row turned through ninety degrees, which is why nothing here
+ * introduces a colour, a radius or a shadow the row did not already have.
+ */
+@media (min-width: 700px) {
+  :is(.s-gigs, .s-gig__more):has(#kc-gig-view-grid:checked) .s-gigs__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  :is(.s-gigs, .s-gig__more):has(#kc-gig-view-grid:checked) .c-gig {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    align-content: start;
+  }
+
+  :is(.s-gigs, .s-gig__more):has(#kc-gig-view-grid:checked) .c-gig__rate {
+    display: flex;
+    gap: 0;
+    align-items: baseline;
+    padding-inline-end: 0;
+    padding-block-end: 16px;
+    border-inline-end: 0;
+    border-block-end: 1px solid var(--c-clay);
+  }
+
+  :is(.s-gigs, .s-gig__more):has(#kc-gig-view-grid:checked) .c-gig__unit {
+    margin-block-start: 0;
+  }
+
+  /*
+   * Out of the flow and into the corner. In one column it would otherwise sit
+   * below the tasks as a stray circle on its own line.
+   */
+  :is(.s-gigs, .s-gig__more):has(#kc-gig-view-grid:checked) .c-gig__go {
+    position: absolute;
+    inset-block-start: clamp(20px, 2.4vw, 28px);
+    inset-inline-end: clamp(20px, 2.4vw, 28px);
+  }
+
+  /*
+   * A card is taller than it is wide where a row is the reverse, so the sample
+   * of the work gets the third line the row had no room for.
+   */
+  :is(.s-gigs, .s-gig__more):has(#kc-gig-view-grid:checked) .c-gig__tasks {
+    max-width: none;
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* The rate card                                                      */
+/* ------------------------------------------------------------------ */
+
+.s-gigs__list {
+  display: grid;
+  gap: 12px;
+
+  /*
+   * Narrower than the site container. A row is one line of type across; at the
+   * full 1440 the gap between the rate and the title grows wide enough that
+   * the eye stops connecting them, which is the one connection the row exists
+   * to make.
+   */
+  max-width: 960px;
+  padding: 0;
+  margin: clamp(40px, 5vw, 64px) auto 0;
+  list-style: none;
+}
+
+.s-gigs__list--tight {
+  margin-block-start: clamp(20px, 2.5vw, 28px);
+}
+
+.c-gig {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  padding: clamp(20px, 2.4vw, 28px);
+  background-color: #fff;
+  border: 1px solid var(--c-clay);
+  border-radius: 18px;
+  transition: transform 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@media (min-width: 700px) {
+  .c-gig {
+    /*
+     * A fixed rate column. Fixed, not auto: the whole point is that "$20" and
+     * "$27.50" start at the same x, and an auto column would let each row set
+     * its own edge and destroy the alignment the page is built on.
+     */
+    grid-template-columns: 132px minmax(0, 1fr) 40px;
+    gap: clamp(20px, 2.5vw, 32px);
+  }
+}
+
+@media (hover: hover) {
+  .c-gig:hover {
+    border-color: color-mix(in oklab, var(--c-trust) 32%, var(--c-clay));
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* Keyboard parity: the row lifts when the title link inside it takes focus. */
+.c-gig:focus-within {
+  border-color: color-mix(in oklab, var(--c-trust) 32%, var(--c-clay));
+  box-shadow: var(--shadow-md);
+}
+
+/* -- The number --------------------------------------------------- */
+
+/*
+ * gap: 0, because "$25" and "/hr" are one word now rather than two things on a
+ * line together. Any gap at all puts a space in the middle of the rate.
+ */
+.c-gig__rate {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  align-items: baseline;
+  margin: 0;
+}
+
+@media (min-width: 700px) {
+  .c-gig__rate {
+    display: block;
+
+    /*
+     * The rule that makes it a rate card rather than a card with a price on
+     * it. One hairline, carried down the left edge of every row at the same
+     * offset, so the column reads as a column.
+     */
+    padding-inline-end: clamp(16px, 2vw, 24px);
+    border-inline-end: 1px solid var(--c-clay);
+
+    /*
+     * Centred in its column — which is a change of mind about what this column
+     * is. Flush left, the rates aligned on their first character, so "$20" and
+     * "$100" started together and ended apart. Centred, they are a stack of
+     * labels rather than a ledger. The tabular figures on .c-gig__amount still
+     * hold each number's own digits to one width, so nothing jitters.
+     *
+     * Set here rather than on the base rule deliberately: below 700px and in a
+     * grid card the rate is a flex row, where text-align does nothing to the
+     * items and the price belongs at the start of the line with everything
+     * else. Putting it beside the display:block it depends on keeps the two
+     * from drifting apart.
+     */
+    text-align: center;
+
+    /*
+     * And centred down the row as well.
+     *
+     * align-content on a block container, not flex — a column flex box would
+     * make the amount and the unit separate items on separate lines, and they
+     * have to stay one inline run to read as "$25/hr". This centres the
+     * in-flow children in the leftover height while leaving the inline
+     * formatting alone.
+     *
+     * The cell keeps stretching to the full row, which is the point: the
+     * hairline on its end edge is what makes this a rate card, and align-self
+     * would have shrunk it to a stub floating beside the listing.
+     */
+    align-content: center;
+  }
+}
+
+/*
+ * Inline, where both of these used to be blocks stacked one above the other.
+ * The rate column reads as a single run — $25/hr — so the two parts have to
+ * share a line at every width, including the block layout above 700px where a
+ * display: block child would break to its own.
+ */
+.c-gig__amount {
+  display: inline;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 2.6vw, 2.375rem);
+  font-weight: var(--display-weight);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--c-ink);
+  letter-spacing: -0.03em;
+  transition: color 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@media (hover: hover) {
+  .c-gig:hover .c-gig__amount {
+    color: var(--c-trust);
+  }
+}
+
+.c-gig__unit {
+  display: inline;
+  margin-block-start: 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--c-ink-soft);
+}
+
+/*
+ * The category, under the rate.
+ *
+ * The same mark the filter uses, so the icon someone clicked in the sidebar is
+ * the icon they then find down the rate column — which is what makes the two
+ * one system rather than a list and a menu that happen to share a page.
+ *
+ * Not the filter's trust blue. In the sidebar the icon is the thing being
+ * chosen and carries the accent; here it is the quietest fact in a column
+ * whose whole job is the number above it, and a row of blue marks down the
+ * page would pull the eye off fifteen prices.
+ *
+ * Not flat clay either, which was the first attempt and was wrong — clay is
+ * the hairline colour, and at that weight on white the icon came out at about
+ * 1.2:1 and read as something that had failed to render rather than as a mark
+ * anyone meant to put there. Mixed most of the way to the soft ink instead: a
+ * warm grey that is plainly visible, and still a long way behind the rate.
+ */
+.c-gig__icon {
+  display: inline-flex;
+  margin-block-start: 12px;
+  color: color-mix(in oklab, var(--c-ink-soft) 62%, var(--c-clay));
+  transition: color 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.c-gig__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/*
+ * It picks up the accent on hover with the rest of the row, alongside the rate
+ * going trust blue and the corner arrow filling in — one gesture, not three
+ * things happening at slightly different moments.
+ */
+@media (hover: hover) {
+  .c-gig:hover .c-gig__icon {
+    color: var(--c-trust);
+  }
+}
+
+/* -- The listing -------------------------------------------------- */
+
+.c-gig__main {
+  min-width: 0;
+}
+
+/*
+ * The category, set inside the byline.
+ *
+ * No margin of its own any more: it is a flex item in .c-gig__by now, and that
+ * row already owns the 8px between everything on it. A margin here would only
+ * be an argument with the gap.
+ *
+ * It keeps the small tracked caps and the trust blue it had as an eyebrow.
+ * That is what stops it reading as a third grey fact between the years and the
+ * verification — it is the one item on the line that says what kind of thing
+ * this is rather than who is offering it, and the colour ties it to the icon
+ * in the rate column and to the same category in the filter.
+ */
+.c-gig__kicker {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--c-trust);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/*
+ * The title now always follows the byline — the eyebrow that used to sit
+ * between them, and needed an adjacent-sibling rule to close the gap up, has
+ * moved into the line above. One margin covers every case.
+ */
+.c-gig__title {
+  margin: 12px 0 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: var(--display-weight);
+  line-height: 1.25;
+  color: var(--c-ink);
+  letter-spacing: -0.015em;
+}
+
+.c-gig__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/*
+ * The whole row is clickable, but only the title is a link — the overlay is an
+ * affordance for the mouse, so the keyboard and a screen reader still meet one
+ * control with one accessible name.
+ */
+.c-gig__link::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  border-radius: inherit;
+}
+
+@media (hover: hover) {
+  .c-gig:hover .c-gig__link {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+  }
+}
+
+/* First in the column now, so it sets the top edge rather than clearing one. */
+.c-gig__by {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  align-items: center;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  color: var(--c-ink-soft);
+}
+
+.c-gig__face {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/*
+ * Shown when a portrait has not been downloaded yet. An initial reads as a
+ * person without a photograph; a grey silhouette reads as a broken image.
+ */
+.c-gig__face--letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: var(--display-weight);
+  color: var(--c-ink-soft);
+  background-color: var(--c-sand);
+}
+
+.c-gig__name {
+  font-weight: 600;
+  color: var(--c-ink);
+}
+
+/*
+ * The dots between the parts of the byline.
+ *
+ * Drawn rather than typed. A · is a 4px mark inside a glyph box whose size and
+ * side bearings are the font's business, not this stylesheet's; a 5px disc is
+ * the same size on every line it appears on and sits on the row's centre
+ * because the flex row puts it there. It is also why clay works here where it
+ * failed as a glyph — a solid disc lays down far more ink than a hairline
+ * stroke of the same value, so the mark reads without the colour having to be
+ * darkened.
+ *
+ * font-size: 0 is not decoration. The span still contains a literal · from the
+ * markup, and at the inherited size that character would draw straight over
+ * the 5px box the background is painting. Collapsing the text is what leaves
+ * the disc on its own.
+ *
+ * flex: none because it is a 5px item in a wrapping flex row — without it the
+ * dots are the first thing to be squeezed when the line is tight, and a
+ * separator that is 3px on one row and 5px on the next is worse than none.
+ */
+.c-gig__sep {
+  display: block;
+  flex: none;
+  width: 5px;
+  height: 5px;
+  font-size: 0;
+  background-color: var(--c-clay);
+  border-radius: 50%;
+}
+
+.c-gig__verified {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--c-leaf);
+}
+
+.c-gig__dot {
+  width: 7px;
+  height: 7px;
+  background-color: currentcolor;
+  border-radius: 50%;
+}
+
+/*
+ * A sample of the work, run together on one line. The full list is the
+ * substance of the listing's own page; four bulleted lines here would turn
+ * every row back into a card and bury the number the row is built around.
+ */
+.c-gig__tasks {
+  /*
+   * Kept to a measure even though the reset above freed it: this is the one
+   * part of the row that is read as a sentence rather than scanned as a fact,
+   * and across the full column it would run past where an eye can track back.
+   */
+  max-width: 64ch;
+  margin: 10px 0 0;
+  overflow: hidden;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--c-ink-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.c-gig__go {
+  display: none;
+}
+
+@media (min-width: 700px) {
+  .c-gig__go {
+    /* Held at the top of the row, level with the rate and the title. */
+    align-self: start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: var(--c-ink-soft);
+    background-color: var(--c-sand);
+    border-radius: 50%;
+    transition: color 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      background-color 200ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+}
+
+.c-gig__go svg {
+  width: 17px;
+  height: 17px;
+}
+
+@media (hover: hover) {
+  .c-gig:hover .c-gig__go {
+    color: #fff;
+    background-color: var(--c-trust);
+  }
+}
+
+/* The sibling listings at the foot of a gig: same row, fewer parts. */
+.c-gig--compact {
+  padding: clamp(16px, 1.8vw, 20px) clamp(18px, 2vw, 24px);
+}
+
+@media (min-width: 700px) {
+  .c-gig--compact {
+    grid-template-columns: 110px minmax(0, 1fr) 40px;
+    align-items: center;
+  }
+}
+
+.c-gig--compact .c-gig__amount {
+  font-size: clamp(1.375rem, 1.9vw, 1.625rem);
+}
+
+/* ------------------------------------------------------------------ */
+/* Pagination                                                         */
+/* ------------------------------------------------------------------ */
+
+.s-gigs .pagination {
+  display: flex;
+  justify-content: center;
+  margin-block-start: clamp(40px, 5vw, 56px);
+}
+
+.s-gigs .nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.s-gigs .page-numbers {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 42px;
+  padding-inline: 12px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--c-ink);
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid var(--c-clay);
+  border-radius: 999px;
+}
+
+.s-gigs .page-numbers.current {
+  color: var(--c-bone);
+  background-color: var(--c-ink);
+  border-color: var(--c-ink);
+}
+
+.s-gigs .page-numbers.dots {
+  background: none;
+  border-color: transparent;
+}
+
+/* ------------------------------------------------------------------ */
+/* One listing — the hero                                             */
+/* ------------------------------------------------------------------ */
+
+/*
+ * SCOPE
+ *
+ * .s-gig, singular — this listing and nothing else. single.php gives a blog
+ * post the identical .s-article__media markup, and a post's featured image is
+ * a real photograph at a real size that should go on filling its half of the
+ * window. Everything here exists because a gig's picture is not that.
+ *
+ * THE PROBLEM
+ *
+ * The platform sends one 300x300 portrait per caregiver. The shared hero puts
+ * its media in a half-window column — 763x604 at 1440 — and fills it with
+ * object-fit: cover. So a 300px square is scaled two and a half times, and on
+ * a hidpi screen closer to five, and then cropped from a square into an
+ * upright landscape, which on a portrait means cutting the top of the head off
+ * and pushing the face to the size of a poster. Soft, badly cropped, and
+ * abutting the page's beige on a hard vertical line at the halfway mark.
+ *
+ * THE FIX
+ *
+ * Stop stretching it. The picture is shown at its own square proportion, at a
+ * size it can actually hold, as a framed object on a surface — and the surface
+ * is the same picture blurred, which is the one treatment that makes an
+ * upscale invisible, because at that radius there is no detail left to be soft.
+ */
+
+/*
+ * The headline at 2rem.
+ *
+ * Scoped to .s-gig, so the archives and the Services page keep the sizes they
+ * are set at and, more to the point, so does a blog post — single.php uses this
+ * same class for its own H1, and that page is not part of this conversation.
+ *
+ * Three settings come with the size rather than being extra. The shared rule is
+ * tuned for display type at up to 3.875rem: line-height 1.06 is 34px of leading
+ * under 32px of text, which is two lines nearly touching; -0.035em is tracking
+ * that only reads as confident when the letters are large; and a 19ch measure at
+ * this size is a 340px column of type stranded in a 670px one. Each is right for
+ * 62px and wrong for 32px.
+ */
+.s-gig .s-article__title {
+  max-width: 26ch;
+  font-size: 2rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.s-gig .s-article__head {
+  /*
+   * The flat #fbf7f0 the shared rule sets is fine behind a photograph that
+   * fills half the page. Behind a framed portrait it is a large empty beige
+   * field, so it takes the same wash and grain as the archive masthead — two
+   * screens a click apart should be lit the same way.
+   */
+  background-image: linear-gradient(158deg, var(--c-sand) 0%, color-mix(in oklab, var(--c-sand) 38%, #fbf7f0) 54%, #fbf7f0 100%);
+}
+
+.s-gig .s-article__head::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  content: "";
+  pointer-events: none;
+  opacity: 0.28;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+/* Above the grain. The shared rule already raises .s-article__head-content. */
+.s-gig .s-article__media {
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* -- The out-of-focus ground -------------------------------------- */
+
+/*
+ * The photograph itself now, unfiltered and unscaled.
+ *
+ * The blur and the scale went together and have gone together: the scale only
+ * existed because blur samples past an element's edges and comes back with
+ * nothing, so an unscaled blurred image fades out around its own border. With
+ * no blur there is no edge to hide, and overscaling would only crop the picture
+ * for no reason.
+ */
+.s-gig__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+ * A tonal wash, so a white-framed portrait has something to sit against and
+ * the ground stays subordinate to it.
+ */
+.s-gig .s-article__media::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  content: "";
+  pointer-events: none;
+  background-image: linear-gradient(200deg, color-mix(in oklab, var(--c-deep) 18%, transparent) 0%, transparent 48%, color-mix(in oklab, var(--c-deep) 26%, transparent) 100%);
+}
+
+/*
+ * The seam, dissolved by masking rather than by painting over it.
+ *
+ * The first attempt faded the blurred image into #fbf7f0 down its left edge,
+ * and left a pale band you could see: the hero's background is a sand-to-bone
+ * gradient, so at the halfway mark where the media starts it is warmer than
+ * #fbf7f0, and a fade to the wrong colour is just a different seam. Matching it
+ * by hand means hard-coding a value read off one viewport width, which stops
+ * being right at the next.
+ *
+ * A mask has no colour to get wrong. The alpha ramps to nothing and whatever
+ * the head is painting shows through, so the join is exact at every width and
+ * survives any later change to that gradient.
+ *
+ * It goes on .s-article__media, not on the backdrop image, and that is the
+ * whole trick. A mask is resolved against its element's own box and then the
+ * element's transform is applied to the result — so masking the backdrop, which
+ * carries scale(1.3), scaled the ramp with it and threw the fade off-frame,
+ * leaving a harder edge than the one it was there to remove. The media is not
+ * transformed, so its ramp lands where it is written.
+ *
+ * Masking the parent takes the portrait with it, which is fine and checked:
+ * 26% puts the ramp's end at 866px against a portrait starting at 887px, and
+ * it stays clear down to 1024 where the numbers are 622 and 635. The portrait
+ * is never lit through.
+ */
+@media (min-width: 1024px) {
+  .s-gig .s-article__media {
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 26%);
+    mask-image: linear-gradient(90deg, transparent 0%, #000 26%);
+  }
+}
+
+/* -- The portrait ------------------------------------------------- */
+
+/*
+ * The sharp portrait is off; the hero keeps only the out-of-focus ground.
+ *
+ * This makes the .s-article__img rules below inert — they are left in place
+ * because they are what a revert needs, and turning the portrait back on is
+ * then this one declaration rather than a reconstruction.
+ *
+ * It costs nothing to load. The hidden <img> and .s-gig__backdrop are the same
+ * attachment and therefore the same URL, so the browser fetches one file
+ * whether this is none or grid.
+ */
+.s-gig .s-article__media-inner {
+  display: none;
+}
+
+/*
+ * Square, because the source is square: at 1:1 object-fit crops nothing at all
+ * and the whole portrait survives, head included.
+ *
+ * The cap is the real decision. 300px is everything the file has, so 320 is
+ * the last size that is still honest about it — beyond that this is enlarging
+ * a thumbnail again, only in a nicer frame. It will still be soft on a hidpi
+ * screen, and that is the platform's to fix; what this stops is the page
+ * making it four times worse.
+ */
+.s-gig .s-article__img {
+  width: clamp(200px, 23vw, 320px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgb(255 255 255 / 55%);
+}
+
+/* ------------------------------------------------------------------ */
+/* One listing — hero facts                                           */
+/* ------------------------------------------------------------------ */
+
+/*
+ * The rate and the person on one ruled strip. Pairing them is the argument the
+ * page is making: this price belongs to this named, checked person — which is
+ * exactly the pairing an agency's rate card cannot show you.
+ */
+.s-gig__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px clamp(24px, 3vw, 40px);
+  align-items: center;
+  padding-block: clamp(20px, 2.4vw, 28px);
+  margin-block-start: clamp(24px, 3vw, 32px);
+  border-block: 1px solid var(--c-clay);
+}
+
+/* Same reasoning as .c-gig__rate: the rate is one run, so no gap inside it. */
+.s-gig__rate {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  align-items: baseline;
+  margin: 0;
+}
+
+.s-gig__amount {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.2vw, 2.75rem);
+  font-weight: var(--display-weight);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--c-ink);
+  letter-spacing: -0.03em;
+}
+
+.s-gig__unit {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-soft);
+}
+
+.s-gig__by {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+}
+
+.s-gig__name {
+  display: block;
+  font-weight: 600;
+  color: var(--c-ink);
+}
+
+.s-gig__years {
+  display: block;
+  color: var(--c-ink-soft);
+}
+
+.s-gig__ask {
+  margin-block-start: clamp(24px, 3vw, 32px);
+}
+
+/* ------------------------------------------------------------------ */
+/* One listing — the two columns                                      */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Body first, caregiver beside it. The mirror image of the blog's layout, and
+ * for a reason: a table of contents belongs before what it indexes, a person
+ * belongs alongside the thing they are offering.
+ */
+/*
+ * The site's container, not a narrower one of its own.
+ *
+ * These three were bounded to 1120px inside the 1440 container, which put the
+ * details 121px in from the hero's left edge — the headline started at 32 and
+ * the caregiver card at 153, on the same page, with nothing between them to
+ * explain the step. The original reason was real but has expired: it was there
+ * to stop the gap between the end of a reading line and the start of the rail
+ * growing to 300px, and that is now handled where it belongs, by capping the
+ * prose rather than the whole layout.
+ *
+ * All three together, not just the layout. They are one column of page and the
+ * only thing worse than all of them being inset is one of them not being.
+ */
+.s-gig__layout,
+.s-gig__more,
+.s-gig .s-article__foot {
+  margin-inline: auto;
+}
+
+.s-gig__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(40px, 5vw, 56px);
+  padding-block: clamp(48px, 6vw, 80px) clamp(24px, 3vw, 40px);
+}
+
+/*
+ * The caregiver to the left, the listing to the right.
+ *
+ * Swapped in CSS and not in the markup, which is safe here for a reason worth
+ * recording rather than assuming: .s-gig__body contains no focusable element
+ * at all — a task list, prose and a date — so the whole layout has exactly one
+ * tab stop, the rail's "Ask about this listing". There is no order for a
+ * keyboard to disagree about. The source keeps the sequence single-gigs.php
+ * documents, where the listing's own substance comes before the person
+ * offering it; the screen leads with the person.
+ */
+@media (min-width: 1024px) {
+  .s-gig__layout {
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: clamp(48px, 5vw, 88px);
+  }
+
+  .s-gig__rail {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .s-gig__body {
+    grid-row: 1;
+    grid-column: 2;
+  }
+}
+
+/*
+ * The measure moved off the column and onto the prose.
+ *
+ * Capping the whole body at 62ch inside a container that is now 250px wider
+ * would leave that 250px empty against the right edge — the column would stop
+ * short of the page for no reason a reader can see. Only the running text
+ * actually needs a measure; the ruled list of terms is a table, and a table is
+ * supposed to reach the edge of the space it is given.
+ */
+.s-gig__body {
+  min-width: 0;
+}
+
+/*
+ * The standfirst.
+ *
+ * Set larger than body copy and darker than the rail ever had it, because out
+ * here it is the opening of the column rather than a note in a card. Kept to a
+ * measure of its own: it is the one thing on this page that is continuous prose
+ * for several lines, and across the full column it would run past where an eye
+ * can find the start of the next line.
+ */
+/*
+ * The column, as a stack of cards.
+ *
+ * Same object as everything else on this site that holds content — white on
+ * the bone, one clay hairline, the 18px radius shared by a listing row and the
+ * caregiver card. No shadow: these are surfaces the eye rests on, not things
+ * that need lifting off the page, and the rail beside them is flat.
+ *
+ * The hairline that used to join the two sections is gone with this. Boxes
+ * with a gap between them do not also need a rule — that says "separate"
+ * twice.
+ */
+.s-gig__bio,
+.s-gig__block {
+  padding: clamp(24px, 2.8vw, 40px);
+  background-color: #fff;
+  border: 1px solid var(--c-clay);
+  border-radius: 18px;
+}
+
+.s-gig__bio,
+.s-gig__block + .s-gig__block {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.s-gig__bio + .s-gig__block,
+.s-gig__block + .s-gig__block {
+  margin-block-start: clamp(20px, 2.2vw, 28px);
+}
+
+/*
+ * The standfirst.
+ *
+ * Larger than the rail ever had it and set in the reading ink, because out
+ * here it opens the column rather than annotating a card. The measure is its
+ * own: this is the only continuous prose on the page that runs several lines,
+ * and across the full column it would pass the point where an eye can find the
+ * start of the next one.
+ */
+.s-gig__bio p {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--c-ink-soft);
+  text-wrap: pretty;
+}
+
+.s-gig__h2 {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 0 0 clamp(16px, 2vw, 24px);
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  font-weight: var(--display-weight);
+  line-height: var(--lh-heading);
+  color: var(--c-ink);
+  letter-spacing: -0.02em;
+}
+
+/*
+ * The mark before a section heading.
+ *
+ * flex: none because a 22px icon in a flex row is the first thing to be
+ * squeezed when the heading wraps, and a marker that changes size between two
+ * headings on one page is worse than no marker.
+ *
+ * Trust blue, like the diamonds in the list below it and the category in the
+ * rate column — this page has one accent and everything that points at
+ * something is set in it.
+ */
+.s-gig__h2-icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--c-trust);
+}
+
+.s-gig__h2-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/*
+ * Set as a specification, one line per row, ruled.
+ *
+ * These four lines are the closest thing the page has to a contract — they are
+ * what this person said they would do for the money at the top — and run as a
+ * loose stack they read like a shopping list. Given a row each and divided by
+ * the same hairline the verification record uses, they read as terms. It is the
+ * cheapest kind of premium there is: nothing added, the existing content given
+ * a structure that matches what it actually is.
+ */
+.s-gig__tasks {
+  display: grid;
+  row-gap: 14px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.s-gig__task {
+  position: relative;
+  padding-block: 0;
+  padding-inline-start: 32px;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  color: var(--c-ink);
+  border-block-end: 0;
+}
+
+/*
+ * A diamond in place of main.css's clay dash.
+ *
+ * Not a tick, and that is the one constraint this mark had to meet. The theme
+ * makes the point in two places already: these lines are what a caregiver said
+ * they would do, and a tick states that each was delivered and signed off,
+ * which is a claim this page has no standing to make. A diamond marks the item
+ * without asserting anything about it.
+ *
+ * Drawn into the existing ::before rather than added to the markup — main.css
+ * puts a 16x2 bar there, so this only has to replace the fill with an image and
+ * give the box square dimensions. Trust blue, which is what every other mark on
+ * this page that points at something is set in.
+ *
+ * top: 0.28em centres an 18px icon on the first line of 18px text at 1.5 —
+ * (27 - 18) / 2 over the font size.
+ */
+.s-gig__task::before {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.28em;
+  width: 18px;
+  height: 18px;
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232e6db4' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M12 3.5 20.5 12 12 20.5 3.5 12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px 18px;
+}
+
+/*
+ * Set as the quotation it is.
+ *
+ * The heading above it says "In their words", and then the words were set as
+ * body copy — the page announced a change of voice and then did not make one.
+ * A rule down the side is the quietest way to mark speech; it needs no glyph,
+ * no italic and no quotation marks that the platform's text does not contain.
+ *
+ * Trust blue mixed into the clay, so the mark that says "this is the caregiver
+ * talking" is the colour this page already uses for everything that belongs to
+ * them — the kicker, the category, the verification tick.
+ */
+.s-gig__prose {
+  /* The reading measure, now that the column is no longer holding one. */
+  max-width: 62ch;
+  padding-inline-start: clamp(20px, 2.2vw, 30px);
+  border-inline-start: 2px solid color-mix(in oklab, var(--c-trust) 32%, var(--c-clay));
+}
+
+.s-gig__prose p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.s-gig__prose p + p {
+  margin-block-start: 1em;
+}
+
+/*
+ * The posting date, with a calendar against it.
+ *
+ * Drawn in the ::before rather than added to the markup: it is one line and
+ * one glyph, and the alternative is a wrapper span in the template for the
+ * sake of an icon that never changes.
+ *
+ * Clay-toward-ink rather than the trust blue used elsewhere. This is the
+ * quietest fact on the page — when the listing was posted, not what it offers
+ * — and the accent would give it a weight the date has not earned.
+ */
+/*
+ * The posting date is off.
+ *
+ * Hidden rather than deleted from single-gigs.php: the template still works out
+ * $kc_since and still prints the line, so putting it back is this one
+ * declaration. The calendar mark below is inert while this stands.
+ */
+.s-gig__posted {
+  display: none;
+  gap: 8px;
+  align-items: center;
+  margin-block-start: clamp(32px, 4vw, 48px);
+  font-size: 0.875rem;
+  color: var(--c-ink-soft);
+}
+
+.s-gig__posted::before {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234a5058' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M3 10h18M8 3v4M16 3v4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 15px 15px;
+}
+
+/* ------------------------------------------------------------------ */
+/* One listing — the caregiver                                        */
+/* ------------------------------------------------------------------ */
+
+.s-gig__rail {
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .s-gig__rail-sticky {
+    position: sticky;
+    inset-block-start: 96px;
+  }
+}
+
+/*
+ * The card's padding comes off and moves to the parts inside it, so the head
+ * can hold a fill that reaches the card's own edges. A tinted band inset by
+ * 32px on every side would read as a box inside a box; run to the edge and
+ * capped by the card's radius, it reads as the top of the card.
+ *
+ * overflow: hidden is what makes that true — without it the head's square
+ * corners sit proud of the card's 18px ones.
+ */
+.c-carer {
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid var(--c-clay);
+  border-radius: 18px;
+}
+
+.c-carer__line,
+.c-carer__tags,
+.c-carer__record,
+.c-carer__ask {
+  margin-inline: clamp(24px, 2.6vw, 32px);
+}
+
+/*
+ * .c-btn--block is width: 100%, which with the card's padding gone measures
+ * 100% of the card and then gets pushed right by the margin above — straight
+ * off the edge. auto lets it fill what is left between the two margins, which
+ * is what "block" was asking for in the first place.
+ */
+.c-carer__ask {
+  width: auto;
+  margin-block-end: clamp(24px, 2.6vw, 32px);
+}
+
+/*
+ * The one photograph on the page, so it is given the room to be one. The hero
+ * deliberately carries no face — see the note in single-gigs.php — which leaves
+ * this as the whole of the page's imagery and the thing that stops a listing
+ * about a person from being entirely type.
+ */
+/*
+ * Portrait beside the identity, identity stacked inside it.
+ *
+ * align-items: center rather than start: the name and badge together are about
+ * the height of the portrait, so centring the two groups against each other is
+ * what makes them read as one unit instead of a picture with some text left
+ * over beside it.
+ */
+/*
+ * The head on its own surface — sand, the page's own second tone, so the
+ * identity is set off from the facts below it without introducing a colour
+ * this page does not already use. It is the same relationship the archive's
+ * filter panel has with the chips inside it.
+ */
+.c-carer__head {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: clamp(20px, 2.2vw, 26px) clamp(24px, 2.6vw, 32px);
+  margin-block-end: 20px;
+  background-color: var(--c-sand);
+  border-block-end: 1px solid var(--c-clay);
+}
+
+.c-carer__identity {
+  min-width: 0;
+}
+
+/*
+ * Square and framed, not a circle.
+ *
+ * A soft radius rather than a hard corner, and rather than the 18px the cards
+ * use — at 88px an 18px radius is a fifth of the whole edge and starts reading
+ * as a squircle. 10px keeps it square while matching the family.
+ *
+ * The border is white, not clay: the portrait now sits on the sand band, and a
+ * white frame lifts it off that tone the way a mount lifts a print, where a
+ * clay hairline on sand would barely register.
+ */
+/* The flex item is the frame now, so it is the thing that must not shrink. */
+.c-carer__portrait {
+  position: relative;
+  flex: none;
+  line-height: 0;
+}
+
+.c-carer__face {
+  width: 88px;
+  height: 88px;
+
+  /* The head row owns the space under it now. */
+  margin-block-end: 0;
+  object-fit: cover;
+  border: 3px solid #fff;
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
+}
+
+/*
+ * The seal, half off the portrait's corner.
+ *
+ * Hung outside the frame rather than tucked inside it: over the picture it
+ * would sit on whatever happens to be in that corner of the photograph and its
+ * legibility would change from caregiver to caregiver. On the corner it always
+ * meets the same two things — the white frame and the sand band — and the white
+ * ring keeps it legible against both.
+ */
+.c-carer__seal {
+  position: absolute;
+  inset-block-end: -5px;
+  inset-inline-end: -5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  color: #fff;
+  background-color: var(--c-leaf);
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+/*
+ * 9px inside an 18px disc that is already carrying a 2px ring: the tick has
+ * about 12px of usable middle, and anything larger touches the ring.
+ */
+.c-carer__seal svg {
+  width: 9px;
+  height: 9px;
+}
+
+/*
+ * The badge belongs to the name directly above it now, so it takes the small
+ * gap of a pair rather than the 12px it used as a separate line in the stack.
+ */
+.c-carer__identity .c-carer__badge {
+  margin-block-start: 8px;
+}
+
+.c-carer__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: var(--display-weight);
+  line-height: 1.2;
+  color: var(--c-ink);
+  letter-spacing: -0.02em;
+}
+
+/*
+ * The same pale-green pill the home page uses for a tier. Repeating it here is
+ * the point: someone who read "Verified" on the tiers section should meet the
+ * identical object on a real person's listing.
+ */
+.c-carer__badge {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 14px;
+  margin-block-start: 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--c-leaf);
+  background-color: color-mix(in oklab, var(--c-leaf) 12%, transparent);
+  border-radius: 999px;
+}
+
+.c-carer__badge svg {
+  width: 13px;
+  height: 13px;
+}
+
+/*
+ * The languages, and the rule that closes them off from the tags.
+ *
+ * The two were adjacent and unrelated — what somebody speaks, then what they
+ * are like — and with nothing between them the tags read as a continuation of
+ * the sentence above. The hairline is the same clay the record below already
+ * uses to separate itself, so the card divides into three parts on one rule
+ * rather than two different ones.
+ */
+.c-carer__line {
+  padding-block-end: clamp(16px, 1.8vw, 20px);
+  margin-block-start: 0;
+  font-size: var(--fs-sm);
+  color: var(--c-ink-soft);
+  border-block-end: 1px solid var(--c-clay);
+}
+
+.c-carer__line-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--c-ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.c-carer__langs {
+  display: grid;
+  row-gap: 6px;
+  padding: 0;
+  margin: 10px 0 0;
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  color: var(--c-ink);
+  list-style: none;
+}
+
+/*
+ * A globe against each language.
+ *
+ * The same mark on every row, which is what makes it a bullet rather than a
+ * statement about the particular language — so it is drawn once here as a
+ * background rather than pasted into the markup by the loop.
+ *
+ * top: 0.15em sets a 16px glyph on the middle of a 16px line at 1.45 —
+ * (23.2 - 16) / 2 over the font size — so it sits on the word, not above it.
+ */
+.c-carer__langs li {
+  position: relative;
+  padding-inline-start: 24px;
+}
+
+.c-carer__langs li::before {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.15em;
+  width: 16px;
+  height: 16px;
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232e6db4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3 12h18'/%3E%3Cpath d='M12 3a14 14 0 0 1 3.6 9A14 14 0 0 1 12 21a14 14 0 0 1-3.6-9A14 14 0 0 1 12 3z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+.c-carer__bio {
+  margin-block-start: 14px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--c-ink-soft);
+}
+
+.c-carer__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+
+  /* Clear of the rule above rather than tight against it. */
+  margin-block-start: clamp(16px, 1.8vw, 20px);
+  list-style: none;
+}
+
+.c-carer__tag {
+  padding: 4px 10px;
+  font-size: 0.8125rem;
+  color: var(--c-ink-soft);
+  background-color: var(--c-sand);
+  border-radius: 6px;
+}
+
+/* -- The record --------------------------------------------------- */
+
+/*
+ * The signature of this page.
+ *
+ * Every care site says "background-checked". The platform actually holds the
+ * individual checks and the date each one cleared, so they are printed by name
+ * with their dates — which answers the question behind the reassurance, which
+ * is not whether a check exists but when it was last done.
+ *
+ * Set as a definition list because that is what it is, and given tabular
+ * figures so the dates align into a column and read as a record rather than as
+ * four separate sentences.
+ */
+.c-carer__record {
+  padding-block-start: 20px;
+  margin-block-start: 20px;
+  border-block-start: 1px solid var(--c-clay);
+}
+
+.c-carer__record-title {
+  margin: 0 0 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--c-ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.c-carer__checks {
+  display: grid;
+  row-gap: 10px;
+  margin: 0;
+}
+
+.c-carer__check {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.c-carer__check dt {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 0.875rem;
+  color: var(--c-ink);
+}
+
+/*
+ * The mark is sized here for every row; only its colour depends on the outcome.
+ * Written the other way round — sizing only the cleared one — a pending row's
+ * circle would inherit the 24px viewBox at whatever the SVG's intrinsic size
+ * resolves to and tower over the line it belongs to.
+ */
+.c-carer__check dt svg {
+  width: 12px;
+  height: 12px;
+  flex: none;
+  color: color-mix(in oklab, var(--c-clay) 45%, var(--c-ink-soft));
+  transform: translateY(1px);
+}
+
+.c-carer__check.is-cleared dt svg {
+  color: var(--c-leaf);
+}
+
+/*
+ * The outstanding rows read quieter than the cleared ones. They are the truth
+ * about this caregiver and belong on the card, but a page arguing that checks
+ * are done should not give the ones that are not done equal weight.
+ */
+.c-carer__check:not(.is-cleared) dt,
+.c-carer__check:not(.is-cleared) dd {
+  color: var(--c-ink-soft);
+}
+
+.c-carer__check dd {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-ink-soft);
+}
+
+.c-carer__ask {
+  margin-block-start: 24px;
+}
+
+/* ------------------------------------------------------------------ */
+/* More from this caregiver                                           */
+/* ------------------------------------------------------------------ */
+
+/*
+ * The foot of the page, restored.
+ *
+ * .s-article__foot used to sit below this section carrying a 48-64px top
+ * margin and 32px of padding, and that was the only thing holding the sibling
+ * listings off the site footer. Moving the back link up into the heading row
+ * took the spacing with it and left the last card butted against the dark
+ * band. The gap belongs to this section anyway — a section should not depend
+ * on whatever happens to follow it to know where it ends.
+ */
+.s-gig__more {
+  padding-block: clamp(40px, 5vw, 56px) clamp(56px, 7vw, 88px);
+  border-block-start: 1px solid var(--c-clay);
+}
+
+/*
+ * The heading and the back link share a line.
+ *
+ * space-between rather than a gap, so the link sits on the page's right edge
+ * and the heading on its left — the same two edges the listing rows below hold.
+ * baseline, not centre: the two are set at very different sizes and centring
+ * would leave the small one floating against the middle of the large one
+ * instead of sitting on the line it shares.
+ */
+.s-gig__more-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px clamp(24px, 3vw, 40px);
+  align-items: baseline;
+  justify-content: space-between;
+  margin-block-end: clamp(20px, 2.5vw, 28px);
+}
+
+/*
+ * One auto margin, on the first item, rather than one on each of the last two.
+ *
+ * The row holds three things now — heading, view switch, back link — and the
+ * two on the right have to travel together. Giving each of them an auto start
+ * margin would split the free space between them and strand both in the middle,
+ * which is the bug the back link had on its own. Pushing everything off the
+ * heading is unambiguous: the switch and the link then sit at the right edge,
+ * separated by the row's own gap.
+ */
+.s-gig__more-head .s-gig__h2 {
+  margin-block-end: 0;
+  margin-inline-end: auto;
+}
+
+.s-gig__more-head .s-gigs__toolbar,
+.s-gig__more-head .s-article__foot {
+  margin-inline: 0;
+}
+
+/* The archive's toolbar centres itself in a 960px column; here it is one item
+ * on a heading row and neither the cap nor the top margin applies. */
+.s-gig__more-head .s-gigs__toolbar {
+  max-width: none;
+  margin-block: 0;
+}
+
+/*
+ * Stripped of the rule and the space it carries as a page footer. Here it is
+ * one item on a heading row, and main.css's top border would draw a second
+ * line directly under .s-gig__more's own.
+ */
+.s-gig__more-head .s-article__foot {
+  padding-block-start: 0;
+  margin-block-start: 0;
+  border-block-start: 0;
+}
+
+/* The list already has its own top margin; the head row supplies the rest. */
+.s-gig__more-head + .s-gigs__list {
+  margin-block-start: 0;
+}
+
+.s-gig__more .s-gigs__list {
+  max-width: none;
+}
